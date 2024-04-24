@@ -1,0 +1,21 @@
+{
+    "julia": "1.9",
+    "packages": {
+        "BraketSimulator": {
+            "uuid": "76d27892-9a0b-406c-98e4-7c178e9b3dff",
+            "rev": "main"
+        },
+        "Braket": {
+            "uuid": "19504a0f-b47d-4348-9127-acc6cc69ef67",
+            "rev": "ksh/oq3"
+        },
+        "OpenQASM3": {
+            "uuid": "791dba98-90c7-4903-ae5f-ea3dc22ea9ce",
+            "rev": "ksh/parameters_update"
+        },
+        "Antlr4Runtime": {
+            "uuid": "780548eb-20d3-4d14-b715-e70121e066d1",
+            "rev": "main"
+        }
+    }
+}
