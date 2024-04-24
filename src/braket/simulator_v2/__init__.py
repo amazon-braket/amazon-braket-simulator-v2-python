@@ -7,8 +7,7 @@ from .simulator import (  # isort:skip
     StateVectorSimulatorV2,
 )
 
-# This file is created by setuptools_scm during the build process:
-from .version import __version__
+from ._version import __version__  # noqa: F401
 
 __all__ = [
     "jl",

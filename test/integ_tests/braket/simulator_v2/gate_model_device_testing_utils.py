@@ -16,7 +16,6 @@ import math
 from typing import Any, Dict, Union
 
 import numpy as np
-
 from braket.aws import AwsDevice
 from braket.circuits import Circuit, Gate, Instruction, Observable, ResultType
 from braket.circuits.quantum_operator_helpers import get_pauli_eigenvalues

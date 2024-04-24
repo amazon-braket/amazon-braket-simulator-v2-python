@@ -12,6 +12,7 @@
 # language governing permissions and limitations under the License.
 
 import pytest
+from braket.devices import LocalSimulator
 from gate_model_device_testing_utils import (
     multithreaded_bell_pair_testing,
     no_result_types_bell_pair_testing,
@@ -33,8 +34,6 @@ from gate_model_device_testing_utils import (
     result_types_tensor_z_z_testing,
     result_types_zero_shots_bell_pair_testing,
 )
-
-from braket.devices import LocalSimulator
 
 DEVICE = LocalSimulator("braket_sv_v2")
 SHOTS = 8000

@@ -18,7 +18,6 @@ from collections import Counter, namedtuple
 
 import numpy as np
 import pytest
-
 from braket.device_schema.simulators import (
     GateModelSimulatorDeviceCapabilities,
     GateModelSimulatorDeviceParameters,
@@ -26,8 +25,9 @@ from braket.device_schema.simulators import (
 from braket.ir.jaqcd import Expectation
 from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.openqasm import Program as OpenQASMProgram
-from braket.simulator_v2 import DensityMatrixSimulatorV2 as DensityMatrixSimulator
 from braket.task_result import AdditionalMetadata, TaskMetadata
+
+from braket.simulator_v2 import DensityMatrixSimulatorV2 as DensityMatrixSimulator
 
 CircuitData = namedtuple("CircuitData", "circuit_ir probability_zero")
 
