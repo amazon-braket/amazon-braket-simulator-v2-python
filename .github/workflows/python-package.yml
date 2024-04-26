@@ -30,6 +30,7 @@ jobs:
       with:
         repository: amazon-braket/BraketSimulator.jl
         token: ${{secrets.GITHUB_TOKEN}}
+        ref: main
     - name: Run unit tests
       run: |
         tox -e unit-tests
