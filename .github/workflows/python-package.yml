@@ -23,6 +23,10 @@ jobs:
         repository: amazon-braket/BraketSimulator.jl
         token: ${{secrets.GH_CI_BOT_TOKEN}}
         ref: main
+    - name: Move Julia Simulator to Julia dev directory
+      run: |
+        mkdir -p ~/.julia/dev
+        mv BraketSimulator.jl ~/.julia/dev
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
