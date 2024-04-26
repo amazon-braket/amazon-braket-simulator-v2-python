@@ -17,16 +17,21 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.9", "3.10", "3.11"]
     steps:
+    - uses: julia-actions/setup-julia@v1
+      with:
+        version: '1'
     - name: Get Julia Simulator
       uses: actions/checkout@v4
       with:
         repository: amazon-braket/BraketSimulator.jl
         token: ${{secrets.GH_CI_BOT_TOKEN}}
         ref: main
-    - name: Move Julia Simulator to Julia dev directory
+    - name: Setup Julia Simulator
+      shell: julia --project=docs --color=yes {0}
       run: |
-        mkdir -p ~/.julia/dev
-        mv BraketSimulator.jl ~/.julia/dev
+        using Pkg
+        Pkg.develop(PackageSpec(path=pwd()))
+        Pkg.instantiate()
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
