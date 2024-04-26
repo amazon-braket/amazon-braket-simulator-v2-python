@@ -17,6 +17,12 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.9", "3.10", "3.11"]
     steps:
+    - name: Get Julia Simulator
+      uses: actions/checkout@v4
+      with:
+        repository: amazon-braket/BraketSimulator.jl
+        token: ${{secrets.GH_CI_BOT_TOKEN}}
+        ref: main
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
@@ -25,12 +31,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install tox
-    - name: Get Julia Simulator
-      uses: actions/checkout@v4
-      with:
-        repository: amazon-braket/BraketSimulator.jl
-        token: ${{secrets.GH_CI_BOT_TOKEN}}
-        ref: main
     - name: Run unit tests
       run: |
         tox -e unit-tests
