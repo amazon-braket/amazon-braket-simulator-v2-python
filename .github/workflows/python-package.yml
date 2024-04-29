@@ -41,6 +41,8 @@ jobs:
       run: |
         pip install tox
     - name: Run unit tests
+      env:
+        GITHUB_TOKEN: ${{secrets.TEMP_PAT_EXP_JUL_28}}
       run: |
         tox -e unit-tests
     - name: Upload coverage report to Codecov
