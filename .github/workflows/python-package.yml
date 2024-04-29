@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: amazon-braket/BraketSimulator.jl
-        token: ${{secrets.GH_CI_BOT_TOKEN}}
+        token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
         ref: main
     - name: Setup Julia Simulator
       shell: julia --project=docs --color=yes {0}
