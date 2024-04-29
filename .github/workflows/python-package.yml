@@ -17,21 +17,6 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.9", "3.10", "3.11"]
     steps:
-    - uses: julia-actions/setup-julia@v1
-      with:
-        version: '1'
-    - name: Get Julia Simulator
-      uses: actions/checkout@v4
-      with:
-        repository: amazon-braket/BraketSimulator.jl
-        token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
-        ref: main
-    - name: Setup Julia Simulator
-      shell: julia --project=docs --color=yes {0}
-      run: |
-        using Pkg
-        Pkg.develop(PackageSpec(path=pwd()))
-        Pkg.instantiate()
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
@@ -42,7 +27,7 @@ jobs:
         pip install tox
     - name: Run unit tests
       env:
-        GITHUB_TOKEN: ${{secrets.TEMP_PAT_EXP_JUL_28}}
+        GH_PRIVATE_TOKEN: ${{secrets.TEMP_PAT_EXP_JUL_28}}
       run: |
         tox -e unit-tests
     - name: Upload coverage report to Codecov
