@@ -17,6 +17,21 @@ jobs:
         os: [macos-latest]
         python-version: ["3.10"]
     steps:
+    - uses: julia-actions/setup-julia@v1
+      with:
+        version: '1'
+    - name: Get Julia Simulator
+      uses: actions/checkout@v4
+      with:
+        repository: amazon-braket/BraketSimulator.jl
+        token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
+        ref: main
+    - name: Setup Julia Simulator
+      shell: julia --project=docs --color=yes {0}
+      run: |
+        using Pkg
+        Pkg.develop(PackageSpec(path=pwd()))
+        Pkg.instantiate()
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
@@ -25,11 +40,10 @@ jobs:
     - name: Install dependencies
       run: |
         pip install tox
-    - name: Setup Julia
-      env:
-        GH_PRIVATE_TOKEN: ${{secrets.TEMP_PAT_EXP_JUL_28}}
+    - name: Setup Julia Simulator
       run: |
-        tox -e julia-setup
+        sed -ie 's/git@github.com:amazon-braket\/BraketSimulator.jl.git/${{ env.GITHUB_WORKSPACE }}\/..\/BraketSimulator.jl/' src/braket/juliapkg.json
+        cat src/braket/juliapkg.json
     - name: Install package
       run: |
         pip install -e .
