@@ -26,6 +26,11 @@ jobs:
         repository: amazon-braket/BraketSimulator.jl
         token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
         ref: main
+    - name: Get Julia Simulator Path
+      run: |
+        pwd
+        echo "JULIA_SIM_PATH=$(pwd)" >> $GITHUB_ENV
+        echo $JULIA_SIM_PATH
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
@@ -36,8 +41,8 @@ jobs:
         pip install tox
     - name: Setup Julia Simulator
       run: |
-        echo $GITHUB_WORKSPACE
-        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$GITHUB_WORKSPACE/../BraketSimulator.jl#" src/braket/juliapkg.json
+        echo $JULIA_SIM_PATH
+        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#JULIA_SIM_PATH#" src/braket/juliapkg.json
         cat src/braket/juliapkg.json
     - name: Install package
       run: |
