@@ -36,6 +36,8 @@ jobs:
     - name: Install dependencies
       run: |
         pip install tox
+        pwd
+        ls
     - name: Setup Julia Simulator
       run: |
         sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$GITHUB_WORKSPACE/julia_sim#" python_sim/src/braket/juliapkg.json
