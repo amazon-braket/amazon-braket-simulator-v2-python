@@ -25,11 +25,17 @@ jobs:
     - name: Install dependencies
       run: |
         pip install tox
-    - name: Run unit tests
+    - name: Setup Julia
       env:
         GH_PRIVATE_TOKEN: ${{secrets.TEMP_PAT_EXP_JUL_28}}
       run: |
-        tox -e gh-action-unit-tests
+        tox -e julia-setup
+    - name: Install package
+      run: |
+        pip install -e .
+    - name: Run Tests
+      run: |
+        tox -e unit-tests
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v3
       if: ${{ strategy.job-index }} == 0
