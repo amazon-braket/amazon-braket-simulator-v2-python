@@ -26,6 +26,7 @@ jobs:
         repository: amazon-braket/BraketSimulator.jl
         token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
         ref: main
+        path: julia_sim
     - name: Get Julia Simulator Path
       run: |
         pwd
@@ -42,7 +43,7 @@ jobs:
     - name: Setup Julia Simulator
       run: |
         echo $JULIA_SIM_PATH
-        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#JULIA_SIM_PATH#" src/braket/juliapkg.json
+        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$JULIA_SIM_PATH#" src/braket/juliapkg.json
         cat src/braket/juliapkg.json
     - name: Install package
       run: |
