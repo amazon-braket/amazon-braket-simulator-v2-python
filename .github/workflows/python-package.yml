@@ -29,7 +29,7 @@ jobs:
       env:
         GH_PRIVATE_TOKEN: ${{secrets.TEMP_PAT_EXP_JUL_28}}
       run: |
-        tox -e unit-tests
+        tox -e gh-action-unit-tests
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v3
       if: ${{ strategy.job-index }} == 0
