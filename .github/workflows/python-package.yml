@@ -17,6 +17,12 @@ jobs:
         os: [macos-latest]
         python-version: ["3.10"]
     steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        path: python_sim
     - uses: julia-actions/setup-julia@v1
       with:
         version: '1'
@@ -27,21 +33,16 @@ jobs:
         token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
         ref: main
         path: julia_sim
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
         pip install tox
     - name: Setup Julia Simulator
       run: |
-        echo $JULIA_SIM_PATH
-        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$GITHUB_WORKSPACE/julia_sim#" src/braket/juliapkg.json
-        cat src/braket/juliapkg.json
+        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$GITHUB_WORKSPACE/julia_sim#" python_sim/src/braket/juliapkg.json
+        cat python_sim/src/braket/juliapkg.json
     - name: Install package
       run: |
+        cd python_sim
         pip install -e .
     - name: Run Tests
       run: |
