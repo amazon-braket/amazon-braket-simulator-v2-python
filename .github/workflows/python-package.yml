@@ -50,6 +50,7 @@ jobs:
         pip install -e .
     - name: Run Tests
       run: |
+        cd python_sim
         tox -e unit-tests
     - name: Upload coverage report to Codecov
       uses: codecov/codecov-action@v3
