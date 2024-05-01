@@ -44,10 +44,6 @@ jobs:
       run: |
         sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$GITHUB_WORKSPACE/julia_sim#" python_sim/src/braket/juliapkg.json
         cat python_sim/src/braket/juliapkg.json
-    - name: Install package
-      run: |
-        cd python_sim
-        pip install -e .
     - name: Run Tests
       run: |
         cd python_sim
