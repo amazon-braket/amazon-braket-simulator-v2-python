@@ -81,7 +81,7 @@ These tests will compare the performance of a series of simulator executions for
 
 1. Create a new git branch:
      ```shell
-     git checkout -b my-fix-branch main
+     git checkout -b <my-fix-branch> main
      ```
 1. Make your changes, **including unit tests** and, if appropriate, integration tests.
    1. Include unit tests when you contribute new features or make bug fixes, as they help to:
