@@ -13,7 +13,6 @@ information to effectively respond to your bug report or contribution.
 * [Contribute via Pull Requests (PRs)](#contribute-via-pull-requests-prs)
   * [Pull Down the Code](#pull-down-the-code)
   * [Run the Unit Tests](#run-the-unit-tests)
-  * [Run the Performance Tests](#run-the-performance-tests)
   * [Make and Test Your Change](#make-and-test-your-change)
   * [Commit Your Change](#commit-your-change)
   * [Send a Pull Request](#send-a-pull-request)
@@ -65,16 +64,6 @@ Before sending us a pull request, please ensure that:
 1. Run the following tox command and verify that all unit tests pass: `tox -e unit-tests`
 
 You can also pass in various pytest arguments `tox -e unit-tests -- your-arguments` to run selected tests. For more information, please see [pytest usage](https://docs.pytest.org/en/stable/usage.html).
-
-
-### Run the Performance Tests
-
-To run the performance tests:
-```bash
-tox -e performance-tests
-```
-These tests will compare the performance of a series of simulator executions for your changes against the latest commit on the main branch.
-*Note*: The execution times for the performance tests are affected by the other processes running on the system.
 
 
 ### Make and Test Your Change
