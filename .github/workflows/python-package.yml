@@ -34,7 +34,7 @@ jobs:
       with:
         repository: amazon-braket/BraketSimulator.jl
         token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
-        ref: ksh/dummy_action
+        ref: main
         path: julia_sim
     - name: Install dependencies
       run: |
