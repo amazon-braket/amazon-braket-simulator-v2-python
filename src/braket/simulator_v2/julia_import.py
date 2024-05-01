@@ -40,6 +40,6 @@ import juliacall
 
 jl = juliacall.Base.Module()
 
-jl.seval("using PythonCall, Braket, BraketSimulator")
+jl.seval("using PythonCall, BraketSimulator")
 jl.seval("using PythonCall: Py, pyconvert")
 jlBraketSimulator = jl.BraketSimulator
