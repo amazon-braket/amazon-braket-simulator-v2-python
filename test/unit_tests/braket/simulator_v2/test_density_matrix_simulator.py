@@ -22,7 +22,7 @@ from braket.device_schema.simulators import (
     GateModelSimulatorDeviceCapabilities,
     GateModelSimulatorDeviceParameters,
 )
-from braket.ir.jaqcd import Expectation
+from braket.ir.jaqcd import DensityMatrix, Expectation
 from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import AdditionalMetadata, TaskMetadata
@@ -846,3 +846,34 @@ def test_measure_targets():
     assert 400 < np.sum(measurements, axis=0)[0] < 600
     assert len(measurements[0]) == 1
     assert result.measuredQubits == [0]
+
+
+@pytest.mark.parametrize(
+    "jaqcd_string, oq3_pragma, jaqcd_type",
+    [
+        ["densitymatrix", "density_matrix", DensityMatrix()],
+    ],
+)
+def test_simulator_analytic_value_type(jaqcd_string, oq3_pragma, jaqcd_type):
+    simulator = DensityMatrixSimulator()
+    jaqcd = JaqcdProgram.parse_raw(
+        json.dumps(
+            {
+                "instructions": [{"type": "h", "target": 0}],
+                "results": [{"type": jaqcd_string}],
+            }
+        )
+    )
+    qasm = OpenQASMProgram(
+        source=f"""
+        qubit q;
+        h q;
+        #pragma braket result {oq3_pragma}
+        """
+    )
+    result = simulator.run(jaqcd, qubit_count=2, shots=0)
+    assert result.resultTypes[0].type == jaqcd_type
+    assert isinstance(result.resultTypes[0].value, np.ndarray)
+    result = simulator.run(qasm, shots=0)
+    assert result.resultTypes[0].type == jaqcd_type
+    assert isinstance(result.resultTypes[0].value, np.ndarray)

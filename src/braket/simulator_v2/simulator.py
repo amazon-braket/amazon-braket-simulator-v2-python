@@ -1,5 +1,6 @@
 import sys
 
+import numpy as np
 from braket.default_simulator.operation_helpers import from_braket_instruction
 from braket.default_simulator.result_types import TargetedResultType
 from braket.default_simulator.simulator import BaseLocalSimulator
@@ -8,7 +9,9 @@ from braket.device_schema.simulators import (
     GateModelSimulatorDeviceCapabilities,
     GateModelSimulatorDeviceParameters,
 )
+from braket.ir.jaqcd import DensityMatrix
 from braket.ir.jaqcd import Program as JaqcdProgram
+from braket.ir.jaqcd import StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
 
@@ -88,6 +91,16 @@ class StateVectorSimulatorV2(BaseLocalSimulator):
             )
         r = jl.simulate(self._device, [circuit_ir], qubit_count, shots)
         r.additionalMetadata.action = circuit_ir
+        if not shots:
+            # need to convert `list` value for `statevector`
+            # and `densitymatrix` result types to `np.ndarray`
+            for result_ind, result_type in enumerate(r.resultTypes):
+                if isinstance(result_type.type, StateVector) or isinstance(
+                    result_type.type, DensityMatrix
+                ):
+                    r.resultTypes[result_ind].value = np.asarray(
+                        r.resultTypes[result_ind].value
+                    )
         return r
 
     def run_openqasm(
@@ -156,6 +169,16 @@ class StateVectorSimulatorV2(BaseLocalSimulator):
         # attach the result types
         if shots:
             r.resultTypes = results
+        else:
+            # need to convert `list` value for `statevector`
+            # and `densitymatrix` result types to `np.ndarray`
+            for result_ind, result_type in enumerate(r.resultTypes):
+                if isinstance(result_type.type, StateVector) or isinstance(
+                    result_type.type, DensityMatrix
+                ):
+                    r.resultTypes[result_ind].value = np.asarray(
+                        r.resultTypes[result_ind].value
+                    )
         return r
 
     @property
@@ -473,6 +496,13 @@ class DensityMatrixSimulatorV2(BaseLocalSimulator):
             )
         r = jl.simulate(self._device, [circuit_ir], qubit_count, shots)
         r.additionalMetadata.action = circuit_ir
+        if not shots:
+            # need to convert `list` value for `densitymatrix` result type to `np.ndarray`
+            for result_ind, result_type in enumerate(r.resultTypes):
+                if isinstance(result_type.type, DensityMatrix):
+                    r.resultTypes[result_ind].value = np.asarray(
+                        r.resultTypes[result_ind].value
+                    )
         return r
 
     def run_openqasm(
@@ -540,6 +570,13 @@ class DensityMatrixSimulatorV2(BaseLocalSimulator):
         # attach the result types
         if shots:
             r.resultTypes = results
+        else:
+            # need to convert `list` value for `densitymatrix` result type to `np.ndarray`
+            for result_ind, result_type in enumerate(r.resultTypes):
+                if isinstance(result_type.type, DensityMatrix):
+                    r.resultTypes[result_ind].value = np.asarray(
+                        r.resultTypes[result_ind].value
+                    )
         return r
 
     @property
