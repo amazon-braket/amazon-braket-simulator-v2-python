@@ -41,7 +41,7 @@ jobs:
         pip install tox
     - name: Setup Julia Simulator for Windows
       run: |
-        (Get-Content python_sim/src/braket/juliapkg.json).Replace('git@github.com:amazon-braket/BraketSimulator.jl.git', "$GITHUB_WORKSPACE\\julia_sim") | Set-Content python_sim/src/braket/juliapkg.json
+        (Get-Content python_sim/src/braket/juliapkg.json).Replace('git@github.com:amazon-braket/BraketSimulator.jl.git', "${env:GITHUB_WORKSPACE}\\julia_sim") | Set-Content python_sim/src/braket/juliapkg.json
         cat python_sim/src/braket/juliapkg.json
       if: runner.os == 'Windows'
     - name: Setup Julia Simulator for non-Windows
