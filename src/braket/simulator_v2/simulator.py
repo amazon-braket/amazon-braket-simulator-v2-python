@@ -68,7 +68,7 @@ class StateVectorSimulatorV2(BaseLocalSimulator):
             for instruction in circuit_ir.instructions
         ]
 
-        if shots > 0 and circuit_ir.basis_rotation_instructions:
+        if shots and circuit_ir.basis_rotation_instructions:
             for instruction in circuit_ir.basis_rotation_instructions:
                 operations.append(from_braket_instruction(instruction))
 
