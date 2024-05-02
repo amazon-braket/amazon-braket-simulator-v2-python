@@ -16,17 +16,17 @@ from .julia_import import jl, jlBraketSimulator
 
 
 class StateVectorSimulatorV2(BaseLocalSimulator):
+    """A state vector simulator meant to run directly on the user's machine using a Julia backend.
+
+    This class wraps a BraketSimulator object so that it can be run and returns
+    results using constructs from the SDK rather than Braket IR.
+    """
+
     DEVICE_ID = "braket_sv_v2"
     _device = jlBraketSimulator.StateVectorSimulator(0, 0)
 
     def initialize_simulation(self, **kwargs):
         return
-
-    """A simulator meant to run directly on the user's machine using a Julia backend.
-
-    This class wraps a BraketSimulator object so that it can be run and returns
-    results using constructs from the SDK rather than Braket IR.
-    """
 
     def run_jaqcd(
         self,
@@ -401,6 +401,12 @@ class StateVectorSimulatorV2(BaseLocalSimulator):
 
 
 class DensityMatrixSimulatorV2(BaseLocalSimulator):
+    """A density matrix simulator meant to run directly on the user's machine using a Julia backend.
+
+    This class wraps a BraketSimulator object so that it can be run and returns
+    results using constructs from the SDK rather than Braket IR.
+    """
+
     DEVICE_ID = "braket_dm_v2"
     _device = jlBraketSimulator.DensityMatrixSimulator(0, 0)
 
@@ -535,12 +541,6 @@ class DensityMatrixSimulatorV2(BaseLocalSimulator):
         if shots:
             r.resultTypes = results
         return r
-
-    """A simulator meant to run directly on the user's machine using a Julia backend.
-
-    This class wraps a BraketSimulator object so that it can be run and returns
-    results using constructs from the SDK rather than Braket IR.
-    """
 
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:
