@@ -1,19 +1,9 @@
-# This must be imported as early as possible to prevent
-# library linking issues caused by numpy/pytorch/etc. importing
-# old libraries:
-from .julia_import import jl, jlBraketSimulator  # isort:skip
-from .simulator import (  # isort:skip
+from braket.simulator_v2.density_matrix_simulator_v2 import (  # noqa: F401
     DensityMatrixSimulatorV2,
+)
+from braket.simulator_v2.julia_import import jl, jlBraketSimulator  # noqa: F401
+from braket.simulator_v2.state_vector_simulator_v2 import (  # noqa: F401
     StateVectorSimulatorV2,
 )
 
 from ._version import __version__  # noqa: F401
-
-__all__ = [
-    "jl",
-    "StateVectorSimulatorV2",
-    "DensityMatrixSimulatorV2",
-    "jlBraketSimulator",
-    "simulator",
-    "__version__",
-]
