@@ -1410,3 +1410,35 @@ def test_rotation_parameter_expressions(operation, state_vector):
     result = simulator.run(OpenQASMProgram(source=qasm), shots=0)
     assert result.resultTypes[0].type == StateVector()
     assert np.allclose(result.resultTypes[0].value, np.array(state_vector))
+
+
+@pytest.mark.parametrize(
+    "jaqcd_string, oq3_pragma, jaqcd_type",
+    [
+        ["statevector", "state_vector", StateVector()],
+        ["densitymatrix", "density_matrix", DensityMatrix()],
+    ],
+)
+def test_simulator_analytic_value_type(jaqcd_string, oq3_pragma, jaqcd_type):
+    simulator = StateVectorSimulator()
+    jaqcd = JaqcdProgram.parse_raw(
+        json.dumps(
+            {
+                "instructions": [{"type": "h", "target": 0}],
+                "results": [{"type": jaqcd_string}],
+            }
+        )
+    )
+    qasm = OpenQASMProgram(
+        source=f"""
+        qubit q;
+        h q;
+        #pragma braket result {oq3_pragma}
+        """
+    )
+    result = simulator.run(jaqcd, qubit_count=2, shots=0)
+    assert result.resultTypes[0].type == jaqcd_type
+    assert isinstance(result.resultTypes[0].value, np.ndarray)
+    result = simulator.run(qasm, shots=0)
+    assert result.resultTypes[0].type == jaqcd_type
+    assert isinstance(result.resultTypes[0].value, np.ndarray)
