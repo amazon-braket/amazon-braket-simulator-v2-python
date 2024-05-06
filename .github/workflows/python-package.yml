@@ -1,0 +1,58 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, feature/** ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11"]
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Set up Julia
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: '1'
+    - name: Get Python Simulator
+      uses: actions/checkout@v4
+      with:
+        path: python_sim
+    - name: Get Julia Simulator
+      uses: actions/checkout@v4
+      with:
+        repository: amazon-braket/BraketSimulator.jl
+        token: ${{secrets.TEMP_PAT_EXP_JUL_28}}
+        ref: main
+        path: julia_sim
+    - name: Install dependencies
+      run: |
+        pip install tox
+    - name: Setup Julia Simulator for Windows
+      run: |
+        (Get-Content python_sim/src/braket/juliapkg.json).Replace('git@github.com:amazon-braket/BraketSimulator.jl.git', ("${env:GITHUB_WORKSPACE}\julia_sim").Replace('\','\\')) | Set-Content python_sim/src/braket/juliapkg.json
+        cat python_sim/src/braket/juliapkg.json
+      if: runner.os == 'Windows'
+    - name: Setup Julia Simulator for non-Windows
+      run: |
+        sed -ie "s#git@github.com:amazon-braket/BraketSimulator.jl.git#$GITHUB_WORKSPACE/julia_sim#" python_sim/src/braket/juliapkg.json
+        cat python_sim/src/braket/juliapkg.json
+      if: runner.os != 'Windows'
+    - name: Run Tests
+      run: |
+        cd python_sim
+        tox -e unit-tests
+    - name: Upload coverage report to Codecov
+      uses: codecov/codecov-action@v3
+      if: ${{ strategy.job-index }} == 0

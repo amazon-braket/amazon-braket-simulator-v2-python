@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amazon-braket-simulator-v2"
+version = "0.0.1"
+description = "Local simulation of quantum circuits"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: Apache Software License"
+]
+dynamic = ["dependencies"]
+
+[project.entry-points."braket.simulators"]
+braket_sv_v2 = "braket.simulator_v2.simulator:StateVectorSimulatorV2"
+braket_dm_v2 = "braket.simulator_v2.simulator:DensityMatrixSimulatorV2"
+
+[project.optional-dependencies]
+test = [
+    "black",
+    "flake8",
+    "flake8-rst-docstrings",
+    "isort",
+    "pre-commit",
+    "pylint",
+    "pytest==7.1.2",
+    "pytest-benchmark",
+    "pytest-cov",
+    "pytest-rerunfailures",
+    "pytest-xdist",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-apidoc",
+    "tox"
+]
+
+[tool.setuptools]
+include-package-data=false
+package-data = {"*" = ["*.json"]}
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+
+[tool.isort]
+profile = "black"
