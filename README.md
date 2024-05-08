@@ -9,10 +9,14 @@ You must have the [Amazon Braket SDK](https://github.com/amazon-braket/amazon-br
 Follow the instructions in the [README](https://github.com/amazon-braket/amazon-braket-sdk-python/blob/main/README.md) for setup.
 
 ## Usage
+
+**Running this simulator for the first time will install additional libraries and may take a few additional minutes. 
+This will not be needed for subsequent runs.**
+
 The quantum simulator implementations `StateVectorSimulatorV2` and `DensityMatrixSimulatorV2` plug into the `LocalSimulator` interface in 
 [Amazon Braket SDK](https://github.com/amazon-braket/amazon-braket-sdk-python), with the `backend` parameters as `"braket_sv_v2"` and `"braket_dm_v2"`, respectively.
 
-**Executing a circuit using the simulator**
+Executing a circuit using the simulator:
 ```python
 from braket.circuits import Circuit
 from braket.devices import LocalSimulator
