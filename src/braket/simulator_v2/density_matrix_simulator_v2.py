@@ -19,9 +19,6 @@ class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
     DEVICE_ID = "braket_dm_v2"
     _device = jlBraketSimulator.DensityMatrixSimulator(0, 0)
 
-    def initialize_simulation(self, **kwargs):
-        return
-
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:
         observables = ["x", "y", "z", "h", "i", "hermitian"]
