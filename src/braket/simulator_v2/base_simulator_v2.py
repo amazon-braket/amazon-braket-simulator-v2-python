@@ -15,6 +15,10 @@ from braket.simulator_v2.julia_import import jl
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
+
+    def __init__(self, device):
+        self._device = device
+
     def initialize_simulation(self, **kwargs):
         return
 

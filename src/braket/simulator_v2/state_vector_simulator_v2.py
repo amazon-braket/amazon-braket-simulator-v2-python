@@ -17,7 +17,9 @@ class StateVectorSimulatorV2(BaseLocalSimulatorV2):
     """
 
     DEVICE_ID = "braket_sv_v2"
-    _device = jlBraketSimulator.StateVectorSimulator(0, 0)
+
+    def __init__(self):
+        super().__init__(jlBraketSimulator.StateVectorSimulator(0, 0))
 
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:

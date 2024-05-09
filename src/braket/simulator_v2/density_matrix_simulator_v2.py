@@ -17,7 +17,9 @@ class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
     """
 
     DEVICE_ID = "braket_dm_v2"
-    _device = jlBraketSimulator.DensityMatrixSimulator(0, 0)
+
+    def __init__(self):
+        super().__init__(jlBraketSimulator.DensityMatrixSimulator(0, 0))
 
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:
