@@ -471,6 +471,7 @@ def test_result_types_analytic():
     #pragma braket result density_matrix q[{0, 2, 1}]
     #pragma braket result expectation z(q[0])
     #pragma braket result expectation x all
+    #pragma braket result expectation y all
     #pragma braket result variance x(q[0]) @ z(q[2]) @ h(q[1])
     #pragma braket result expectation hermitian([[0, -1im], [0 + 1im, 0]]) q[0]
     """
@@ -495,10 +496,11 @@ def test_result_types_analytic():
     assert result_types[13].type == DensityMatrix(targets=(0, 2, 1))
     assert result_types[14].type == Expectation(observable=("z",), targets=(0,))
     assert result_types[15].type == Expectation(observable=("x",))
-    assert result_types[16].type == Variance(
+    assert result_types[16].type == Expectation(observable=("y",))
+    assert result_types[17].type == Variance(
         observable=("x", "z", "h"), targets=(0, 2, 1)
     )
-    assert result_types[17].type == Expectation(
+    assert result_types[18].type == Expectation(
         observable=([[[0, 0], [0, -1]], [[0, 1], [0, 0]]],),
         targets=(0,),
     )
@@ -586,8 +588,10 @@ def test_result_types_analytic():
     )
     assert np.allclose(result_types[14].value, 0)
     assert np.allclose(result_types[14].value, 0)
-    assert np.allclose(result_types[16].value, 1)
-    assert np.allclose(result_types[17].value, 0)
+    assert np.allclose(result_types[15].value, [0, 0, 0])
+    assert np.allclose(result_types[16].value, [0, 0, 0])
+    assert np.allclose(result_types[17].value, 1)
+    assert np.allclose(result_types[18].value, 0)
 
 
 def test_invalid_standard_observable_target():
@@ -1442,3 +1446,33 @@ def test_simulator_analytic_value_type(jaqcd_string, oq3_pragma, jaqcd_type):
     result = simulator.run(qasm, shots=0)
     assert result.resultTypes[0].type == jaqcd_type
     assert isinstance(result.resultTypes[0].value, np.ndarray)
+
+
+def test_unitary_pragma():
+    qasm = """
+    qubit[3] q;
+
+    x q[0];
+    h q[1];
+
+    // unitary pragma for t gate
+    #pragma braket unitary([[1.0, 0], [0, 0.70710678 + 0.70710678im]]) q[0]
+    ti q[0];
+
+    // unitary pragma for h gate (with phase shift)
+    #pragma braket unitary([[0.70710678 im, 0.70710678im], [0 - -0.70710678im, -0.0 - 0.70710678im]]) q[1]
+    gphase(-π/2) q[1];
+    h q[1];
+
+    // unitary pragma for ccnot gate
+    #pragma braket unitary([[1.0, 0, 0, 0, 0, 0, 0, 0], [0, 1.0, 0, 0, 0, 0, 0, 0], [0, 0, 1.0, 0, 0, 0, 0, 0], [0, 0, 0, 1.0, 0, 0, 0, 0], [0, 0, 0, 0, 1.0, 0, 0, 0], [0, 0, 0, 0, 0, 1.0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1.0], [0, 0, 0, 0, 0, 0, 1.0, 0]]) q
+
+    #pragma braket result state_vector
+    """  # noqa
+    simulator = StateVectorSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=0)
+    assert result.resultTypes[0].type == StateVector()
+    assert np.allclose(
+        result.resultTypes[0].value,
+        [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
+    )
