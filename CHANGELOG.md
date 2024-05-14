@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.1 (2024-05-14)
+
+### Bug Fixes and Other Changes
+
+ * adding publish workflow
+
 ## v0.1.0 (2024-05-14)
 
 ### Bug Fixes and Other Changes
@@ -13,4 +19,3 @@
  * Force StateVector and DensityMatrix values to be ndarrays and test
  * setting up the repository
  * Initial commit
-
