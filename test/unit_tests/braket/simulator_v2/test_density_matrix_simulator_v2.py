@@ -877,3 +877,21 @@ def test_simulator_analytic_value_type(jaqcd_string, oq3_pragma, jaqcd_type):
     result = simulator.run(qasm, shots=0)
     assert result.resultTypes[0].type == jaqcd_type
     assert isinstance(result.resultTypes[0].value, np.ndarray)
+
+
+def test_kraus_noise():
+    qasm = """
+    qubit[2] qs;
+
+    x qs[0];
+
+    #pragma braket noise kraus([[0.9486833im, 0], [0, 0.9486833im]], [[0, 0.31622777], [0.31622777, 0]]) qs[0]
+    #pragma braket noise kraus([[0.9486832980505138, 0, 0, 0], [0, 0.9486832980505138, 0, 0], [0, 0, 0.9486832980505138, 0], [0, 0, 0, 0.9486832980505138]], [[0, 0.31622776601683794, 0, 0], [0.31622776601683794, 0, 0, 0], [0, 0, 0, 0.31622776601683794], [0, 0, 0.31622776601683794, 0]]) qs[{1, 0}]
+
+    #pragma braket result probability
+    """  # noqa
+    device = DensityMatrixSimulator()
+    program = OpenQASMProgram(source=qasm)
+    result = device.run(program)
+    probabilities = result.resultTypes[0].value
+    assert np.allclose(probabilities, [0.18, 0, 0.82, 0])

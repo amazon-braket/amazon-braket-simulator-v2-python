@@ -4,15 +4,16 @@ branch = True
 source =
     braket
 omit =
-    **/braket/default_simulator/openqasm/parser/generated/*
+    **/braket/default_simulator/**
     **/braket/device_schema/**
+    **/braket/schema_common/**
     **/braket/ir/**
     **/braket/task_result/**
 
 [paths]
 source =
-    src/braket/simulatorv_v2
-    .tox/*/lib/python*/site-packages/braket
+    src/braket/simulator_v2
+    .tox/*/lib/python*/site-packages/braket/simulator_v2
 
 [report]
 show_missing = True
