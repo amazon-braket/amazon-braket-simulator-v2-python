@@ -38,8 +38,8 @@ else:
 
 import braket.default_simulator.gate_operations as gates
 import braket.default_simulator.noise_operations as noises
-from braket.default_simulator.openqasm.circuit import Circuit
 import juliacall
+from braket.default_simulator.openqasm.circuit import Circuit
 
 jl = juliacall.Base.Module()
 
