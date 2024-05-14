@@ -33,5 +33,5 @@ jobs:
         cd python_sim
         tox -e unit-tests
     - name: Upload coverage report to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       if: ${{ strategy.job-index }} == 0
