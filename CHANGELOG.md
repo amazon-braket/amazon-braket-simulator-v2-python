@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.1.post0 (2024-05-15)
+
+### Documentation Changes
+
+ * Add classifiers to pyproject.toml
+
 ## v0.1.1 (2024-05-14)
 
 ### Bug Fixes and Other Changes
