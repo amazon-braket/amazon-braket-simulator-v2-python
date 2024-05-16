@@ -13,6 +13,8 @@ Follow the instructions in the [README](https://github.com/amazon-braket/amazon-
 **Running this simulator for the first time will install additional libraries and may take a few additional minutes. 
 This will not be needed for subsequent runs.**
 
+## Circuit simulators
+
 The quantum simulator implementations `StateVectorSimulatorV2` and `DensityMatrixSimulatorV2` plug into the `LocalSimulator` interface in 
 [Amazon Braket SDK](https://github.com/amazon-braket/amazon-braket-sdk-python), with the `backend` parameters as `"braket_sv_v2"` and `"braket_dm_v2"`, respectively.
 
@@ -25,6 +27,35 @@ device = LocalSimulator("braket_sv_v2")
 
 bell = Circuit().h(0).cnot(0, 1)
 print(device.run(bell, shots=100).result().measurement_counts)
+```
+
+### Tensor Network AHS Simulator
+
+This is a python interface to Julia-based Tensor Network simulator for Rydberg systems [BraketAHS.jl](https://github.com/amazon-braket/BraketAHS.jl). 
+The simulator runs locally by analogy with the `LocalSimulator` and is dedicated for execution of Analog Hamiltonian Simulation (AHS) programs.
+
+To start using the Tensor Network simulator:
+
+```python
+
+from braket.devices import LocalSimulator
+
+device = LocalSimulator("braket_ahs_tn")
+
+ahs_program = ... # Define AHS program (class AnalogHamiltonianSimulation)
+
+task = device.run(ahs_program, shots=100, max_bond_dim=16)
+result = task.result() # A list of ShotResults
+
+print(result)
+
+```
+
+Example runner file is provided in `src/braket/ahs_tn_simulator/runner.py`.
+To run the example:
+
+```
+python src/braket/ahs_tn_simulator/runner.py
 ```
 
 ## Documentation
