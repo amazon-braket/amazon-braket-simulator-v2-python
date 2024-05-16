@@ -88,7 +88,7 @@ class LocalSimulatorTN(BaseLocalSimulator):
                              "compute-correlators" => {str(compute_correlators).lower()},
                              "compute-truncation-error" => false,
                              "generate-plots" => false,
-                             "experiment-path" => "../experiments",
+                             "experiment-path" => "../../experiments",
                              "program-path" => "tmp"
                               )
                              """)
