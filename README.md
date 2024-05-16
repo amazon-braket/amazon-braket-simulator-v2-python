@@ -38,9 +38,9 @@ To start using the Tensor Network simulator:
 
 ```python
 
-from braket.devices import LocalSimulator
+from braket.devices import LocalSimulatorTN
 
-device = LocalSimulator("braket_ahs_tn")
+device = LocalSimulatorTN()
 
 ahs_program = ... # Define AHS program (class AnalogHamiltonianSimulation)
 
