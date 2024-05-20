@@ -17,7 +17,7 @@ else:
         warnings.warn(
             "`PYTHON_JULIACALL_HANDLE_SIGNALS` environment variable "
             + "is set to something other than 'yes' or ''. "
-            + +"You will experience segfaults if running with Julia multithreading."
+            + "You will experience segfaults if running with Julia multithreading."
         )
 
     if os.environ.get("PYTHON_JULIACALL_THREADS", "auto") != "auto":
