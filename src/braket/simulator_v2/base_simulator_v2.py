@@ -5,7 +5,7 @@ from braket.default_simulator.operation_helpers import from_braket_instruction
 from braket.default_simulator.result_types import TargetedResultType
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.device_schema import DeviceActionType
-from braket.ir.jaqcd import DensityMatrix
+from braket.ir.jaqcd import DensityMatrix, Probability
 from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.jaqcd import StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
@@ -82,8 +82,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
             )
         r = jl.simulate(self._device, [circuit_ir], qubit_count, shots)
         r.additionalMetadata.action = circuit_ir
-        if not shots:
-            r = _analytic_result_value_to_ndarray(r)
+        r = _result_value_to_ndarray(r)
         return r
 
     def run_openqasm(
@@ -153,11 +152,11 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
         if shots:
             r.resultTypes = results
         else:
-            r = _analytic_result_value_to_ndarray(r)
+            r = _result_value_to_ndarray(r)
         return r
 
 
-def _analytic_result_value_to_ndarray(
+def _result_value_to_ndarray(
     task_result: GateModelTaskResult,
 ) -> GateModelTaskResult:
     """Convert any StateVector or DensityMatrix result values from raw Python lists to the expected
@@ -165,8 +164,10 @@ def _analytic_result_value_to_ndarray(
     with the pydantic specification for ResultTypeValues.
     """
     for result_ind, result_type in enumerate(task_result.resultTypes):
-        if isinstance(result_type.type, StateVector) or isinstance(
-            result_type.type, DensityMatrix
+        if (
+            isinstance(result_type.type, StateVector)
+            or isinstance(result_type.type, DensityMatrix)
+            or isinstance(result_type.type, Probability)
         ):
             task_result.resultTypes[result_ind].value = np.asarray(
                 task_result.resultTypes[result_ind].value
