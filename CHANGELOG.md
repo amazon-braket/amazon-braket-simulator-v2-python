@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.2 (2024-05-22)
+
+### Bug Fixes and Other Changes
+
+ * making precompilation during import optional
+
 ## v0.1.1.post0 (2024-05-15)
 
 ### Documentation Changes
