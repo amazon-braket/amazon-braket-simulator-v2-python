@@ -4,7 +4,7 @@
         "BraketSimulator": {
             "uuid": "76d27892-9a0b-406c-98e4-7c178e9b3dff",
             "url": "https://github.com/amazon-braket/BraketSimulator.jl.git",
-            "rev": "main"
+            "rev": "ksh/parsing"
         }
     }
 }
