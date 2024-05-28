@@ -847,6 +847,7 @@ def test_measure_targets():
     assert len(measurements[0]) == 1
     assert result.measuredQubits == [0]
 
+
 @pytest.mark.parametrize(
     "jaqcd_string, oq3_pragma, jaqcd_type",
     [

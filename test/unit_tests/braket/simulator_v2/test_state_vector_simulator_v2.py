@@ -1415,6 +1415,7 @@ def test_rotation_parameter_expressions(operation, state_vector):
     assert result.resultTypes[0].type == StateVector()
     assert np.allclose(result.resultTypes[0].value, np.array(state_vector))
 
+
 @pytest.mark.parametrize(
     "jaqcd_string, oq3_pragma, jaqcd_type",
     [
