@@ -22,7 +22,7 @@ from braket.device_schema.simulators import (
     GateModelSimulatorDeviceCapabilities,
     GateModelSimulatorDeviceParameters,
 )
-from braket.ir.jaqcd import DensityMatrix, Expectation
+from braket.ir.jaqcd import DensityMatrix, Expectation, Probability
 from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import AdditionalMetadata, TaskMetadata
@@ -847,11 +847,11 @@ def test_measure_targets():
     assert len(measurements[0]) == 1
     assert result.measuredQubits == [0]
 
-
 @pytest.mark.parametrize(
     "jaqcd_string, oq3_pragma, jaqcd_type",
     [
         ["densitymatrix", "density_matrix", DensityMatrix()],
+        ["probability", "probability", Probability()],
     ],
 )
 def test_simulator_analytic_value_type(jaqcd_string, oq3_pragma, jaqcd_type):
