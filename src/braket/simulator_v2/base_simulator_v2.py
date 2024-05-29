@@ -106,51 +106,10 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
                 are requested when shots>0.
         """
 
-        # use Python parser
-        circuit = self.parse_program(openqasm_ir).circuit
-        qubit_count = circuit.num_qubits
-        measured_qubits = circuit.measured_qubits
-
-        self._validate_ir_results_compatibility(
-            circuit.results,
-            device_action_type=DeviceActionType.OPENQASM,
-        )
-        self._validate_ir_instructions_compatibility(
-            circuit,
-            device_action_type=DeviceActionType.OPENQASM,
-        )
-        self._validate_input_provided(circuit)
-        BaseLocalSimulator._validate_shots_and_ir_results(
-            shots, circuit.results, qubit_count
-        )
-
-        operations = circuit.instructions
-        BaseLocalSimulator._validate_operation_qubits(operations)
-
-        results = circuit.results
-
-        if not shots:
-            result_types = BaseLocalSimulator._translate_result_types(results)
-            BaseLocalSimulator._validate_result_types_qubits_exist(
-                [
-                    result_type
-                    for result_type in result_types
-                    if isinstance(result_type, TargetedResultType)
-                ],
-                qubit_count,
-            )
-        else:
-            for bri in circuit.basis_rotation_instructions:
-                circuit.add_instruction(bri)
-
-        r = jl.simulate(
-            self._device, [circuit], qubit_count, shots, measured_qubits=measured_qubits
-        )
+        r = jl.simulate(self._device, [openqasm_ir], shots)
         r.additionalMetadata.action = openqasm_ir
         # attach the result types
-        if shots:
-            r.resultTypes = results
-        else:
+        if not shots:
             r = _result_value_to_ndarray(r)
         return r
 
