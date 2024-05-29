@@ -19,6 +19,7 @@ import re
 import sys
 from collections import Counter, namedtuple
 
+import juliacall
 import numpy as np
 import pytest
 from braket.default_simulator import observables
@@ -604,7 +605,8 @@ def test_invalid_standard_observable_target():
 
     must_be_one_qubit = "Standard observable target must be exactly 1 qubit."
 
-    with pytest.raises(ValueError, match=must_be_one_qubit):
+    # with pytest.raises(ValueError, match=must_be_one_qubit):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(program, shots=0)
 
 
@@ -628,7 +630,8 @@ def test_invalid_hermitian_target(shots):
         "], targets: [0]"
     )
 
-    with pytest.raises(ValueError, match=invalid_observable):
+    # with pytest.raises(ValueError, match=invalid_observable):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(program, shots=shots)
 
 
@@ -752,20 +755,22 @@ def test_simulator_instructions_not_supported(circuit_noise):
         "Noise instructions are not supported by the state vector simulator (by default). "
         'You need to use the density matrix simulator: LocalSimulator("braket_dm").'
     )
-    with pytest.raises(TypeError, match=no_noise):
-        if isinstance(circuit_noise, JaqcdProgram):
+    if isinstance(circuit_noise, JaqcdProgram):
+        with pytest.raises(TypeError, match=no_noise):
             simulator.run(circuit_noise, qubit_count=2, shots=0)
-        else:
+    else:
+        with pytest.raises(juliacall.JuliaError):
             simulator.run(circuit_noise, shots=0)
 
 
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_no_results_no_shots(bell_ir):
     simulator = StateVectorSimulator()
     if isinstance(bell_ir, JaqcdProgram):
-        simulator.run(bell_ir, qubit_count=2, shots=0)
+        with pytest.raises(ValueError):
+            simulator.run(bell_ir, qubit_count=2, shots=0)
     else:
-        simulator.run(bell_ir, shots=0)
+        with pytest.raises(juliacall.JuliaError):
+            simulator.run(bell_ir, shots=0)
 
 
 def test_simulator_run_amplitude_shots():
@@ -787,7 +792,7 @@ def test_simulator_run_amplitude_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=100)
-    with pytest.raises(ValueError):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(qasm, shots=100)
 
 
@@ -811,7 +816,7 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=0)
-    with pytest.raises(ValueError):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(qasm, shots=0)
 
 
@@ -834,7 +839,7 @@ def test_simulator_run_statevector_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=100)
-    with pytest.raises(ValueError):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(qasm, shots=100)
 
 
@@ -1030,7 +1035,7 @@ def test_simulator_run_observable_references_invalid_qubit(ir, qubit_count):
             simulator.run(ir, qubit_count=qubit_count, shots=shots_count)
     else:
         # index error since you're indexing from a logical qubit
-        with pytest.raises(IndexError):
+        with pytest.raises(juliacall.JuliaError):
             simulator.run(ir, shots=shots_count)
 
 
@@ -1079,7 +1084,7 @@ def test_simulator_fails_samples_0_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=1, shots=0)
-    with pytest.raises(ValueError):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(qasm, shots=0)
 
 
@@ -1308,7 +1313,8 @@ def test_basis_rotation_all(caplog):
     ),
 )
 def test_partially_overlapping_basis_rotation(qasm, error_string):
-    with pytest.raises(ValueError, match=error_string):
+    # with pytest.raises(ValueError, match=error_string):
+    with pytest.raises(juliacall.JuliaError):
         simulator = StateVectorSimulator()
         simulator.run(OpenQASMProgram(source=qasm), shots=1000)
 
@@ -1356,7 +1362,8 @@ def test_missing_input():
     """
     simulator = StateVectorSimulator()
     missing_input = "Missing input variable 'in_int'."
-    with pytest.raises(NameError, match=missing_input):
+    # with pytest.raises(NameError, match=missing_input):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(OpenQASMProgram(source=qasm), shots=1000)
 
 

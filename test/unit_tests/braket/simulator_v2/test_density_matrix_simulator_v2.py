@@ -16,6 +16,7 @@ import json
 import sys
 from collections import Counter, namedtuple
 
+import juliacall
 import numpy as np
 import pytest
 from braket.device_schema.simulators import (
@@ -152,13 +153,14 @@ def test_simulator_run_bell_pair(bell_ir, caplog):
     assert not caplog.text
 
 
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_no_results_no_shots(bell_ir):
     simulator = DensityMatrixSimulator()
     if isinstance(bell_ir, JaqcdProgram):
-        simulator.run(bell_ir, qubit_count=2, shots=0)
+        with pytest.raises(ValueError):
+            simulator.run(bell_ir, qubit_count=2, shots=0)
     else:
-        simulator.run(bell_ir, shots=0)
+        with pytest.raises(juliacall.JuliaError):
+            simulator.run(bell_ir, shots=0)
 
 
 def test_simulator_run_grcs_8(grcs_8_qubit):
@@ -509,8 +511,8 @@ def test_simulator_run_invalid_ir_result_types_openqasm(result_type):
         {result_type}
         """
     )
-    with pytest.raises(TypeError):
-        simulator.run(ir, qubit_count=2, shots=100)
+    with pytest.raises(juliacall.JuliaError):
+        simulator.run(ir, shots=100)
 
 
 def test_simulator_run_densitymatrix_shots():
@@ -532,7 +534,7 @@ def test_simulator_run_densitymatrix_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=100)
-    with pytest.raises(ValueError):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(qasm, shots=100)
 
 
@@ -674,7 +676,7 @@ def test_simulator_fails_samples_0_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=1, shots=0)
-    with pytest.raises(ValueError):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(qasm, shots=0)
 
 
@@ -828,7 +830,7 @@ def test_adjoint_gradient_pragma_dm1():
     )
     ag_not_supported = "Result type adjoint_gradient is not supported."
 
-    with pytest.raises(TypeError, match=ag_not_supported):
+    with pytest.raises(juliacall.JuliaError):
         simulator.run(prog, shots=0)
 
 

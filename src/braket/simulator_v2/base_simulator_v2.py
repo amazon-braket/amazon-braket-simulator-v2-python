@@ -79,7 +79,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
                 ],
                 qubit_count,
             )
-        r = jl.simulate(self._device, [circuit_ir], qubit_count, shots)
+        r = jl.simulate(self._device, [circuit_ir.json()], qubit_count, shots)
         r.additionalMetadata.action = circuit_ir
         r = _result_value_to_ndarray(r)
         return r
@@ -111,6 +111,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
         # attach the result types
         if not shots:
             r = _result_value_to_ndarray(r)
+        else:
+            r.resultTypes = [rt.type for rt in r.resultTypes]
         return r
 
 
