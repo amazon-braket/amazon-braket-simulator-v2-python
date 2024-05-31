@@ -163,11 +163,7 @@ def _result_value_to_ndarray(
     with the pydantic specification for ResultTypeValues.
     """
     for result_ind, result_type in enumerate(task_result.resultTypes):
-        if (
-            isinstance(result_type.type, StateVector)
-            or isinstance(result_type.type, DensityMatrix)
-            or isinstance(result_type.type, Probability)
-        ):
+        if isinstance(result_type.type, (StateVector, DensityMatrix, Probability)):
             task_result.resultTypes[result_ind].value = np.asarray(
                 task_result.resultTypes[result_ind].value
             )
