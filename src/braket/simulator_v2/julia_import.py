@@ -127,6 +127,7 @@ def precompile():
         100,
         measured_qubits=[],
     )
+    os.environ["BRAKET_SIMV2_PRECOMPILE"] = True
 
 
 if os.environ.get("BRAKET_SIMV2_PRECOMPILE", False):
