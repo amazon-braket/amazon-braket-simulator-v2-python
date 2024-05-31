@@ -1421,6 +1421,7 @@ def test_rotation_parameter_expressions(operation, state_vector):
     [
         ["statevector", "state_vector", StateVector()],
         ["densitymatrix", "density_matrix", DensityMatrix()],
+        ["probability", "probability", Probability()],
     ],
 )
 def test_simulator_analytic_value_type(jaqcd_string, oq3_pragma, jaqcd_type):
