@@ -1,4 +1,4 @@
-# Amazon Simulator Version 2
+# Amazon Braket Simulator Version 2
 
 This Amazon Braket Simulator is a second generation of our Python open source library that provides an
 implementation of a quantum simulators that you can run locally. You can use the simulator to test quantum tasks
