@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.3 (2024-06-03)
+
+### Bug Fixes and Other Changes
+
+ * Update README.md
+ * Also turn list values to ndarray for Probability result types
+
 ## v0.1.2 (2024-05-22)
 
 ### Bug Fixes and Other Changes
