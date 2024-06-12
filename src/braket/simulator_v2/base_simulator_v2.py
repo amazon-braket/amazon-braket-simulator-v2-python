@@ -1,5 +1,5 @@
 from abc import ABC
-
+from typing import Union
 import numpy as np
 from braket.default_simulator.operation_helpers import from_braket_instruction
 from braket.default_simulator.result_types import TargetedResultType
@@ -9,12 +9,13 @@ from braket.ir.jaqcd import DensityMatrix, Probability
 from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.jaqcd import StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
+from braket.simulator import MultiSimulator
 from braket.task_result import GateModelTaskResult
 
 from braket.simulator_v2.julia_import import jl
 
 
-class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
+class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
     def __init__(self, device):
         self._device = device
 
@@ -114,6 +115,23 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, ABC):
         else:
             r.resultTypes = [rt.type for rt in r.resultTypes]
         return r
+
+    def run_multiple(
+        self, payloads: list[Union[OpenQASMProgram, JaqcdProgram]], shots: int = 0, **kwargs
+    ) -> list[GateModelTaskResult]:
+        results = jl.simulate(self._device, payloads, shots)
+        for r_ix, result in enumerate(results):
+            results[r_ix].additionalMetadata.action = payloads[r_ix]
+            # attach the result types
+            if not shots:
+                results[r_ix] = _result_value_to_ndarray(result)
+            else:
+                if isinstance(payloads[r_ix], OpenQASMProgram):
+                    results[r_ix].resultTypes = [rt.type for rt in result.resultTypes]
+                elif isinstance(payloads[r_ix], JaqcdProgram):
+                    results[r_ix] = _result_value_to_ndarray(result)
+
+        return results
 
 
 def _result_value_to_ndarray(

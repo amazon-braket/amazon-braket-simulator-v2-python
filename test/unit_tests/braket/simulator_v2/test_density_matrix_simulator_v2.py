@@ -898,3 +898,36 @@ def test_kraus_noise():
     result = device.run(program)
     probabilities = result.resultTypes[0].value
     assert np.allclose(probabilities, [0.18, 0, 0.82, 0])
+
+def test_run_multiple():
+    qasm = """
+    qubit[3] q;
+
+    x q[0];
+    h q[1];
+
+    // unitary pragma for t gate
+    #pragma braket unitary([[1.0, 0], [0, 0.70710678 + 0.70710678im]]) q[0]
+    ti q[0];
+
+    // unitary pragma for h gate (with phase shift)
+    #pragma braket unitary([[0.70710678 im, 0.70710678im], [0 - -0.70710678im, -0.0 - 0.70710678im]]) q[1]
+    gphase(-π/2) q[1];
+    h q[1];
+
+    // unitary pragma for ccnot gate
+    #pragma braket unitary([[1.0, 0, 0, 0, 0, 0, 0, 0], [0, 1.0, 0, 0, 0, 0, 0, 0], [0, 0, 1.0, 0, 0, 0, 0, 0], [0, 0, 0, 1.0, 0, 0, 0, 0], [0, 0, 0, 0, 1.0, 0, 0, 0], [0, 0, 0, 0, 0, 1.0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1.0], [0, 0, 0, 0, 0, 0, 1.0, 0]]) q
+
+    #pragma braket result state_vector
+    """  # noqa
+    simulator = DensityMatrixSimulator()
+    n_circuits = 20
+    circuit_irs = [OpenQASMProgram(source=qasm) for ii in range(n_circuits)]
+    results = simulator.run_multiple(circuit_irs, shots=0)
+    assert len(results) == n_circuits
+    for result in results:
+        assert result.resultTypes[0].type == StateVector()
+        assert np.allclose(
+            result.resultTypes[0].value,
+            [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
+        )
