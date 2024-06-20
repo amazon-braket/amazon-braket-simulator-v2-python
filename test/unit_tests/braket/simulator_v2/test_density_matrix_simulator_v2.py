@@ -899,6 +899,7 @@ def test_kraus_noise():
     probabilities = result.resultTypes[0].value
     assert np.allclose(probabilities, [0.18, 0, 0.82, 0])
 
+
 def test_run_multiple():
     qasm = """
     qubit[3] q;
@@ -918,7 +919,7 @@ def test_run_multiple():
     // unitary pragma for ccnot gate
     #pragma braket unitary([[1.0, 0, 0, 0, 0, 0, 0, 0], [0, 1.0, 0, 0, 0, 0, 0, 0], [0, 0, 1.0, 0, 0, 0, 0, 0], [0, 0, 0, 1.0, 0, 0, 0, 0], [0, 0, 0, 0, 1.0, 0, 0, 0], [0, 0, 0, 0, 0, 1.0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1.0], [0, 0, 0, 0, 0, 0, 1.0, 0]]) q
 
-    #pragma braket result state_vector
+    #pragma braket result probability 
     """  # noqa
     simulator = DensityMatrixSimulator()
     n_circuits = 20
@@ -926,8 +927,8 @@ def test_run_multiple():
     results = simulator.run_multiple(circuit_irs, shots=0)
     assert len(results) == n_circuits
     for result in results:
-        assert result.resultTypes[0].type == StateVector()
+        assert result.resultTypes[0].type == Probability()
         assert np.allclose(
             result.resultTypes[0].value,
-            [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
+            [0, 0, 0, 0, 0.5, 0, 0, 0.5],
         )

@@ -1,5 +1,5 @@
-from abc import ABC
 from typing import Union
+
 import numpy as np
 from braket.default_simulator.operation_helpers import from_braket_instruction
 from braket.default_simulator.result_types import TargetedResultType
@@ -21,6 +21,28 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
 
     def initialize_simulation(self, **kwargs):
         return
+
+    def _jaqcd_to_jl(self, circuit_ir: JaqcdProgram):
+        # convert to the Julia JaqcdProgram type for dispatch
+        jl_program = jl.BraketSimulator.Braket.parse_raw_schema(
+            jl.convert(jl.String, circuit_ir.json())
+        )
+        if circuit_ir.basis_rotation_instructions:
+            # need to read these in explicitly due to the Vector{Any} type of the field
+            parsed_bris = [
+                jl.BraketSimulator.Braket.JSON3.read(
+                    bri.json(),
+                    jl.BraketSimulator.Braket.Instruction,
+                )
+                for bri in circuit_ir.basis_rotation_instructions
+            ]
+            jl_program = jl.BraketSimulator.Braket.Program(
+                jl_program.braketSchemaHeader,
+                jl_program.instructions,
+                jl_program.results,
+                parsed_bris,
+            )
+        return jl_program
 
     def run_jaqcd(
         self,
@@ -80,10 +102,33 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
                 ],
                 qubit_count,
             )
-        r = jl.simulate(self._device, [circuit_ir.json()], qubit_count, shots)
+
+        r = jl.simulate(self._device, self._jaqcd_to_jl(circuit_ir), qubit_count, shots)
         r.additionalMetadata.action = circuit_ir
         r = _result_value_to_ndarray(r)
         return r
+
+    def _openqasm_to_jl(self, openqasm_ir: OpenQASMProgram):
+        # convert to the Julia OpenQasmProgram type for dispatch
+        jl_braket_schema_header = jl.BraketSimulator.Braket.braketSchemaHeader(
+            jl.convert(jl.String, openqasm_ir.braketSchemaHeader.name),
+            jl.convert(jl.String, openqasm_ir.braketSchemaHeader.version),
+        )
+        if openqasm_ir.inputs:
+            jl_inputs = jl.Dict(
+                [
+                    (jl.convert(jl.String, input_key), jl.convert(jl.Number, input_val))
+                    for (input_key, input_val) in openqasm_ir.inputs.items()
+                ]
+            )
+        else:
+            jl_inputs = jl.nothing
+        jl_source = jl.convert(jl.String, openqasm_ir.source)
+        return jl.BraketSimulator.Braket.OpenQasmProgram(
+            jl_braket_schema_header,
+            jl_source,
+            jl_inputs,
+        )
 
     def run_openqasm(
         self,
@@ -106,8 +151,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-
-        r = jl.simulate(self._device, [openqasm_ir], shots)
+        r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
         r.additionalMetadata.action = openqasm_ir
         # attach the result types
         if not shots:
@@ -116,10 +160,22 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
             r.resultTypes = [rt.type for rt in r.resultTypes]
         return r
 
+    def _ir_list_to_jl(self, payloads: list[Union[OpenQASMProgram, JaqcdProgram]]):
+        converted_payloads = [
+            self._openqasm_to_jl(ir)
+            if isinstance(ir, OpenQASMProgram)
+            else self._jaqcd_to_jl(ir)
+            for ir in payloads
+        ]
+        return converted_payloads
+
     def run_multiple(
-        self, payloads: list[Union[OpenQASMProgram, JaqcdProgram]], shots: int = 0, **kwargs
+        self,
+        payloads: list[Union[OpenQASMProgram, JaqcdProgram]],
+        shots: int = 0,
+        **kwargs,
     ) -> list[GateModelTaskResult]:
-        results = jl.simulate(self._device, payloads, shots)
+        results = jl.simulate(self._device, self._ir_list_to_jl(payloads), shots)
         for r_ix, result in enumerate(results):
             results[r_ix].additionalMetadata.action = payloads[r_ix]
             # attach the result types
