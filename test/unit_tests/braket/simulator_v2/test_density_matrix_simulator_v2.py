@@ -155,11 +155,10 @@ def test_simulator_run_bell_pair(bell_ir, caplog):
 
 def test_simulator_run_no_results_no_shots(bell_ir):
     simulator = DensityMatrixSimulator()
-    if isinstance(bell_ir, JaqcdProgram):
-        with pytest.raises(ValueError):
+    with pytest.raises(ValueError):
+        if isinstance(bell_ir, JaqcdProgram):
             simulator.run(bell_ir, qubit_count=2, shots=0)
-    else:
-        with pytest.raises(juliacall.JuliaError):
+        else:
             simulator.run(bell_ir, shots=0)
 
 
@@ -483,7 +482,6 @@ def bell_ir_with_result(ir_type):
 
 
 @pytest.mark.parametrize("result_type", invalid_ir_result_types)
-@pytest.mark.xfail(raises=TypeError)
 def test_simulator_run_invalid_ir_result_types(result_type):
     simulator = DensityMatrixSimulator()
     ir = JaqcdProgram.parse_raw(
@@ -491,7 +489,8 @@ def test_simulator_run_invalid_ir_result_types(result_type):
             {"instructions": [{"type": "h", "target": 0}], "results": [result_type]}
         )
     )
-    simulator.run(ir, qubit_count=2, shots=100)
+    with pytest.raises(TypeError):
+        simulator.run(ir, qubit_count=2, shots=100)
 
 
 @pytest.mark.parametrize(
@@ -511,8 +510,8 @@ def test_simulator_run_invalid_ir_result_types_openqasm(result_type):
         {result_type}
         """
     )
-    with pytest.raises(juliacall.JuliaError):
-        simulator.run(ir, shots=100)
+    with pytest.raises(TypeError):
+        simulator.run(ir, qubit_count=2, shots=100)
 
 
 def test_simulator_run_densitymatrix_shots():
@@ -534,7 +533,7 @@ def test_simulator_run_densitymatrix_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=100)
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run(qasm, shots=100)
 
 
@@ -615,7 +614,6 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
     assert not caplog.text
 
 
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
     simulator = DensityMatrixSimulator()
     ir = JaqcdProgram.parse_raw(
@@ -633,7 +631,8 @@ def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
         )
     )
     shots_count = 1000
-    simulator.run(ir, qubit_count=2, shots=shots_count)
+    with pytest.raises(ValueError):
+        simulator.run(ir, qubit_count=2, shots=shots_count)
 
 
 @pytest.mark.parametrize("targets", [(None), ([1]), ([0])])
@@ -676,7 +675,7 @@ def test_simulator_fails_samples_0_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=1, shots=0)
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run(qasm, shots=0)
 
 
@@ -830,7 +829,7 @@ def test_adjoint_gradient_pragma_dm1():
     )
     ag_not_supported = "Result type adjoint_gradient is not supported."
 
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(TypeError, match=ag_not_supported):
         simulator.run(prog, shots=0)
 
 
@@ -848,6 +847,41 @@ def test_measure_targets():
     assert 400 < np.sum(measurements, axis=0)[0] < 600
     assert len(measurements[0]) == 1
     assert result.measuredQubits == [0]
+
+
+def test_measure_no_gates():
+    qasm = """
+    bit[4] b;
+    qubit[4] q;
+    b[0] = measure q[0];
+    b[1] = measure q[1];
+    b[2] = measure q[2];
+    b[3] = measure q[3];
+    """
+    simulator = DensityMatrixSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=1000)
+    measurements = np.array(result.measurements, dtype=int)
+    assert np.all(measurements == np.zeros((1000, 4)))
+    assert result.measuredQubits == [0, 1, 2, 3]
+
+
+def test_measure_with_qubits_not_used():
+    qasm = """
+    bit[4] b;
+    qubit[4] q;
+    h q[0];
+    cnot q[0], q[1];
+    b = measure q;
+    """
+    simulator = DensityMatrixSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=1000)
+    measurements = np.array(result.measurements, dtype=int)
+    assert 400 < np.sum(measurements, axis=0)[0] < 600
+    assert 400 < np.sum(measurements, axis=0)[1] < 600
+    assert np.sum(measurements, axis=0)[2] == 0
+    assert np.sum(measurements, axis=0)[3] == 0
+    assert len(measurements[0]) == 4
+    assert result.measuredQubits == [0, 1, 2, 3]
 
 
 @pytest.mark.parametrize(
