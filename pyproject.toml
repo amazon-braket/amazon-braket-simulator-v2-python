@@ -27,6 +27,7 @@ braket_dm_v2 = "braket.simulator_v2.density_matrix_simulator_v2:DensityMatrixSim
 
 [project.optional-dependencies]
 test = [
+    "amazon-braket-pennylane-plugin",
     "black",
     "flake8",
     "flake8-rst-docstrings",

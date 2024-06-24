@@ -162,9 +162,11 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
 
     def _ir_list_to_jl(self, payloads: list[Union[OpenQASMProgram, JaqcdProgram]]):
         converted_payloads = [
-            self._openqasm_to_jl(ir)
-            if isinstance(ir, OpenQASMProgram)
-            else self._jaqcd_to_jl(ir)
+            (
+                self._openqasm_to_jl(ir)
+                if isinstance(ir, OpenQASMProgram)
+                else self._jaqcd_to_jl(ir)
+            )
             for ir in payloads
         ]
         return converted_payloads
