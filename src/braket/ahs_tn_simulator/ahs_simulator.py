@@ -55,7 +55,6 @@ class LocalSimulatorTN(BaseLocalSimulator):
         C6: float = 5.42e-24,
         cutoff: float = 1e-8,
         max_bond_dim: int = 16,
-        tau: float = 0.01e-6,
         compute_truncation_error: bool = False,
         compute_correlators: bool = False,
         compute_energies: bool = False,
@@ -78,7 +77,6 @@ class LocalSimulatorTN(BaseLocalSimulator):
         json_str = program.to_ir().json()
         json_dict = jl.BraketAHS.JSON3.read(json_str)
         args = jl.Base.seval(f"""Dict("shots" => {shots},
-                             "tau" => {tau},
                              "n-tau-steps" => {n_tau_steps},
                              "C6" => {C6},
                              "interaction-radius" => {interaction_radius},

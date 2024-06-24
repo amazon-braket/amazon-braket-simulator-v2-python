@@ -2,7 +2,9 @@
     "julia": "1.9",
     "packages": {
         "BraketAHS": {
-            "uuid": "aad1d28c-1a3f-47da-806d-2ed76430c1d6"
+            "uuid": "aad1d28c-1a3f-47da-806d-2ed76430c1d6",
+            "url": "https://github.com/amazon-braket/BraketAHS.jl.git",
+            "rev": "qcup"
         }
     }
 }
