@@ -616,22 +616,22 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
 
 def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
     simulator = DensityMatrixSimulator()
-    ir = JaqcdProgram.parse_raw(
-        json.dumps(
-            {
-                "instructions": [
-                    {"type": "h", "target": 0},
-                    {"type": "cnot", "target": 1, "control": 0},
-                ],
-                "basis_rotation_instructions": [{"type": "foo", "target": 1}],
-                "results": [
-                    {"type": "expectation", "observable": ["x"], "targets": [1]}
-                ],
-            }
-        )
-    )
-    shots_count = 1000
     with pytest.raises(ValueError):
+        ir = JaqcdProgram.parse_raw(
+            json.dumps(
+                {
+                    "instructions": [
+                        {"type": "h", "target": 0},
+                        {"type": "cnot", "target": 1, "control": 0},
+                    ],
+                    "basis_rotation_instructions": [{"type": "foo", "target": 1}],
+                    "results": [
+                        {"type": "expectation", "observable": ["x"], "targets": [1]}
+                    ],
+                }
+            )
+        )
+        shots_count = 1000
         simulator.run(ir, qubit_count=2, shots=shots_count)
 
 
