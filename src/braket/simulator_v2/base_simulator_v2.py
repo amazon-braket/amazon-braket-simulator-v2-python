@@ -231,7 +231,7 @@ def _result_value_to_ndarray(
 
 def _handle_julia_error(julia_error: JuliaError):
     try:
-        python_exception = getattr(julia_error.exception, "python_exception", None)
+        python_exception = getattr(julia_error.exception, "alternate_type", None)
         if python_exception is None:
             error = julia_error
         else:
