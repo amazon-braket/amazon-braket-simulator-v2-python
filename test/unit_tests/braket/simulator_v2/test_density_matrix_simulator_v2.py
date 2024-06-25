@@ -16,7 +16,6 @@ import json
 import sys
 from collections import Counter, namedtuple
 
-import juliacall
 import numpy as np
 import pytest
 from braket.device_schema.simulators import (

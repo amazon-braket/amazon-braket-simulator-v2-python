@@ -98,7 +98,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 qubit_count,
             )
         try:
-            r = jl.simulate(self._device, [circuit_ir.json()], qubit_count, shots)
+            r = jl.simulate(
+                self._device, self._jaqcd_to_jl(circuit_ir), qubit_count, shots
+            )
         except juliacall.JuliaError as e:
             _handle_julia_error(e)
         r.additionalMetadata.action = circuit_ir
