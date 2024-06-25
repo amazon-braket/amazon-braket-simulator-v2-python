@@ -1485,36 +1485,65 @@ def test_unitary_pragma():
         [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
     )
 
-
 def test_run_multiple():
-    qasm = """
-    qubit[3] q;
-
-    x q[0];
-    h q[1];
-
-    // unitary pragma for t gate
-    #pragma braket unitary([[1.0, 0], [0, 0.70710678 + 0.70710678im]]) q[0]
-    ti q[0];
-
-    // unitary pragma for h gate (with phase shift)
-    #pragma braket unitary([[0.70710678 im, 0.70710678im], [0 - -0.70710678im, -0.0 - 0.70710678im]]) q[1]
-    gphase(-π/2) q[1];
-    h q[1];
-
-    // unitary pragma for ccnot gate
-    #pragma braket unitary([[1.0, 0, 0, 0, 0, 0, 0, 0], [0, 1.0, 0, 0, 0, 0, 0, 0], [0, 0, 1.0, 0, 0, 0, 0, 0], [0, 0, 0, 1.0, 0, 0, 0, 0], [0, 0, 0, 0, 1.0, 0, 0, 0], [0, 0, 0, 0, 0, 1.0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1.0], [0, 0, 0, 0, 0, 0, 1.0, 0]]) q
-
-    #pragma braket result state_vector
-    """  # noqa
-    simulator = StateVectorSimulator()
-    n_circuits = 20
-    circuit_irs = [OpenQASMProgram(source=qasm) for ii in range(n_circuits)]
-    results = simulator.run_multiple(circuit_irs, shots=0)
-    assert len(results) == n_circuits
-    for result in results:
-        assert result.resultTypes[0].type == StateVector()
-        assert np.allclose(
-            result.resultTypes[0].value,
-            [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
+    payloads = [
+        OpenQASMProgram(
+            source=f"""
+            OPENQASM 3.0;
+            bit[2] b;
+            qubit[2] q;
+            {gates[0]} q[0];
+            {gates[1]} q[1];
+            b = measure q;
+            """
         )
+        for gates in [("x", "z"), ("z", "x"), ("x", "x")]
+    ]
+    args = [[2], [5], [10]]
+    kwargs = [{"shots": 3}, {"shots": 6}, {"shots": 9}]
+    expected_measurements = [[1, 0], [0, 1], [1, 1]]
+    simulator = StateVectorSimulator()
+    for result, payload_args, expected in zip(
+        simulator.run_multiple(payloads, args=args), args, expected_measurements
+    ):
+        measurements = np.array(result.measurements, dtype=int)
+        assert len(measurements) == payload_args[0]
+        assert all(np.all(expected == actual) for actual in measurements)
+    for result, payload_kwargs, expected in zip(
+        simulator.run_multiple(payloads, kwargs=kwargs), kwargs, expected_measurements
+    ):
+        measurements = np.array(result.measurements, dtype=int)
+        assert len(measurements) == payload_kwargs["shots"]
+        assert all(np.all(expected == actual) for actual in measurements)
+
+
+def test_run_multiple_wrong_num_args():
+    payload = OpenQASMProgram(
+        source="""
+            OPENQASM 3.0;
+            bit[1] b;
+            qubit[1] q;
+            h q[0];
+            b = measure q;
+            """
+    )
+    args = [[2], [5], [10], [15]]
+    simulator = StateVectorSimulator()
+    with pytest.raises(juliacall.JuliaError):
+        simulator.run_multiple([payload] * (len(args) - 1), args=args)
+
+
+def test_run_multiple_wrong_num_kwargs():
+    payload = OpenQASMProgram(
+        source="""
+            OPENQASM 3.0;
+            bit[1] b;
+            qubit[1] q;
+            h q[0];
+            b = measure q;
+            """
+    )
+    kwargs = [{"shots": 3}, {"shots": 6}]
+    simulator = StateVectorSimulator()
+    with pytest.raises(juliacall.JuliaError):
+        simulator.run_multiple([payload] * (len(kwargs) + 1), kwargs=kwargs)

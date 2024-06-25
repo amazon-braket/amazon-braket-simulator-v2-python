@@ -1,4 +1,4 @@
-juliacall==0.9.19
+juliacall==0.9.20
 numpy
 amazon-braket-schemas>=1.20.2
-amazon-braket-sdk @ git+https://github.com/amazon-braket/amazon-braket-sdk-python@rmshaffer/multi-sim
+amazon-braket-sdk @ git+https://github.com/amazon-braket/amazon-braket-sdk-python@multi2

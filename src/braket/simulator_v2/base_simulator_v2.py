@@ -1,4 +1,5 @@
-from typing import Union
+from collections.abc import Mapping, Sequence
+from typing import Any, Optional, Union
 
 import numpy as np
 from braket.default_simulator.operation_helpers import from_braket_instruction
@@ -9,13 +10,12 @@ from braket.ir.jaqcd import DensityMatrix, Probability
 from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.jaqcd import StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
-from braket.simulator import MultiSimulator
 from braket.task_result import GateModelTaskResult
 
 from braket.simulator_v2.julia_import import jl
 
 
-class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
+class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device):
         self._device = device
 
@@ -87,8 +87,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
         if shots and circuit_ir.basis_rotation_instructions:
             for instruction in circuit_ir.basis_rotation_instructions:
                 operations.append(from_braket_instruction(instruction))
-
-        BaseLocalSimulator._validate_operation_qubits(operations)
 
         if not shots and circuit_ir.results:
             result_types = BaseLocalSimulator._translate_result_types(
@@ -173,15 +171,16 @@ class BaseLocalSimulatorV2(BaseLocalSimulator, MultiSimulator):
 
     def run_multiple(
         self,
-        payloads: list[Union[OpenQASMProgram, JaqcdProgram]],
-        shots: int = 0,
-        **kwargs,
+        payloads: Sequence[Union[OpenQASMProgram, JaqcdProgram]],
+        args: Optional[Sequence[Sequence[Any]]] = None,
+        kwargs: Optional[Sequence[Mapping[str, Any]]] = None,
+        max_parallel: Optional[int] = -1,
     ) -> list[GateModelTaskResult]:
-        results = jl.simulate(self._device, self._ir_list_to_jl(payloads), shots)
+        results = jl.simulate(self._device, self._ir_list_to_jl(payloads), args, kwargs, max_parallel=max_parallel)
         for r_ix, result in enumerate(results):
             results[r_ix].additionalMetadata.action = payloads[r_ix]
             # attach the result types
-            if not shots:
+            if not kwargs or not kwargs[r_ix]['shots']:
                 results[r_ix] = _result_value_to_ndarray(result)
             else:
                 if isinstance(payloads[r_ix], OpenQASMProgram):
