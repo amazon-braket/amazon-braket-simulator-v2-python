@@ -614,13 +614,19 @@ def test_invalid_hermitian_target(shots):
     OPENQASM 3.0;
     qubit[3] q;
     i q;
-    #pragma braket result expectation hermitian([[-6+0im, 2+1im, -3+0im, -5+2im], [2-1im, 0im, 2-1im, -5+4im], [-3+0im, 2+1im, 0im, -4+3im], [-5-2im, -5-4im, -4-3im, -6+0im]]) q[0] # noqa: E501
+    // # noqa: E501
+    #pragma braket result expectation hermitian([[-6+0im, 2+1im, -3+0im, -5+2im], [2-1im, 0im, 2-1im, -5+4im], [-3+0im, 2+1im, 0im, -4+3im], [-5-2im, -5-4im, -4-3im, -6+0im]]) q[0]
     """
     simulator = StateVectorSimulator()
     program = OpenQASMProgram(source=qasm)
 
     invalid_observable = re.escape(
-        "Invalid observable specified for 'expectation' result."
+        "Invalid observable specified: ["
+        "[[-6.0, 0.0], [2.0, 1.0], [-3.0, 0.0], [-5.0, 2.0]], "
+        "[[2.0, -1.0], [0.0, 0.0], [2.0, -1.0], [-5.0, 4.0]], "
+        "[[-3.0, 0.0], [2.0, 1.0], [0.0, 0.0], [-4.0, 3.0]], "
+        "[[-5.0, -2.0], [-5.0, -4.0], [-4.0, -3.0], [-6.0, 0.0]]"
+        "], targets: [0]"
     )
 
     with pytest.raises(ValueError, match=invalid_observable):
