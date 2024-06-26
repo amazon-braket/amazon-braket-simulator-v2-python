@@ -19,7 +19,6 @@ import re
 import sys
 from collections import Counter, namedtuple
 
-import juliacall
 import numpy as np
 import pytest
 from braket.default_simulator import observables
@@ -605,8 +604,7 @@ def test_invalid_standard_observable_target():
 
     must_be_one_qubit = "Standard observable target must be exactly 1 qubit."
 
-    # with pytest.raises(ValueError, match=must_be_one_qubit):
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError, match=must_be_one_qubit):
         simulator.run(program, shots=0)
 
 
@@ -616,7 +614,8 @@ def test_invalid_hermitian_target(shots):
     OPENQASM 3.0;
     qubit[3] q;
     i q;
- pragma braket result expectation hermitian([[-6+0im, 2+1im, -3+0im, -5+2im], [2-1im, 0im, 2-1im, -5+4im], [-3+0im, 2+1im, 0im, -4+3im], [-5-2im, -5-4im, -4-3im, -6+0im]]) q[0] # noqa: E501
+    // # noqa: E501
+    #pragma braket result expectation hermitian([[-6+0im, 2+1im, -3+0im, -5+2im], [2-1im, 0im, 2-1im, -5+4im], [-3+0im, 2+1im, 0im, -4+3im], [-5-2im, -5-4im, -4-3im, -6+0im]]) q[0]
     """
     simulator = StateVectorSimulator()
     program = OpenQASMProgram(source=qasm)
@@ -630,8 +629,7 @@ def test_invalid_hermitian_target(shots):
         "], targets: [0]"
     )
 
-    # with pytest.raises(ValueError, match=invalid_observable):
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError, match=invalid_observable):
         simulator.run(program, shots=shots)
 
 
@@ -701,6 +699,7 @@ def circuit_noise(ir_type):
             h q[0];
             cnot q[0], q[1];
             #pragma braket noise bit_flip(.15) q[0]
+            #pragma braket result probability q[0]
             """
         )
 
@@ -752,24 +751,23 @@ def test_simulator_identity(caplog):
 def test_simulator_instructions_not_supported(circuit_noise):
     simulator = StateVectorSimulator()
     no_noise = re.escape(
-        "Noise instructions are not supported by the state vector simulator (by default). "
-        'You need to use the density matrix simulator: LocalSimulator("braket_dm").'
+        "Noise instructions are not supported by "
+        "StateVectorSimulator(qubit_count=0, shots=0) (by default). "
+        'You need to use the density matrix simulator: LocalSimulator("braket_dm_v2").'
     )
-    if isinstance(circuit_noise, JaqcdProgram):
-        with pytest.raises(TypeError, match=no_noise):
-            simulator.run(circuit_noise, qubit_count=2, shots=0)
-    else:
-        with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(TypeError, match=no_noise):
+        if isinstance(circuit_noise, JaqcdProgram):
+            simulator.run(circuit_noise, qubit_count=0, shots=0)
+        else:
             simulator.run(circuit_noise, shots=0)
 
 
 def test_simulator_run_no_results_no_shots(bell_ir):
     simulator = StateVectorSimulator()
-    if isinstance(bell_ir, JaqcdProgram):
-        with pytest.raises(ValueError):
+    with pytest.raises(ValueError):
+        if isinstance(bell_ir, JaqcdProgram):
             simulator.run(bell_ir, qubit_count=2, shots=0)
-    else:
-        with pytest.raises(juliacall.JuliaError):
+        else:
             simulator.run(bell_ir, shots=0)
 
 
@@ -792,7 +790,7 @@ def test_simulator_run_amplitude_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=100)
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run(qasm, shots=100)
 
 
@@ -816,7 +814,7 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=0)
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run(qasm, shots=0)
 
 
@@ -839,7 +837,7 @@ def test_simulator_run_statevector_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=2, shots=100)
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run(qasm, shots=100)
 
 
@@ -921,27 +919,27 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
     assert not caplog.text
 
 
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
     # not a valid computation path for openqasm, since basis rotation instructions
     # are calculated from the result types during simulation
     simulator = StateVectorSimulator()
-    ir = JaqcdProgram.parse_raw(
-        json.dumps(
-            {
-                "instructions": [
-                    {"type": "h", "target": 0},
-                    {"type": "cnot", "target": 1, "control": 0},
-                ],
-                "basis_rotation_instructions": [{"type": "foo", "target": 1}],
-                "results": [
-                    {"type": "expectation", "observable": ["x"], "targets": [1]}
-                ],
-            }
+    with pytest.raises(ValueError):
+        ir = JaqcdProgram.parse_raw(
+            json.dumps(
+                {
+                    "instructions": [
+                        {"type": "h", "target": 0},
+                        {"type": "cnot", "target": 1, "control": 0},
+                    ],
+                    "basis_rotation_instructions": [{"type": "foo", "target": 1}],
+                    "results": [
+                        {"type": "expectation", "observable": ["x"], "targets": [1]}
+                    ],
+                }
+            )
         )
-    )
-    shots_count = 1000
-    simulator.run(ir, qubit_count=2, shots=shots_count)
+        shots_count = 1000
+        simulator.run(ir, qubit_count=2, shots=shots_count)
 
 
 @pytest.mark.parametrize(
@@ -973,7 +971,6 @@ def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
         ),
     ],
 )
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_non_contiguous_qubits(ir, qubit_count):
     # not relevant for openqasm, since it handles qubit allocation
     simulator = StateVectorSimulator()
@@ -1035,7 +1032,7 @@ def test_simulator_run_observable_references_invalid_qubit(ir, qubit_count):
             simulator.run(ir, qubit_count=qubit_count, shots=shots_count)
     else:
         # index error since you're indexing from a logical qubit
-        with pytest.raises(juliacall.JuliaError):
+        with pytest.raises(IndexError):
             simulator.run(ir, shots=shots_count)
 
 
@@ -1084,7 +1081,7 @@ def test_simulator_fails_samples_0_shots():
     )
     with pytest.raises(ValueError):
         simulator.run(jaqcd, qubit_count=1, shots=0)
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run(qasm, shots=0)
 
 
@@ -1306,15 +1303,14 @@ def test_basis_rotation_all(caplog):
         qubit[2] q;
         i q;
         #pragma braket result expectation x(q[0])
-        #pragma braket result expectation z(q[0]) @ x(q[1])
+        #pragma braket result expectation z(q[0])
         """,
             "Conflicting result types applied to a single qubit",
         ),
     ),
 )
 def test_partially_overlapping_basis_rotation(qasm, error_string):
-    # with pytest.raises(ValueError, match=error_string):
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError, match=error_string):
         simulator = StateVectorSimulator()
         simulator.run(OpenQASMProgram(source=qasm), shots=1000)
 
@@ -1333,22 +1329,22 @@ def test_sample(caplog):
     assert not caplog.text
 
 
-# def test_adjoint_gradient_pragma_sv1():
-#    simulator = StateVectorSimulator()
-#    prog = OpenQASMProgram(
-#        source="""
-#        input float alpha;
-#        input float beta;
-#        qubit[1] q;
-#        h q[0];
-#        #pragma braket result adjoint_gradient h(q[0]) alpha, beta
-#        """,
-#        inputs={"alpha": 0.2, "beta": 0.3},
-#    )
-#    ag_not_supported = "Result type adjoint_gradient is not supported."
-#
-#    with pytest.raises(TypeError, match=ag_not_supported):
-#        simulator.run(prog, shots=0)
+def test_adjoint_gradient_pragma_sv1():
+    simulator = StateVectorSimulator()
+    prog = OpenQASMProgram(
+        source="""
+        input float alpha;
+        input float beta;
+        qubit[1] q;
+        h q[0];
+        #pragma braket result adjoint_gradient h(q[0]) alpha, beta
+        """,
+        inputs={"alpha": 0.2, "beta": 0.3},
+    )
+    ag_not_supported = "Result type adjoint_gradient is not supported."
+
+    with pytest.raises(TypeError, match=ag_not_supported):
+        simulator.run(prog, shots=0)
 
 
 def test_missing_input():
@@ -1362,8 +1358,7 @@ def test_missing_input():
     """
     simulator = StateVectorSimulator()
     missing_input = "Missing input variable 'in_int'."
-    # with pytest.raises(NameError, match=missing_input):
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(NameError, match=missing_input):
         simulator.run(OpenQASMProgram(source=qasm), shots=1000)
 
 
@@ -1381,6 +1376,43 @@ def test_measure_targets():
     assert 400 < np.sum(measurements, axis=0)[0] < 600
     assert len(measurements[0]) == 1
     assert result.measuredQubits == [0]
+
+
+def test_measure_no_gates():
+    qasm = """
+    bit[4] b;
+    qubit[4] q;
+    b[0] = measure q[0];
+    b[1] = measure q[1];
+    b[2] = measure q[2];
+    b[3] = measure q[3];
+    """
+    simulator = StateVectorSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=1000)
+    measurements = np.array(result.measurements, dtype=int)
+    assert np.all(measurements == np.zeros((1000, 4)))
+    # assert np.sum(measurements, axis=0)[2] == 0
+    # assert len(measurements[0]) == 4
+    assert result.measuredQubits == [0, 1, 2, 3]
+
+
+def test_measure_with_qubits_not_used():
+    qasm = """
+    bit[4] b;
+    qubit[4] q;
+    h q[0];
+    cnot q[0], q[1];
+    b = measure q;
+    """
+    simulator = StateVectorSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=1000)
+    measurements = np.array(result.measurements, dtype=int)
+    assert 400 < np.sum(measurements, axis=0)[0] < 600
+    assert 400 < np.sum(measurements, axis=0)[1] < 600
+    assert np.sum(measurements, axis=0)[2] == 0
+    assert np.sum(measurements, axis=0)[3] == 0
+    assert len(measurements[0]) == 4
+    assert result.measuredQubits == [0, 1, 2, 3]
 
 
 @pytest.mark.parametrize(
@@ -1485,6 +1517,45 @@ def test_unitary_pragma():
         [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
     )
 
+
+@pytest.mark.parametrize(
+    "ir, qubit_count",
+    [
+        (
+            JaqcdProgram.parse_raw(
+                json.dumps(
+                    {
+                        "instructions": [{"type": "z", "target": 2}],
+                        "basis_rotation_instructions": [],
+                        "results": [],
+                    }
+                )
+            ),
+            1,
+        ),
+        (
+            JaqcdProgram.parse_raw(
+                json.dumps(
+                    {
+                        "instructions": [{"type": "h", "target": 0}],
+                        "basis_rotation_instructions": [{"type": "z", "target": 3}],
+                        "results": [],
+                    }
+                )
+            ),
+            2,
+        ),
+    ],
+)
+def test_run_multiple_non_contiguous(ir, qubit_count):
+    # not relevant for openqasm, since it handles qubit allocation
+    simulator = StateVectorSimulator()
+    shots_count = 1000
+    batch_size = 5
+    payloads = [ir] * batch_size
+    simulator.run_multiple(payloads, [[qubit_count, shots_count]] * batch_size, None)
+
+
 def test_run_multiple():
     payloads = [
         OpenQASMProgram(
@@ -1529,7 +1600,7 @@ def test_run_multiple_wrong_num_args():
     )
     args = [[2], [5], [10], [15]]
     simulator = StateVectorSimulator()
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run_multiple([payload] * (len(args) - 1), args=args)
 
 
@@ -1545,5 +1616,5 @@ def test_run_multiple_wrong_num_kwargs():
     )
     kwargs = [{"shots": 3}, {"shots": 6}]
     simulator = StateVectorSimulator()
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run_multiple([payload] * (len(kwargs) + 1), kwargs=kwargs)

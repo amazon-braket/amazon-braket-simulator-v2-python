@@ -1,6 +1,8 @@
+import sys
 from collections.abc import Mapping, Sequence
 from typing import Any, Optional, Union
 
+import juliacall
 import numpy as np
 from braket.default_simulator.operation_helpers import from_braket_instruction
 from braket.default_simulator.result_types import TargetedResultType
@@ -11,6 +13,7 @@ from braket.ir.jaqcd import Program as JaqcdProgram
 from braket.ir.jaqcd import StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
+from juliacall import JuliaError
 
 from braket.simulator_v2.julia_import import jl
 
@@ -67,17 +70,13 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-        self._validate_ir_results_compatibility(
-            circuit_ir.results,
-            device_action_type=DeviceActionType.JAQCD,
-        )
-        self._validate_ir_instructions_compatibility(
-            circuit_ir,
-            device_action_type=DeviceActionType.JAQCD,
-        )
+        self._validate_jaqcd(circuit_ir, qubit_count, shots)
+
         BaseLocalSimulator._validate_shots_and_ir_results(
             shots, circuit_ir.results, qubit_count
         )
+
+        circuit_ir = BaseLocalSimulator._map_circuit_to_contiguous_qubits(circuit_ir)
 
         operations = [
             from_braket_instruction(instruction)
@@ -100,8 +99,12 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 ],
                 qubit_count,
             )
-
-        r = jl.simulate(self._device, self._jaqcd_to_jl(circuit_ir), qubit_count, shots)
+        try:
+            r = jl.simulate(
+                self._device, self._jaqcd_to_jl(circuit_ir), qubit_count, shots
+            )
+        except juliacall.JuliaError as e:
+            _handle_julia_error(e)
         r.additionalMetadata.action = circuit_ir
         r = _result_value_to_ndarray(r)
         return r
@@ -149,7 +152,10 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-        r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
+        try:
+            r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
+        except juliacall.JuliaError as e:
+            _handle_julia_error(e)
         r.additionalMetadata.action = openqasm_ir
         # attach the result types
         if not shots:
@@ -163,7 +169,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             (
                 self._openqasm_to_jl(ir)
                 if isinstance(ir, OpenQASMProgram)
-                else self._jaqcd_to_jl(ir)
+                else self._jaqcd_to_jl(
+                    BaseLocalSimulator._map_circuit_to_contiguous_qubits(ir)
+                )
             )
             for ir in payloads
         ]
@@ -176,11 +184,21 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         kwargs: Optional[Sequence[Mapping[str, Any]]] = None,
         max_parallel: Optional[int] = -1,
     ) -> list[GateModelTaskResult]:
-        results = jl.simulate(self._device, self._ir_list_to_jl(payloads), args, kwargs, max_parallel=max_parallel)
+        try:
+            results = jl.simulate(
+                self._device,
+                self._ir_list_to_jl(payloads),
+                args,
+                kwargs,
+                max_parallel=max_parallel,
+            )
+        except juliacall.JuliaError as e:
+            _handle_julia_error(e)
+
         for r_ix, result in enumerate(results):
             results[r_ix].additionalMetadata.action = payloads[r_ix]
             # attach the result types
-            if not kwargs or not kwargs[r_ix]['shots']:
+            if not kwargs or not kwargs[r_ix]["shots"]:
                 results[r_ix] = _result_value_to_ndarray(result)
             else:
                 if isinstance(payloads[r_ix], OpenQASMProgram):
@@ -189,6 +207,27 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                     results[r_ix] = _result_value_to_ndarray(result)
 
         return results
+
+    def _validate_jaqcd(self, circuit_ir, qubit_count, shots):
+        self._validate_ir_results_compatibility(
+            circuit_ir.results,
+            device_action_type=DeviceActionType.JAQCD,
+        )
+        try:
+            # the default simulator has validations that hard-codes recommendations. We need
+            # to override them to correspond to the v2 simulator. Temporarily catching error
+            # but we need to split this function out in the base.
+            self._validate_ir_instructions_compatibility(
+                circuit_ir,
+                device_action_type=DeviceActionType.JAQCD,
+            )
+        except TypeError:
+            raise TypeError(
+                "Noise instructions are not supported by "
+                f"StateVectorSimulator(qubit_count={qubit_count}, shots={shots}) "
+                "(by default). You need to use the density matrix simulator: "
+                'LocalSimulator("braket_dm_v2").'
+            )
 
 
 def _result_value_to_ndarray(
@@ -204,3 +243,16 @@ def _result_value_to_ndarray(
                 task_result.resultTypes[result_ind].value
             )
     return task_result
+
+
+def _handle_julia_error(julia_error: JuliaError):
+    try:
+        python_exception = getattr(julia_error.exception, "alternate_type", None)
+        if python_exception is None:
+            error = julia_error
+        else:
+            class_val = getattr(sys.modules["builtins"], str(python_exception))
+            error = class_val(julia_error.exception.message)
+    except Exception:
+        raise julia_error
+    raise error
