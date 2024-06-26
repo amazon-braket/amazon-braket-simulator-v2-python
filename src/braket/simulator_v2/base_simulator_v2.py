@@ -76,6 +76,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             shots, circuit_ir.results, qubit_count
         )
 
+        circuit_ir = BaseLocalSimulator._map_circuit_to_contiguous_qubits(circuit_ir)
+
         operations = [
             from_braket_instruction(instruction)
             for instruction in circuit_ir.instructions
@@ -167,7 +169,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             (
                 self._openqasm_to_jl(ir)
                 if isinstance(ir, OpenQASMProgram)
-                else self._jaqcd_to_jl(ir)
+                else self._jaqcd_to_jl(
+                    BaseLocalSimulator._map_circuit_to_contiguous_qubits(ir)
+                )
             )
             for ir in payloads
         ]

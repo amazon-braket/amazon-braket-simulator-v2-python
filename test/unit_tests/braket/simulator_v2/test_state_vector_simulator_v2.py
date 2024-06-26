@@ -969,8 +969,7 @@ def test_simulator_run_non_contiguous_qubits(ir, qubit_count):
     # not relevant for openqasm, since it handles qubit allocation
     simulator = StateVectorSimulator()
     shots_count = 1000
-    with pytest.raises(ValueError):
-        simulator.run(ir, qubit_count=qubit_count, shots=shots_count)
+    simulator.run(ir, qubit_count=qubit_count, shots=shots_count)
 
 
 @pytest.mark.parametrize(
@@ -1511,6 +1510,44 @@ def test_unitary_pragma():
         result.resultTypes[0].value,
         [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
     )
+
+
+@pytest.mark.parametrize(
+    "ir, qubit_count",
+    [
+        (
+            JaqcdProgram.parse_raw(
+                json.dumps(
+                    {
+                        "instructions": [{"type": "z", "target": 2}],
+                        "basis_rotation_instructions": [],
+                        "results": [],
+                    }
+                )
+            ),
+            1,
+        ),
+        (
+            JaqcdProgram.parse_raw(
+                json.dumps(
+                    {
+                        "instructions": [{"type": "h", "target": 0}],
+                        "basis_rotation_instructions": [{"type": "z", "target": 3}],
+                        "results": [],
+                    }
+                )
+            ),
+            2,
+        ),
+    ],
+)
+def test_run_multiple_non_contiguous(ir, qubit_count):
+    # not relevant for openqasm, since it handles qubit allocation
+    simulator = StateVectorSimulator()
+    shots_count = 1000
+    batch_size = 5
+    payloads = [ir] * batch_size
+    simulator.run_multiple(payloads, [[qubit_count, shots_count]] * batch_size, None)
 
 
 def test_run_multiple():
