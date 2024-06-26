@@ -1512,6 +1512,7 @@ def test_unitary_pragma():
         [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
     )
 
+
 def test_run_multiple():
     payloads = [
         OpenQASMProgram(
@@ -1556,7 +1557,7 @@ def test_run_multiple_wrong_num_args():
     )
     args = [[2], [5], [10], [15]]
     simulator = StateVectorSimulator()
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run_multiple([payload] * (len(args) - 1), args=args)
 
 
@@ -1572,5 +1573,5 @@ def test_run_multiple_wrong_num_kwargs():
     )
     kwargs = [{"shots": 3}, {"shots": 6}]
     simulator = StateVectorSimulator()
-    with pytest.raises(juliacall.JuliaError):
+    with pytest.raises(ValueError):
         simulator.run_multiple([payload] * (len(kwargs) + 1), kwargs=kwargs)

@@ -1,6 +1,6 @@
+import sys
 from collections.abc import Mapping, Sequence
 from typing import Any, Optional, Union
-import sys
 
 import juliacall
 import numpy as np
@@ -151,7 +151,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 are requested when shots>0.
         """
         try:
-            r = jl.simulate(self._device, [openqasm_ir], shots)
+            r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
         except juliacall.JuliaError as e:
             _handle_julia_error(e)
         r.additionalMetadata.action = openqasm_ir
@@ -180,11 +180,21 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         kwargs: Optional[Sequence[Mapping[str, Any]]] = None,
         max_parallel: Optional[int] = -1,
     ) -> list[GateModelTaskResult]:
-        results = jl.simulate(self._device, self._ir_list_to_jl(payloads), args, kwargs, max_parallel=max_parallel)
+        try:
+            results = jl.simulate(
+                self._device,
+                self._ir_list_to_jl(payloads),
+                args,
+                kwargs,
+                max_parallel=max_parallel,
+            )
+        except juliacall.JuliaError as e:
+            _handle_julia_error(e)
+
         for r_ix, result in enumerate(results):
             results[r_ix].additionalMetadata.action = payloads[r_ix]
             # attach the result types
-            if not kwargs or not kwargs[r_ix]['shots']:
+            if not kwargs or not kwargs[r_ix]["shots"]:
                 results[r_ix] = _result_value_to_ndarray(result)
             else:
                 if isinstance(payloads[r_ix], OpenQASMProgram):
