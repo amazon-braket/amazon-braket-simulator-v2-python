@@ -73,7 +73,7 @@ class LocalSimulatorTN(BaseLocalSimulator):
         # Validate the given program against the capabilities
         # validate_program(program, capabilities_constants())
 
-        print("testing, flush=True")
+        print("testing", flush=True)
         
         # Convert input program to a Julia JSON object
         json_str = program.to_ir().json()
