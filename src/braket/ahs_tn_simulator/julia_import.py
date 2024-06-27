@@ -49,6 +49,8 @@ else:
 # with mp.Pool(mp.cpu_count()) as pool:
 #     pool.map(import2, range(mp.cpu_count()))
 
+print("i am in julia import")
+
 from juliacall import Main as jl
 
 jl.seval("using PythonCall, BraketAHS")
