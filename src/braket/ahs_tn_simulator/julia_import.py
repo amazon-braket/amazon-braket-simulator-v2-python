@@ -36,16 +36,21 @@ else:
     ):
         os.environ[k] = os.environ.get(k, default)
 
-def import2(_):
+# def import2(_):
 
-    from juliacall import Main as jl
+#     from juliacall import Main as jl
 
-    jl.seval("using PythonCall, BraketAHS")
-    jl.seval("using PythonCall: Py, pyconvert")
-    jlBraketAHS = jl.BraketAHS
+#     jl.seval("using PythonCall, BraketAHS")
+#     jl.seval("using PythonCall: Py, pyconvert")
+#     jlBraketAHS = jl.BraketAHS
 
-import multiprocessing as mp
+# import multiprocessing as mp
 
-with mp.Pool(mp.cpu_count()) as pool:
-    pool.map(import2, range(mp.cpu_count()))
+# with mp.Pool(mp.cpu_count()) as pool:
+#     pool.map(import2, range(mp.cpu_count()))
 
+from juliacall import Main as jl
+
+jl.seval("using PythonCall, BraketAHS")
+jl.seval("using PythonCall: Py, pyconvert")
+jlBraketAHS = jl.BraketAHS
