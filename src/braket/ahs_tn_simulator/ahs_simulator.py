@@ -91,6 +91,7 @@ class LocalSimulatorTN(BaseLocalSimulator):
                               )
                              """)
 
+        print("testing")
         raw_results = jlBraketAHS.run(json_dict, args)
         dist = np.array(raw_results["samples"]).T.tolist()
         filling = np.ones(len(program.register), dtype=int)
