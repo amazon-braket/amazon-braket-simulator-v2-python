@@ -73,6 +73,8 @@ class LocalSimulatorTN(BaseLocalSimulator):
         # Validate the given program against the capabilities
         # validate_program(program, capabilities_constants())
 
+        print("testing, flush=True")
+        
         # Convert input program to a Julia JSON object
         json_str = program.to_ir().json()
         json_dict = jl.BraketAHS.JSON3.read(json_str)
@@ -91,7 +93,6 @@ class LocalSimulatorTN(BaseLocalSimulator):
                               )
                              """)
 
-        print("testing")
         raw_results = jlBraketAHS.run(json_dict, args)
         dist = np.array(raw_results["samples"]).T.tolist()
         filling = np.ones(len(program.register), dtype=int)
