@@ -1,10 +1,10 @@
 import sys
-from collections.abc import Mapping, Sequence
+import warnings
+from collections.abc import Sequence
 from typing import Any, Optional, Union
 
 import juliacall
 import numpy as np
-from braket.default_simulator.operation_helpers import from_braket_instruction
 from braket.default_simulator.result_types import TargetedResultType
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.device_schema import DeviceActionType
@@ -25,67 +25,14 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def initialize_simulation(self, **kwargs):
         return
 
-    def _jaqcd_to_jl(self, circuit_ir: JaqcdProgram):
-        # convert to the Julia JaqcdProgram type for dispatch
-        jl_program = jl.BraketSimulator.Braket.parse_raw_schema(
-            jl.convert(jl.String, circuit_ir.json())
-        )
-        if circuit_ir.basis_rotation_instructions:
-            # need to read these in explicitly due to the Vector{Any} type of the field
-            parsed_bris = [
-                jl.BraketSimulator.Braket.JSON3.read(
-                    bri.json(),
-                    jl.BraketSimulator.Braket.Instruction,
-                )
-                for bri in circuit_ir.basis_rotation_instructions
-            ]
-            jl_program = jl.BraketSimulator.Braket.Program(
-                jl_program.braketSchemaHeader,
-                jl_program.instructions,
-                jl_program.results,
-                parsed_bris,
-            )
-        return jl_program
+    def _jaqcd_to_jl(self, circuit_ir: JaqcdProgram, shots: int):
+        qubit_map = BaseLocalSimulator._map_circuit_to_contiguous_qubits(circuit_ir)
+        qubit_count = len(qubit_map)
 
-    def run_jaqcd(
-        self,
-        circuit_ir: JaqcdProgram,
-        qubit_count: int,
-        shots: int = 0,
-        batch_size: int = 1,  # unused
-    ) -> GateModelTaskResult:
-        """Executes the circuit specified by the supplied `circuit_ir` on the simulator.
-
-        Args:
-            circuit_ir (Program): ir representation of a braket circuit specifying the
-                instructions to execute.
-            qubit_count (int): The number of qubits to simulate.
-            shots (int): The number of times to run the circuit.
-
-        Returns:
-            GateModelTaskResult: object that represents the result
-
-        Raises:
-            ValueError: If result types are not specified in the IR or sample is specified
-                as a result type when shots=0. Or, if StateVector and Amplitude result types
-                are requested when shots>0.
-        """
         self._validate_jaqcd(circuit_ir, qubit_count, shots)
-
         BaseLocalSimulator._validate_shots_and_ir_results(
             shots, circuit_ir.results, qubit_count
         )
-
-        circuit_ir = BaseLocalSimulator._map_circuit_to_contiguous_qubits(circuit_ir)
-
-        operations = [
-            from_braket_instruction(instruction)
-            for instruction in circuit_ir.instructions
-        ]
-
-        if shots and circuit_ir.basis_rotation_instructions:
-            for instruction in circuit_ir.basis_rotation_instructions:
-                operations.append(from_braket_instruction(instruction))
 
         if not shots and circuit_ir.results:
             result_types = BaseLocalSimulator._translate_result_types(
@@ -99,10 +46,60 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 ],
                 qubit_count,
             )
-        try:
-            r = jl.simulate(
-                self._device, self._jaqcd_to_jl(circuit_ir), qubit_count, shots
+        # convert to the Julia JaqcdProgram type for dispatch
+        jl_program = jl.BraketSimulator.Braket.parse_raw_schema(
+            jl.convert(jl.String, circuit_ir.json())
+        )
+        if circuit_ir.basis_rotation_instructions:
+            # need to read these in explicitly due to
+            # Vector{Any} type of field
+            parsed_bris = [
+                jl.BraketSimulator.Braket.JSON3.read(
+                    bri.json(),
+                    jl.BraketSimulator.Braket.Instruction,
+                )
+                for bri in circuit_ir.basis_rotation_instructions
+            ]
+            jl_program = jl.BraketSimulator.Braket.Program(
+                jl_program.braketSchemaHeader,
+                # concatenate these to make sure "extra" qubits are picked up
+                jl.vcat(jl_program.instructions, parsed_bris),
+                jl_program.results,
+                [],
             )
+        return jl_program, qubit_count
+
+    def run_jaqcd(
+        self,
+        circuit_ir: JaqcdProgram,
+        qubit_count: Any = None,
+        shots: int = 0,
+        batch_size: int = 1,  # unused
+    ) -> GateModelTaskResult:
+        """Executes the circuit specified by the supplied `circuit_ir` on the simulator.
+
+        Args:
+            circuit_ir (Program): ir representation of a braket circuit specifying the
+                instructions to execute.
+            qubit_count (Any): Unused parameter; in signature for backwards-compatibility
+            shots (int): The number of times to run the circuit.
+            batch_size (int): Unused parameter; in signature for backwards-compatibility
+
+        Returns:
+            GateModelTaskResult: object that represents the result
+
+        Raises:
+            ValueError: If result types are not specified in the IR or sample is specified
+                as a result type when shots=0. Or, if StateVector and Amplitude result types
+                are requested when shots>0.
+        """
+        if qubit_count is not None:
+            warnings.warn(
+                f"qubit_count is deprecated for {type(self).__name__} and can be set to None"
+            )
+        translated_ir, qubit_count = self._jaqcd_to_jl(circuit_ir, shots)
+        try:
+            r = jl.simulate(self._device, translated_ir, qubit_count, shots)
         except juliacall.JuliaError as e:
             _handle_julia_error(e)
         r.additionalMetadata.action = circuit_ir
@@ -164,14 +161,14 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             r.resultTypes = [rt.type for rt in r.resultTypes]
         return r
 
-    def _ir_list_to_jl(self, payloads: list[Union[OpenQASMProgram, JaqcdProgram]]):
+    def _ir_list_to_jl(
+        self, payloads: list[Union[OpenQASMProgram, JaqcdProgram]], shots: int
+    ):
         converted_payloads = [
             (
                 self._openqasm_to_jl(ir)
                 if isinstance(ir, OpenQASMProgram)
-                else self._jaqcd_to_jl(
-                    BaseLocalSimulator._map_circuit_to_contiguous_qubits(ir)
-                )
+                else self._jaqcd_to_jl(ir, shots)[0]
             )
             for ir in payloads
         ]
@@ -179,36 +176,49 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
 
     def run_multiple(
         self,
-        payloads: Sequence[Union[OpenQASMProgram, JaqcdProgram]],
-        args: Optional[Sequence[Sequence[Any]]] = None,
-        kwargs: Optional[Sequence[Mapping[str, Any]]] = None,
+        programs: Sequence[Union[OpenQASMProgram, JaqcdProgram]],
         max_parallel: Optional[int] = -1,
+        shots: Optional[int] = 0,
+        inputs: Optional[Union[dict, Sequence[dict]]] = None,
     ) -> list[GateModelTaskResult]:
+        """
+        Run the tasks specified by the given IR programs.
+        Extra arguments will contain any additional information necessary to run the tasks,
+        such as the extra parameters for AHS simulations.
+        Args:
+            programs (Sequence[Union[OQ3Program, JaqcdProgram]]): The IR representations
+                of the programs
+            max_parallel (Optional[int]): The maximum number of programs to run in parallel.
+                Default is the number of logical CPUs.
+        Returns:
+            list[GateModelTaskResult]: A list of result objects, with the ith object being
+            the result of the ith program.
+        """
         try:
             results = jl.simulate(
                 self._device,
-                self._ir_list_to_jl(payloads),
-                args,
-                kwargs,
+                self._ir_list_to_jl(programs, shots),
                 max_parallel=max_parallel,
+                shots=shots,
+                inputs=inputs,
             )
         except juliacall.JuliaError as e:
             _handle_julia_error(e)
 
         for r_ix, result in enumerate(results):
-            results[r_ix].additionalMetadata.action = payloads[r_ix]
+            results[r_ix].additionalMetadata.action = programs[r_ix]
             # attach the result types
-            if not kwargs or not kwargs[r_ix]["shots"]:
+            if not shots:
                 results[r_ix] = _result_value_to_ndarray(result)
             else:
-                if isinstance(payloads[r_ix], OpenQASMProgram):
+                if isinstance(programs[r_ix], OpenQASMProgram):
                     results[r_ix].resultTypes = [rt.type for rt in result.resultTypes]
-                elif isinstance(payloads[r_ix], JaqcdProgram):
+                elif isinstance(programs[r_ix], JaqcdProgram):
                     results[r_ix] = _result_value_to_ndarray(result)
 
         return results
 
-    def _validate_jaqcd(self, circuit_ir, qubit_count, shots):
+    def _validate_jaqcd(self, circuit_ir, qubit_count: int, shots: int):
         self._validate_ir_results_compatibility(
             circuit_ir.results,
             device_action_type=DeviceActionType.JAQCD,
@@ -223,9 +233,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             )
         except TypeError:
             raise TypeError(
-                "Noise instructions are not supported by "
-                f"StateVectorSimulator(qubit_count={qubit_count}, shots={shots}) "
-                "(by default). You need to use the density matrix simulator: "
+                "Noise instructions are not supported by the state vector simulator (by default). "
+                "You need to use the density matrix simulator: "
                 'LocalSimulator("braket_dm_v2").'
             )
 

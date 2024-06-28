@@ -751,13 +751,12 @@ def test_simulator_identity(caplog):
 def test_simulator_instructions_not_supported(circuit_noise):
     simulator = StateVectorSimulator()
     no_noise = re.escape(
-        "Noise instructions are not supported by "
-        "StateVectorSimulator(qubit_count=0, shots=0) (by default). "
+        "Noise instructions are not supported by the state vector simulator (by default). "
         'You need to use the density matrix simulator: LocalSimulator("braket_dm_v2").'
     )
     with pytest.raises(TypeError, match=no_noise):
         if isinstance(circuit_noise, JaqcdProgram):
-            simulator.run(circuit_noise, qubit_count=0, shots=0)
+            simulator.run(circuit_noise, qubit_count=2, shots=0)
         else:
             simulator.run(circuit_noise, shots=0)
 
@@ -799,7 +798,7 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
     jaqcd = JaqcdProgram.parse_raw(
         json.dumps(
             {
-                "instructions": [{"type": "h", "target": 0}],
+                "instructions": [{"type": "h", "target": 0}, {"type": "i", "target": 1}],
                 "results": [{"type": "amplitude", "states": ["0"]}],
             }
         )
@@ -813,7 +812,7 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
         """
     )
     with pytest.raises(ValueError):
-        simulator.run(jaqcd, qubit_count=2, shots=0)
+        simulator.run(jaqcd, shots=0)
     with pytest.raises(ValueError):
         simulator.run(qasm, shots=0)
 
@@ -975,7 +974,7 @@ def test_simulator_run_non_contiguous_qubits(ir, qubit_count):
     # not relevant for openqasm, since it handles qubit allocation
     simulator = StateVectorSimulator()
     shots_count = 1000
-    simulator.run(ir, qubit_count=qubit_count, shots=shots_count)
+    simulator.run(ir, shots=shots_count)
 
 
 @pytest.mark.parametrize(
@@ -1553,7 +1552,23 @@ def test_run_multiple_non_contiguous(ir, qubit_count):
     shots_count = 1000
     batch_size = 5
     payloads = [ir] * batch_size
-    simulator.run_multiple(payloads, [[qubit_count, shots_count]] * batch_size, None)
+    simulator.run_multiple(payloads, shots=shots_count)
+
+
+def test_noncontiguous_qubits_jaqcd_multiple_targets():
+    jaqcd_program = {
+        "braketSchemaHeader": {"name": "braket.ir.jaqcd.program", "version": "1"},
+        "instructions": [
+            {"type": "x", "target": 3},
+            {"type": "swap", "targets": [3, 4]},
+        ],
+        "results": [{"type": "expectation", "observable": ["z"], "targets": [4]}],
+    }
+    prg = JaqcdProgram.parse_raw(json.dumps(jaqcd_program))
+    result = StateVectorSimulator().run(prg, qubit_count=2, shots=0)
+
+    assert result.measuredQubits == [0, 1]
+    assert result.resultTypes[0].value == -1
 
 
 def test_run_multiple():
@@ -1561,60 +1576,16 @@ def test_run_multiple():
         OpenQASMProgram(
             source=f"""
             OPENQASM 3.0;
-            bit[2] b;
-            qubit[2] q;
-            {gates[0]} q[0];
-            {gates[1]} q[1];
-            b = measure q;
+            bit[1] b;
+            qubit[1] q;
+            {gate} q[0];
+            #pragma braket result state_vector
             """
         )
-        for gates in [("x", "z"), ("z", "x"), ("x", "x")]
+        for gate in ["h", "z", "x"]
     ]
-    args = [[2], [5], [10]]
-    kwargs = [{"shots": 3}, {"shots": 6}, {"shots": 9}]
-    expected_measurements = [[1, 0], [0, 1], [1, 1]]
     simulator = StateVectorSimulator()
-    for result, payload_args, expected in zip(
-        simulator.run_multiple(payloads, args=args), args, expected_measurements
-    ):
-        measurements = np.array(result.measurements, dtype=int)
-        assert len(measurements) == payload_args[0]
-        assert all(np.all(expected == actual) for actual in measurements)
-    for result, payload_kwargs, expected in zip(
-        simulator.run_multiple(payloads, kwargs=kwargs), kwargs, expected_measurements
-    ):
-        measurements = np.array(result.measurements, dtype=int)
-        assert len(measurements) == payload_kwargs["shots"]
-        assert all(np.all(expected == actual) for actual in measurements)
-
-
-def test_run_multiple_wrong_num_args():
-    payload = OpenQASMProgram(
-        source="""
-            OPENQASM 3.0;
-            bit[1] b;
-            qubit[1] q;
-            h q[0];
-            b = measure q;
-            """
-    )
-    args = [[2], [5], [10], [15]]
-    simulator = StateVectorSimulator()
-    with pytest.raises(ValueError):
-        simulator.run_multiple([payload] * (len(args) - 1), args=args)
-
-
-def test_run_multiple_wrong_num_kwargs():
-    payload = OpenQASMProgram(
-        source="""
-            OPENQASM 3.0;
-            bit[1] b;
-            qubit[1] q;
-            h q[0];
-            b = measure q;
-            """
-    )
-    kwargs = [{"shots": 3}, {"shots": 6}]
-    simulator = StateVectorSimulator()
-    with pytest.raises(ValueError):
-        simulator.run_multiple([payload] * (len(kwargs) + 1), kwargs=kwargs)
+    results = simulator.run_multiple(payloads, shots=0)
+    assert np.allclose(results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
+    assert np.allclose(results[1].resultTypes[0].value, np.array([1, 0]))
+    assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))
