@@ -115,7 +115,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         if openqasm_ir.inputs:
             jl_inputs = jl.Dict(
                 [
-                    (jl.convert(jl.String, input_key), jl.convert(jl.Number, input_val))
+                    (jl.convert(jl.String, input_key), jl.convert(jl.String, input_val) if isinstance(input_val, str) else jl.convert(jl.Number, input_val))
                     for (input_key, input_val) in openqasm_ir.inputs.items()
                 ]
             )
