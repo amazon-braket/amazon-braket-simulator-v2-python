@@ -77,7 +77,9 @@ class LocalSimulatorTN(BaseLocalSimulator):
         
         # Convert input program to a Julia JSON object
         json_str = program.to_ir().json()
+        print(f"json_str = {json_str}")
         json_dict = jl.BraketAHS.JSON3.read(json_str)
+        print(f"json_dict = {json_dict}")
         args = jl.Base.seval(f"""Dict("shots" => {shots},
                              "n-tau-steps" => {n_tau_steps},
                              "C6" => {C6},
