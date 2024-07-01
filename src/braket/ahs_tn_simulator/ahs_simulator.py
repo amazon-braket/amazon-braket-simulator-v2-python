@@ -59,8 +59,8 @@ class LocalSimulatorTN(BaseLocalSimulator):
         compute_correlators: bool = False,
         compute_energies: bool = False,
         generate_plots: bool = False,
-        *args,
-        **kwargs
+        # *args,
+        # **kwargs
     ) -> AnalogHamiltonianSimulationQuantumTaskResult:
         """
         Run the simulation for the dynamics of the Rydberg system, and return the result
