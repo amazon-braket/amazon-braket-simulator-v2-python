@@ -78,26 +78,26 @@ class LocalSimulatorTN(BaseLocalSimulator):
         # Convert input program to a Julia JSON object
         jl.println("Hello from Julia!")
 
-        # json_str = program.to_ir().json()
-        # print(f"json_str = {json_str}")
-        # json_dict = jl.BraketAHS.JSON3.read(json_str)
-        # print(f"json_dict = {json_dict}")
-        # args = jl.Base.seval(f"""Dict("shots" => {shots},
-        #                      "n-tau-steps" => {n_tau_steps},
-        #                      "C6" => {C6},
-        #                      "interaction-radius" => {interaction_radius},
-        #                      "max-bond-dim" => {max_bond_dim},
-        #                      "cutoff" => {cutoff},
-        #                      "compute-energies" => {str(compute_energies).lower()},
-        #                      "compute-correlators" => {str(compute_correlators).lower()},
-        #                      "compute-truncation-error" => false,
-        #                      "generate-plots" => false,
-        #                      "experiment-path" => "../../experiments",
-        #                      "program-path" => "tmp"
-        #                       )
-        #                      """)
+        json_str = program.to_ir().json()
+        print(f"json_str = {json_str}")
+        json_dict = jl.BraketAHS.JSON3.read(json_str)
+        print(f"json_dict = {json_dict}")
+        args = jl.Base.seval(f"""Dict("shots" => {shots},
+                             "n-tau-steps" => {n_tau_steps},
+                             "C6" => {C6},
+                             "interaction-radius" => {interaction_radius},
+                             "max-bond-dim" => {max_bond_dim},
+                             "cutoff" => {cutoff},
+                             "compute-energies" => {str(compute_energies).lower()},
+                             "compute-correlators" => {str(compute_correlators).lower()},
+                             "compute-truncation-error" => false,
+                             "generate-plots" => false,
+                             "experiment-path" => "../../experiments",
+                             "program-path" => "tmp"
+                              )
+                             """)
 
-        # raw_results = jlBraketAHS.run(json_dict, args)
+        raw_results = jlBraketAHS.run(json_dict, args)
         dist = np.array(raw_results).T.tolist()
         filling = np.ones(len(program.register), dtype=int)
 
