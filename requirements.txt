@@ -1,5 +1,4 @@
-juliacall==0.9.19
+juliacall==0.9.20
 numpy
-amazon-braket-default-simulator>=1.21.2
 amazon-braket-schemas>=1.20.2
-amazon-braket-sdk>=1.76.0
+amazon-braket-sdk>=1.83.0

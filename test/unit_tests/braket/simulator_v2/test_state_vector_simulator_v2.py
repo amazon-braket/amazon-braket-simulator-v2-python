@@ -614,7 +614,8 @@ def test_invalid_hermitian_target(shots):
     OPENQASM 3.0;
     qubit[3] q;
     i q;
- pragma braket result expectation hermitian([[-6+0im, 2+1im, -3+0im, -5+2im], [2-1im, 0im, 2-1im, -5+4im], [-3+0im, 2+1im, 0im, -4+3im], [-5-2im, -5-4im, -4-3im, -6+0im]]) q[0] # noqa: E501
+    // # noqa: E501
+    #pragma braket result expectation hermitian([[-6+0im, 2+1im, -3+0im, -5+2im], [2-1im, 0im, 2-1im, -5+4im], [-3+0im, 2+1im, 0im, -4+3im], [-5-2im, -5-4im, -4-3im, -6+0im]]) q[0]
     """
     simulator = StateVectorSimulator()
     program = OpenQASMProgram(source=qasm)
@@ -698,6 +699,7 @@ def circuit_noise(ir_type):
             h q[0];
             cnot q[0], q[1];
             #pragma braket noise bit_flip(.15) q[0]
+            #pragma braket result probability q[0]
             """
         )
 
@@ -750,7 +752,7 @@ def test_simulator_instructions_not_supported(circuit_noise):
     simulator = StateVectorSimulator()
     no_noise = re.escape(
         "Noise instructions are not supported by the state vector simulator (by default). "
-        'You need to use the density matrix simulator: LocalSimulator("braket_dm").'
+        'You need to use the density matrix simulator: LocalSimulator("braket_dm_v2").'
     )
     with pytest.raises(TypeError, match=no_noise):
         if isinstance(circuit_noise, JaqcdProgram):
@@ -759,13 +761,13 @@ def test_simulator_instructions_not_supported(circuit_noise):
             simulator.run(circuit_noise, shots=0)
 
 
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_no_results_no_shots(bell_ir):
     simulator = StateVectorSimulator()
-    if isinstance(bell_ir, JaqcdProgram):
-        simulator.run(bell_ir, qubit_count=2, shots=0)
-    else:
-        simulator.run(bell_ir, shots=0)
+    with pytest.raises(ValueError):
+        if isinstance(bell_ir, JaqcdProgram):
+            simulator.run(bell_ir, qubit_count=2, shots=0)
+        else:
+            simulator.run(bell_ir, shots=0)
 
 
 def test_simulator_run_amplitude_shots():
@@ -796,7 +798,10 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
     jaqcd = JaqcdProgram.parse_raw(
         json.dumps(
             {
-                "instructions": [{"type": "h", "target": 0}],
+                "instructions": [
+                    {"type": "h", "target": 0},
+                    {"type": "i", "target": 1},
+                ],
                 "results": [{"type": "amplitude", "states": ["0"]}],
             }
         )
@@ -810,7 +815,7 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
         """
     )
     with pytest.raises(ValueError):
-        simulator.run(jaqcd, qubit_count=2, shots=0)
+        simulator.run(jaqcd, shots=0)
     with pytest.raises(ValueError):
         simulator.run(qasm, shots=0)
 
@@ -916,27 +921,27 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
     assert not caplog.text
 
 
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
     # not a valid computation path for openqasm, since basis rotation instructions
     # are calculated from the result types during simulation
     simulator = StateVectorSimulator()
-    ir = JaqcdProgram.parse_raw(
-        json.dumps(
-            {
-                "instructions": [
-                    {"type": "h", "target": 0},
-                    {"type": "cnot", "target": 1, "control": 0},
-                ],
-                "basis_rotation_instructions": [{"type": "foo", "target": 1}],
-                "results": [
-                    {"type": "expectation", "observable": ["x"], "targets": [1]}
-                ],
-            }
+    with pytest.raises(ValueError):
+        ir = JaqcdProgram.parse_raw(
+            json.dumps(
+                {
+                    "instructions": [
+                        {"type": "h", "target": 0},
+                        {"type": "cnot", "target": 1, "control": 0},
+                    ],
+                    "basis_rotation_instructions": [{"type": "foo", "target": 1}],
+                    "results": [
+                        {"type": "expectation", "observable": ["x"], "targets": [1]}
+                    ],
+                }
+            )
         )
-    )
-    shots_count = 1000
-    simulator.run(ir, qubit_count=2, shots=shots_count)
+        shots_count = 1000
+        simulator.run(ir, qubit_count=2, shots=shots_count)
 
 
 @pytest.mark.parametrize(
@@ -968,12 +973,11 @@ def test_simulator_run_result_types_shots_basis_rotation_gates_value_error():
         ),
     ],
 )
-@pytest.mark.xfail(raises=ValueError)
 def test_simulator_run_non_contiguous_qubits(ir, qubit_count):
     # not relevant for openqasm, since it handles qubit allocation
     simulator = StateVectorSimulator()
     shots_count = 1000
-    simulator.run(ir, qubit_count=qubit_count, shots=shots_count)
+    simulator.run(ir, shots=shots_count)
 
 
 @pytest.mark.parametrize(
@@ -1301,7 +1305,7 @@ def test_basis_rotation_all(caplog):
         qubit[2] q;
         i q;
         #pragma braket result expectation x(q[0])
-        #pragma braket result expectation z(q[0]) @ x(q[1])
+        #pragma braket result expectation z(q[0])
         """,
             "Conflicting result types applied to a single qubit",
         ),
@@ -1327,22 +1331,22 @@ def test_sample(caplog):
     assert not caplog.text
 
 
-# def test_adjoint_gradient_pragma_sv1():
-#    simulator = StateVectorSimulator()
-#    prog = OpenQASMProgram(
-#        source="""
-#        input float alpha;
-#        input float beta;
-#        qubit[1] q;
-#        h q[0];
-#        #pragma braket result adjoint_gradient h(q[0]) alpha, beta
-#        """,
-#        inputs={"alpha": 0.2, "beta": 0.3},
-#    )
-#    ag_not_supported = "Result type adjoint_gradient is not supported."
-#
-#    with pytest.raises(TypeError, match=ag_not_supported):
-#        simulator.run(prog, shots=0)
+def test_adjoint_gradient_pragma_sv1():
+    simulator = StateVectorSimulator()
+    prog = OpenQASMProgram(
+        source="""
+        input float alpha;
+        input float beta;
+        qubit[1] q;
+        h q[0];
+        #pragma braket result adjoint_gradient h(q[0]) alpha, beta
+        """,
+        inputs={"alpha": 0.2, "beta": 0.3},
+    )
+    ag_not_supported = "Result type adjoint_gradient is not supported."
+
+    with pytest.raises(TypeError, match=ag_not_supported):
+        simulator.run(prog, shots=0)
 
 
 def test_missing_input():
@@ -1374,6 +1378,43 @@ def test_measure_targets():
     assert 400 < np.sum(measurements, axis=0)[0] < 600
     assert len(measurements[0]) == 1
     assert result.measuredQubits == [0]
+
+
+def test_measure_no_gates():
+    qasm = """
+    bit[4] b;
+    qubit[4] q;
+    b[0] = measure q[0];
+    b[1] = measure q[1];
+    b[2] = measure q[2];
+    b[3] = measure q[3];
+    """
+    simulator = StateVectorSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=1000)
+    measurements = np.array(result.measurements, dtype=int)
+    assert np.all(measurements == np.zeros((1000, 4)))
+    # assert np.sum(measurements, axis=0)[2] == 0
+    # assert len(measurements[0]) == 4
+    assert result.measuredQubits == [0, 1, 2, 3]
+
+
+def test_measure_with_qubits_not_used():
+    qasm = """
+    bit[4] b;
+    qubit[4] q;
+    h q[0];
+    cnot q[0], q[1];
+    b = measure q;
+    """
+    simulator = StateVectorSimulator()
+    result = simulator.run(OpenQASMProgram(source=qasm), shots=1000)
+    measurements = np.array(result.measurements, dtype=int)
+    assert 400 < np.sum(measurements, axis=0)[0] < 600
+    assert 400 < np.sum(measurements, axis=0)[1] < 600
+    assert np.sum(measurements, axis=0)[2] == 0
+    assert np.sum(measurements, axis=0)[3] == 0
+    assert len(measurements[0]) == 4
+    assert result.measuredQubits == [0, 1, 2, 3]
 
 
 @pytest.mark.parametrize(
@@ -1477,3 +1518,77 @@ def test_unitary_pragma():
         result.resultTypes[0].value,
         [0, 0, 0, 0, 0.70710678, 0, 0, 0.70710678],
     )
+
+
+@pytest.mark.parametrize(
+    "ir, qubit_count",
+    [
+        (
+            JaqcdProgram.parse_raw(
+                json.dumps(
+                    {
+                        "instructions": [{"type": "z", "target": 2}],
+                        "basis_rotation_instructions": [],
+                        "results": [],
+                    }
+                )
+            ),
+            1,
+        ),
+        (
+            JaqcdProgram.parse_raw(
+                json.dumps(
+                    {
+                        "instructions": [{"type": "h", "target": 0}],
+                        "basis_rotation_instructions": [{"type": "z", "target": 3}],
+                        "results": [],
+                    }
+                )
+            ),
+            2,
+        ),
+    ],
+)
+def test_run_multiple_non_contiguous(ir, qubit_count):
+    # not relevant for openqasm, since it handles qubit allocation
+    simulator = StateVectorSimulator()
+    shots_count = 1000
+    batch_size = 5
+    payloads = [ir] * batch_size
+    simulator.run_multiple(payloads, shots=shots_count)
+
+
+def test_noncontiguous_qubits_jaqcd_multiple_targets():
+    jaqcd_program = {
+        "braketSchemaHeader": {"name": "braket.ir.jaqcd.program", "version": "1"},
+        "instructions": [
+            {"type": "x", "target": 3},
+            {"type": "swap", "targets": [3, 4]},
+        ],
+        "results": [{"type": "expectation", "observable": ["z"], "targets": [4]}],
+    }
+    prg = JaqcdProgram.parse_raw(json.dumps(jaqcd_program))
+    result = StateVectorSimulator().run(prg, qubit_count=2, shots=0)
+
+    assert result.measuredQubits == [0, 1]
+    assert result.resultTypes[0].value == -1
+
+
+def test_run_multiple():
+    payloads = [
+        OpenQASMProgram(
+            source=f"""
+            OPENQASM 3.0;
+            bit[1] b;
+            qubit[1] q;
+            {gate} q[0];
+            #pragma braket result state_vector
+            """
+        )
+        for gate in ["h", "z", "x"]
+    ]
+    simulator = StateVectorSimulator()
+    results = simulator.run_multiple(payloads, shots=0)
+    assert np.allclose(results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
+    assert np.allclose(results[1].resultTypes[0].value, np.array([1, 0]))
+    assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))
