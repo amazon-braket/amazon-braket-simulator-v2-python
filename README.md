@@ -1,5 +1,10 @@
 # Amazon Braket Simulator Version 2
 
+[![Latest Version](https://img.shields.io/pypi/v/amazon-braket-simulator-v2.svg)](https://pypi.python.org/pypi/amazon-braket-simulator-v2)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/amazon-braket-simulator-v2)](https://pypi.python.org/pypi/amazon-braket-simulator-v2)
+[![Build status](https://github.com/amazon-braket/amazon-braket-simulator-v2-python/actions/workflows/python-package.yml/badge.svg)](https://github.com/amazon-braket/amazon-braket-simulator-v2-python/actions/workflows/python-package.yml)
+[![Documentation Status](https://img.shields.io/readthedocs/amazon-braket-simulator-v2-python.svg?logo=read-the-docs)](https://amazon-braket-simulator-v2-python.readthedocs.io/en/latest/?badge=latest)
+
 This Amazon Braket Simulator is a second generation of our Python open source library that provides an
 implementation of a quantum simulators that you can run locally. You can use the simulator to test quantum tasks
 that you construct for the [Amazon Braket SDK](https://github.com/amazon-braket/amazon-braket-sdk-python) before you submit them to the Amazon Braket service for execution.
