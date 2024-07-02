@@ -261,7 +261,7 @@ def test_properties():
                     ],
                     "supportPhysicalQubits": False,
                     "supportsPartialVerbatimBox": False,
-                    "requiresContiguousQubitIndices": True,
+                    "requiresContiguousQubitIndices": False,
                     "requiresAllQubitsMeasurement": True,
                     "supportsUnassignedMeasurements": True,
                     "disabledQubitRewiringSupported": False,
