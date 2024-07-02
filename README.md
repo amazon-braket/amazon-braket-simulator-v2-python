@@ -10,7 +10,7 @@ Follow the instructions in the [README](https://github.com/amazon-braket/amazon-
 
 ## Usage
 
-**Running this simulator for the first time will install additional libraries and may take a few additional minutes. 
+**Importing this package for the first time will install additional libraries and precompile the Julia modules, which may take a few additional minutes. 
 This will not be needed for subsequent runs.**
 
 The quantum simulator implementations `StateVectorSimulatorV2` and `DensityMatrixSimulatorV2` plug into the `LocalSimulator` interface in 
