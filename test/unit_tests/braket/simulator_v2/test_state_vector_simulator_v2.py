@@ -798,7 +798,10 @@ def test_simulator_run_amplitude_no_shots_invalid_states():
     jaqcd = JaqcdProgram.parse_raw(
         json.dumps(
             {
-                "instructions": [{"type": "h", "target": 0}, {"type": "i", "target": 1}],
+                "instructions": [
+                    {"type": "h", "target": 0},
+                    {"type": "i", "target": 1},
+                ],
                 "results": [{"type": "amplitude", "states": ["0"]}],
             }
         )
