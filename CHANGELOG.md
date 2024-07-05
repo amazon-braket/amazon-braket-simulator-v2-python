@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.2.0 (2024-07-02)
+
+### Features
+
+ * Update for new `run_multiple` API and internal Julia changes
+
+### Documentation Changes
+
+ * Enable Read the Docs
+
 ## v0.1.3 (2024-06-03)
 
 ### Bug Fixes and Other Changes
