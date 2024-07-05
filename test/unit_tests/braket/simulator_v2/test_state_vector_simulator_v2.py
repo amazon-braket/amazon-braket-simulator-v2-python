@@ -1573,7 +1573,7 @@ def test_noncontiguous_qubits_jaqcd_multiple_targets():
 def test_run_multiple_single_circuit():
     payload = [
         OpenQASMProgram(
-            source=f"""
+            source="""
             OPENQASM 3.0;
             bit[1] b;
             qubit[1] q;

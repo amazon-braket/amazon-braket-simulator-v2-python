@@ -1,6 +1,7 @@
 import os
-import sys
 import warnings
+
+import juliacall
 
 # Check if JuliaCall is already loaded, and if so, warn the user
 # about the relevant environment variables. If not loaded,
@@ -28,8 +29,6 @@ for k, default in (
     ("JULIA_CONDAPKG_BACKEND", "Null"),
 ):
     os.environ[k] = os.environ.get(k, default)
-
-import juliacall
 
 jl = juliacall.Base.Module()
 
