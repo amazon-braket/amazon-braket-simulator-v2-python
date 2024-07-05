@@ -1585,10 +1585,10 @@ def test_run_multiple():
             #pragma braket result state_vector
             """
         )
-        for gate in ["h", "z", "x"]
+        for gate in ["h", "x", "z"]
     ]
     simulator = StateVectorSimulator()
     results = simulator.run_multiple(payloads, shots=0)
     assert np.allclose(results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
-    assert np.allclose(results[1].resultTypes[0].value, np.array([1, 0]))
-    assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))
+    assert np.allclose(results[1].resultTypes[0].value, np.array([0, 1]))
+    assert np.allclose(results[2].resultTypes[0].value, np.array([1, 0]))
