@@ -101,9 +101,7 @@ def test_simulator_run_bell_pair(bell_ir, batch_size, caplog):
     simulator = StateVectorSimulator()
     shots_count = 10000
     if isinstance(bell_ir, JaqcdProgram):
-        result = simulator.run(
-            bell_ir, shots=shots_count, batch_size=batch_size
-        )
+        result = simulator.run(bell_ir, shots=shots_count, batch_size=batch_size)
     else:
         result = simulator.run(bell_ir, shots=shots_count, batch_size=batch_size)
 
@@ -1571,6 +1569,7 @@ def test_noncontiguous_qubits_jaqcd_multiple_targets():
     assert result.measuredQubits == [0, 1]
     assert result.resultTypes[0].value == -1
 
+
 def test_run_multiple_single_circuit():
     payload = [
         OpenQASMProgram(
@@ -1586,6 +1585,7 @@ def test_run_multiple_single_circuit():
     simulator = StateVectorSimulator()
     results = simulator.run_multiple(payload, shots=0)
     assert np.allclose(results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
+
 
 def test_run_multiple():
     payloads = [
