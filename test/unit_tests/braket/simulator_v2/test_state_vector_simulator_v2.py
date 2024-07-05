@@ -1573,6 +1573,21 @@ def test_noncontiguous_qubits_jaqcd_multiple_targets():
     assert result.measuredQubits == [0, 1]
     assert result.resultTypes[0].value == -1
 
+def test_run_multiple_single_circuit():
+    payload = [
+        OpenQASMProgram(
+            source=f"""
+            OPENQASM 3.0;
+            bit[1] b;
+            qubit[1] q;
+            h q[0];
+            #pragma braket result state_vector
+            """
+        )
+    ]
+    simulator = StateVectorSimulator()
+    results = simulator.run_multiple(payload, shots=0)
+    assert np.allclose(results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
 
 def test_run_multiple():
     payloads = [
