@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.1 (2024-07-06)
+
+### Bug Fixes and Other Changes
+
+ * StateVector shouldn't be a supported pragma for DM simulator
+
 ## v0.2.0 (2024-07-02)
 
 ### Features
