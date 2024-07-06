@@ -3,7 +3,6 @@ import warnings
 from collections.abc import Sequence
 from typing import Any, Optional, Union
 
-import juliacall
 import numpy as np
 from braket.default_simulator.result_types import TargetedResultType
 from braket.default_simulator.simulator import BaseLocalSimulator
@@ -100,7 +99,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         translated_ir, qubit_count = self._jaqcd_to_jl(circuit_ir, shots)
         try:
             r = jl.simulate(self._device, translated_ir, qubit_count, shots)
-        except juliacall.JuliaError as e:
+        except JuliaError as e:
             _handle_julia_error(e)
         r.additionalMetadata.action = circuit_ir
         r = _result_value_to_ndarray(r)
@@ -158,7 +157,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         """
         try:
             r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
-        except juliacall.JuliaError as e:
+        except JuliaError as e:
             _handle_julia_error(e)
         r.additionalMetadata.action = openqasm_ir
         # attach the result types
@@ -209,7 +208,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 shots=shots,
                 inputs=inputs,
             )
-        except juliacall.JuliaError as e:
+        except JuliaError as e:
             _handle_julia_error(e)
 
         for r_ix, result in enumerate(results):

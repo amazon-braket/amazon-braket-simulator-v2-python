@@ -267,7 +267,6 @@ def test_properties():
                     ],
                     "supportedPragmas": [
                         "braket_unitary_matrix",
-                        "braket_result_type_state_vector",
                         "braket_result_type_density_matrix",
                         "braket_result_type_sample",
                         "braket_result_type_expectation",
