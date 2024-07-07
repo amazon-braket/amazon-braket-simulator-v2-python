@@ -29,6 +29,8 @@ from braket.task_result import (
     TaskMetadata,
 )
 from braket.tasks.local_quantum_task import LocalQuantumTask
+from braket.tasks.local_quantum_task_batch import LocalQuantumTaskBatch
+
 
 from .julia_import import jl, jlBraketAHS
 from .results_utils import convert_result
@@ -46,6 +48,58 @@ class LocalSimulatorTN(BaseLocalSimulator):
     results using constructs from the SDK rather than Braket IR.
     """
 
+    def run_batch(
+        self,
+        programs,
+        shots: int = 100,
+        n_tau_steps: int = 400,
+        interaction_radius: float = 10e-6,
+        C6: float = 5.42e-24,
+        cutoff: float = 1e-8,
+        max_bond_dim: int = 16,
+        compute_truncation_error: bool = False,
+        compute_correlators: bool = False,
+        compute_energies: bool = False,
+        generate_plots: bool = False,
+        # *args,
+        # **kwargs        
+    ):
+
+        # Convert input program to a Julia JSON object
+        jl.println("Hello from run_batch in v2")
+
+        json_strs = [program.to_ir().json() for program in programs]
+        json_dicts = [jl.BraketAHS.JSON3.read(json_str) for json_str in json_strs]
+        
+        args = jl.Base.seval(f"""Dict("shots" => {shots},
+                             "n-tau-steps" => {n_tau_steps},
+                             "C6" => {C6},
+                             "interaction-radius" => {interaction_radius},
+                             "max-bond-dim" => {max_bond_dim},
+                             "cutoff" => {cutoff},
+                             "compute-energies" => {str(compute_energies).lower()},
+                             "compute-correlators" => {str(compute_correlators).lower()},
+                             "compute-truncation-error" => false,
+                             "generate-plots" => false,
+                             "experiment-path" => "../../experiments",
+                             "program-path" => "tmp"
+                              )
+                             """)
+
+        raw_results_list = jlBraketAHS.run_batch(json_dicts, args)
+        dists = [np.array(raw_results).T.tolist() for raw_results in raw_results_list]
+        filling = np.ones(len(program.register), dtype=int)
+
+        results = [convert_result(
+            dist,
+            filling,
+            self._task_metadata(shots),
+        ) for dist in dists]
+
+        task = LocalQuantumTaskBatch(results)
+        return task
+
+    
     def run(
         self,
         program: Program,
@@ -76,12 +130,11 @@ class LocalSimulatorTN(BaseLocalSimulator):
         print("testing", flush=True)
         
         # Convert input program to a Julia JSON object
-        jl.println("Hello from Julia!")
+        jl.println("Hello from run in v2!")
 
         json_str = program.to_ir().json()
-        print(f"json_str = {json_str}")
         json_dict = jl.BraketAHS.JSON3.read(json_str)
-        print(f"json_dict = {json_dict}")
+
         args = jl.Base.seval(f"""Dict("shots" => {shots},
                              "n-tau-steps" => {n_tau_steps},
                              "C6" => {C6},
