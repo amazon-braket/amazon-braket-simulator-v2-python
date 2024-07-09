@@ -1,6 +1,6 @@
 import sys
-import warnings
 import threading
+import warnings
 from collections.abc import Sequence
 from typing import Any, Optional, Union
 
