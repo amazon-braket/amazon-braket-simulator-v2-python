@@ -1,4 +1,5 @@
 import sys
+import threading
 import warnings
 from collections.abc import Sequence
 from typing import Any, Optional, Union
@@ -92,6 +93,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
+        _validate_thread()
         if qubit_count is not None:
             warnings.warn(
                 f"qubit_count is deprecated for {type(self).__name__} and can be set to None"
@@ -155,6 +157,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
+        _validate_thread()
         try:
             r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
         except JuliaError as e:
@@ -200,6 +203,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
+        _validate_thread()
         try:
             results = jl.simulate(
                 self._device,
@@ -243,6 +247,14 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 "You need to use the density matrix simulator: "
                 'LocalSimulator("braket_dm_v2").'
             )
+
+
+def _validate_thread():
+    if threading.current_thread() is not threading.main_thread():
+        raise RuntimeError(
+            "Simulations must be run from the Main thread. "
+            "For multiple simulations, please use run_batch() instead."
+        )
 
 
 def _result_value_to_ndarray(

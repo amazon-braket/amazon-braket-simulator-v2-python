@@ -15,6 +15,7 @@ import cmath
 import json
 import sys
 from collections import Counter, namedtuple
+from unittest.mock import patch
 
 import numpy as np
 import pytest
@@ -930,3 +931,13 @@ def test_kraus_noise():
     result = device.run(program)
     probabilities = result.resultTypes[0].value
     assert np.allclose(probabilities, [0.18, 0, 0.82, 0])
+
+
+@patch("braket.simulator_v2.base_simulator_v2.threading")
+def test_threading(mock_threading):
+    program = OpenQASMProgram(source="""OPENQASM 3.0;""")
+    simulator = DensityMatrixSimulator()
+    with pytest.raises(
+        RuntimeError, match="Simulations must be run from the Main thread.*"
+    ):
+        simulator.run(program, shots=0)
