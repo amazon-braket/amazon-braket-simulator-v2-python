@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.2 (2024-07-11)
+
+### Bug Fixes and Other Changes
+
+ * adding check for main thread
+
 ## v0.2.1 (2024-07-06)
 
 ### Bug Fixes and Other Changes
