@@ -85,7 +85,6 @@ def setup_pool():
     atexit.register(__JULIA_POOL__.close)
     return
 
-
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         global __JULIA_POOL__
@@ -166,9 +165,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             _handle_julia_error(e)
 
         results = [
-            GateModelTaskResult(**json.loads(jl_result)) for jl_result in jl_results
+            GateModelTaskResult.parse_raw_schema(jl_result) for jl_result in jl_results
         ]
-        jl_results = None
         for p_ix, program in enumerate(programs):
             results[p_ix].additionalMetadata.action = program
 
