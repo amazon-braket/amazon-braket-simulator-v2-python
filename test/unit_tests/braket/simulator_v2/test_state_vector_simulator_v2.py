@@ -13,11 +13,9 @@
 
 import cmath
 import re
-
-# import re
 import sys
 from collections import Counter, namedtuple
-from unittest.mock import patch
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import pytest
@@ -1134,11 +1132,50 @@ def test_run_multiple():
     assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))
 
 
-@patch("braket.simulator_v2.base_simulator_v2.threading")
-def test_threading(mock_threading):
-    program = OpenQASMProgram(source="""OPENQASM 3.0;""")
-    simulator = StateVectorSimulator()
-    with pytest.raises(
-        RuntimeError, match="Simulations must be run from the Main thread.*"
-    ):
-        simulator.run(program, shots=0)
+@pytest.mark.timeout(10)
+def test_run_single_executor():
+    payload = OpenQASMProgram(
+        source="""
+            OPENQASM 3.0;
+            bit[1] b;
+            qubit[1] q;
+            h q[0];
+            #pragma braket result state_vector
+            """
+    )
+    pool = ThreadPoolExecutor(2)
+    fs = {
+        pool.submit(StateVectorSimulator().run_openqasm, payload): ix
+        for ix in range(10)
+    }
+    for future in as_completed(fs):
+        results = future.result()
+        assert np.allclose(results.resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
+
+
+@pytest.mark.timeout(10)
+def test_run_multiple_executor():
+    payloads = [
+        OpenQASMProgram(
+            source=f"""
+            OPENQASM 3.0;
+            bit[1] b;
+            qubit[1] q;
+            {gate} q[0];
+            #pragma braket result state_vector
+            """
+        )
+        for gate in ["h", "z", "x"]
+    ]
+    pool = ThreadPoolExecutor(2)
+    fs = {
+        pool.submit(StateVectorSimulator().run_multiple, payloads): ix
+        for ix in range(10)
+    }
+    for future in as_completed(fs):
+        results = future.result()
+        assert np.allclose(
+            results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2)
+        )
+        assert np.allclose(results[1].resultTypes[0].value, np.array([1, 0]))
+        assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))

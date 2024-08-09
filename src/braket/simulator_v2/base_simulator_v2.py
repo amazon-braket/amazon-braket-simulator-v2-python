@@ -19,35 +19,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def initialize_simulation(self, **kwargs):
         return
 
-    def _openqasm_to_jl(self, openqasm_ir: OpenQASMProgram):
-        # convert to the Julia OpenQasmProgram type for dispatch
-        jl_braket_schema_header = jl.BraketSimulator.braketSchemaHeader(
-            jl.convert(jl.String, openqasm_ir.braketSchemaHeader.name),
-            jl.convert(jl.String, openqasm_ir.braketSchemaHeader.version),
-        )
-        if openqasm_ir.inputs:
-            jl_inputs = jl.Dict(
-                [
-                    (
-                        jl.convert(jl.String, input_key),
-                        (
-                            jl.convert(jl.String, input_val)
-                            if isinstance(input_val, str)
-                            else jl.convert(jl.Number, input_val)
-                        ),
-                    )
-                    for (input_key, input_val) in openqasm_ir.inputs.items()
-                ]
-            )
-        else:
-            jl_inputs = jl.nothing
-        jl_source = jl.convert(jl.String, openqasm_ir.source)
-        return jl.BraketSimulator.OpenQasmProgram(
-            jl_braket_schema_header,
-            jl_source,
-            jl_inputs,
-        )
-
     def run_openqasm(
         self,
         openqasm_ir: OpenQASMProgram,
@@ -70,26 +41,37 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 are requested when shots>0.
         """
         try:
-            r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
+            jl_shots = shots
+            jl_inputs = (
+                jl.Dict[jl.String, jl.Any](
+                    jl.Pair(jl.convert(jl.String, k), jl.convert(jl.Any, v))
+                    for (k, v) in openqasm_ir.inputs.items()
+                )
+                if openqasm_ir.inputs
+                else jl.Dict[jl.String, jl.Any]()
+            )
+            jl_result = jl.BraketSimulator.simulate._jl_call_nogil(
+                self._device, openqasm_ir.source, jl_inputs, jl_shots
+            )
         except JuliaError as e:
             _handle_julia_error(e)
-        r.additionalMetadata.action = openqasm_ir
+
+        result = GateModelTaskResult.parse_raw_schema(jl_result)
+        result.additionalMetadata.action = openqasm_ir
+
         # attach the result types
         if not shots:
-            r = _result_value_to_ndarray(r)
+            result = _result_value_to_ndarray(result)
         else:
-            r.resultTypes = [rt.type for rt in r.resultTypes]
-        return r
-
-    def _ir_list_to_jl(self, payloads: list[OpenQASMProgram], shots: int):
-        return [self._openqasm_to_jl(ir) for ir in payloads]
+            result.resultTypes = [rt.type for rt in result.resultTypes]
+        return result
 
     def run_multiple(
         self,
         programs: Sequence[OpenQASMProgram],
         max_parallel: Optional[int] = -1,
         shots: Optional[int] = 0,
-        inputs: Optional[Union[dict, Sequence[dict]]] = None,
+        inputs: Optional[Union[dict, Sequence[dict]]] = {},
     ) -> list[GateModelTaskResult]:
         """
         Run the tasks specified by the given IR programs.
@@ -104,24 +86,45 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             the result of the ith program.
         """
         try:
-            results = jl.simulate(
+            irs = jl.Vector[jl.String]()
+            is_single_input = isinstance(inputs, dict) or len(inputs) == 1
+            py_inputs = {}
+            if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
+                py_inputs = [inputs.copy() for _ in range(len(programs))]
+            elif is_single_input and not isinstance(inputs, dict):
+                py_inputs = [inputs[0].copy() for _ in range(len(programs))]
+            else:
+                py_inputs = inputs
+            jl_inputs = jl.Vector[jl.Dict[jl.String, jl.Any]]()
+            for p_ix, program in enumerate(programs):
+                irs.append(program.source)
+                if program.inputs:
+                    jl_inputs.append(program.inputs | py_inputs[p_ix])
+                else:
+                    jl_inputs.append(py_inputs[p_ix])
+
+            jl_results = jl.BraketSimulator.simulate._jl_call_nogil(
                 self._device,
-                self._ir_list_to_jl(programs, shots),
-                max_parallel=max_parallel,
-                shots=shots,
-                inputs=inputs,
+                irs,
+                jl_inputs,
+                shots,
+                max_parallel=jl.convert(jl.Int, max_parallel),
             )
+
         except JuliaError as e:
             _handle_julia_error(e)
+        results = [
+            GateModelTaskResult.parse_raw_schema(jl_result) for jl_result in jl_results
+        ]
+        for p_ix, program in enumerate(programs):
+            results[p_ix].additionalMetadata.action = program
 
         for r_ix, result in enumerate(results):
-            results[r_ix].additionalMetadata.action = programs[r_ix]
             # attach the result types
             if not shots:
                 results[r_ix] = _result_value_to_ndarray(result)
             else:
                 results[r_ix].resultTypes = [rt.type for rt in result.resultTypes]
-
         return results
 
 
@@ -132,16 +135,42 @@ def _result_value_to_ndarray(
     np.ndarray. This must be done because the wrapper Julia simulator results Python lists to comply
     with the pydantic specification for ResultTypeValues.
     """
+
+    def reconstruct_complex(v):
+        if isinstance(v, list):
+            return complex(v[0], v[1])
+        else:
+            return v
+
     for result_ind, result_type in enumerate(task_result.resultTypes):
-        if isinstance(result_type.type, (StateVector, DensityMatrix, Probability)):
-            task_result.resultTypes[result_ind].value = np.asarray(
-                task_result.resultTypes[result_ind].value
-            )
+        # Amplitude
+        if isinstance(result_type.value, dict):
+            val = task_result.resultTypes[result_ind].value
+            task_result.resultTypes[result_ind].value = {
+                k: reconstruct_complex(v) for (k, v) in val.items()
+            }
+        if isinstance(result_type.type, StateVector):
+            val = task_result.resultTypes[result_ind].value
+            # complex are stored as tuples of reals
+            fixed_val = [reconstruct_complex(v) for v in val]
+            task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
+        if isinstance(result_type.type, DensityMatrix):
+            val = task_result.resultTypes[result_ind].value
+            # complex are stored as tuples of reals
+            fixed_val = [
+                [reconstruct_complex(v) for v in inner_val] for inner_val in val
+            ]
+            task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
+        if isinstance(result_type.type, Probability):
+            val = task_result.resultTypes[result_ind].value
+            task_result.resultTypes[result_ind].value = np.asarray(val)
+
     return task_result
 
 
 def _handle_julia_error(julia_error: JuliaError):
     try:
+        print(julia_error)
         python_exception = getattr(julia_error.exception, "alternate_type", None)
         if python_exception is None:
             error = julia_error
