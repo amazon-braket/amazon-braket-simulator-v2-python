@@ -124,6 +124,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
 
         return results
 
+
 def _result_value_to_ndarray(
     task_result: GateModelTaskResult,
 ) -> GateModelTaskResult:
