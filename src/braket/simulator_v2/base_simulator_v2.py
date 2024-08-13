@@ -107,7 +107,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         """
         try:
             julia_irs = self._ir_list_to_jl(programs, shots)
-            results = jl.simulate._jl_call_nogil(
+            results = jl.simulate(
                 self._device,
                 julia_irs,
                 max_parallel=max_parallel,
