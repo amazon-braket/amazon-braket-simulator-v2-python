@@ -70,7 +70,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 are requested when shots>0.
         """
         try:
-            r = jl.simulate(self._device, self._openqasm_to_jl(openqasm_ir), shots)
+            r = jl.simulate._jl_call_nogil(
+                self._device, self._openqasm_to_jl(openqasm_ir), shots
+            )
         except JuliaError as e:
             _handle_julia_error(e)
         r.additionalMetadata.action = openqasm_ir
@@ -104,9 +106,10 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             the result of the ith program.
         """
         try:
-            results = jl.simulate(
+            julia_irs = self._ir_list_to_jl(programs, shots)
+            results = jl.simulate._jl_call_nogil(
                 self._device,
-                self._ir_list_to_jl(programs, shots),
+                julia_irs,
                 max_parallel=max_parallel,
                 shots=shots,
                 inputs=inputs,
