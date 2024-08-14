@@ -43,7 +43,5 @@ def vqe():
 @pytest.mark.timeout(10)
 def test_qiskit_vqe(H2_op, vqe):
     # Find the ground state
-    print("Computing VQE", flush=True)
     result = vqe.compute_minimum_eigenvalue(H2_op)
-    print("Done computing VQE", flush=True)
     assert result.eigenvalue < 0.0
