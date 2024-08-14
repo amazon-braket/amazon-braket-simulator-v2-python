@@ -32,6 +32,5 @@ for k, default in (
 
 jl = juliacall.Base.Module()
 
-jl.seval("using PythonCall, BraketSimulator")
-jl.seval("using PythonCall: Py, pyconvert")
+jl.seval("using JSON3, BraketSimulator")
 jlBraketSimulator = jl.BraketSimulator
