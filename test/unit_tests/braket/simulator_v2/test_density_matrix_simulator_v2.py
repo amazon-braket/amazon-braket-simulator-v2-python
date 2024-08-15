@@ -338,11 +338,11 @@ def bell_ir_with_result(ir_type):
 
 @pytest.mark.parametrize(
     "result_type",
-    (
+    [
         "#pragma braket result state_vector",
         "#pragma braket result density_matrix",
         '#pragma braket result amplitude "0"',
-    ),
+    ],
 )
 def test_simulator_run_invalid_ir_result_types_openqasm(result_type):
     simulator = DensityMatrixSimulator()
