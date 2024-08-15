@@ -32,7 +32,6 @@ test = [
     "flake8",
     "flake8-rst-docstrings",
     "isort",
-    "julia",
     "pre-commit",
     "pylint",
     "pytest==7.1.2",
