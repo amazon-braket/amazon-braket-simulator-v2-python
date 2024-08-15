@@ -507,7 +507,7 @@ def test_invalid_standard_observable_target():
         simulator.run(program, shots=0)
 
 
-@pytest.mark.parametrize("shots", (0, 10))
+@pytest.mark.parametrize("shots", [0, 10])
 def test_invalid_hermitian_target(shots):
     qasm = """
     OPENQASM 3.0;
@@ -696,7 +696,7 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
 @pytest.mark.parametrize(
     "ir, qubit_count",
     [
-        (
+        [
             OpenQASMProgram(
                 source="""
                 qubit[2] q;
@@ -705,7 +705,7 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
                 """
             ),
             None,
-        ),
+        ],
     ],
 )
 def test_simulator_run_observable_references_invalid_qubit(ir, qubit_count):
@@ -863,7 +863,7 @@ def test_basis_rotation_all(caplog):
 
 @pytest.mark.parametrize(
     "qasm, error_string",
-    (
+    [
         (
             """
         qubit[2] q;
@@ -895,7 +895,7 @@ def test_basis_rotation_all(caplog):
         """,
             "Conflicting result types applied to a single qubit",
         ),
-    ),
+    ],
 )
 def test_partially_overlapping_basis_rotation(qasm, error_string):
     with pytest.raises(ValueError, match=error_string):
