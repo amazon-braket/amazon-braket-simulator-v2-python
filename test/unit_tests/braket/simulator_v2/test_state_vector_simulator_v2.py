@@ -696,7 +696,7 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
 @pytest.mark.parametrize(
     "ir, qubit_count",
     [
-        (
+        [
             OpenQASMProgram(
                 source="""
                 qubit[2] q;
@@ -705,7 +705,7 @@ def test_simulator_run_result_types_shots_basis_rotation_gates(caplog):
                 """
             ),
             None,
-        ),
+        ],
     ],
 )
 def test_simulator_run_observable_references_invalid_qubit(ir, qubit_count):

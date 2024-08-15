@@ -442,42 +442,42 @@ def test_simulator_fails_samples_0_shots():
 @pytest.mark.parametrize(
     "result_types,expected",
     [
-        (
+        [
             """
             #pragma braket result expectation x(q[1])
             #pragma braket result variance x(q[1])
             """,
             [0, 1],
-        ),
-        (
+        ],
+        [
             """
             #pragma braket result expectation x all
             #pragma braket result variance x(q[1])
             """,
             [[0, 0], 1],
-        ),
-        (
+        ],
+        [
             """
             #pragma braket result expectation hermitian([[0, 1], [1, 0]]) q[1]
             #pragma braket result variance hermitian([[0, 1], [1, 0]]) q[1]
             """,
             [0, 1],
-        ),
-        (
+        ],
+        [
             """
             #pragma braket result expectation x(q[0]) @ hermitian([[0, 1], [1, 0]]) q[1]
             #pragma braket result expectation x(q[0]) @ hermitian([[0, 1], [1, 0]]) q[1]
             """,
             [1, 1],
-        ),
-        (
+        ],
+        [
             """
             #pragma braket result variance x(q[1])
             #pragma braket result expectation x all
             #pragma braket result expectation x(q[0]) @ hermitian([[0, 1], [1, 0]]) q[1]
             """,
             [1, [0, 0], 1],
-        ),
+        ],
     ],
 )
 def test_simulator_valid_observables_qasm(result_types, expected, caplog):
