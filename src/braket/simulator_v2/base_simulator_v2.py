@@ -1,7 +1,7 @@
 import sys
-from collections.abc import Sequence
-from concurrent.futures import ThreadPoolExecutor, wait, Future
 import threading
+from collections.abc import Sequence
+from concurrent.futures import Future, ThreadPoolExecutor, wait
 from typing import Optional, Union
 
 import numpy as np
@@ -9,9 +9,10 @@ from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
-        
-from braket.simulator_v2.julia_import import jl
 from juliacall import JuliaError
+
+from braket.simulator_v2.julia_import import jl
+
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device):
@@ -25,11 +26,11 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         # we must yield multiple times
         if threading.current_thread() is threading.main_thread():
             while True:
-            # yield to Julia's task scheduler
+                # yield to Julia's task scheduler
                 jl_yield()
-            # wait for up to 0.1 seconds for the threads to finish
+                # wait for up to 0.1 seconds for the threads to finish
                 state = wait([f], timeout=0.1)
-            # if they finished then stop otherwise try again
+                # if they finished then stop otherwise try again
                 if not state.not_done:
                     break
         return f.result()
@@ -199,6 +200,7 @@ def _result_value_to_ndarray(
 
     return task_result
 
+
 def _handle_julia_error(julia_error: JuliaError):
     try:
         python_exception = getattr(julia_error.exception, "alternate_type", None)
@@ -210,4 +212,3 @@ def _handle_julia_error(julia_error: JuliaError):
     except Exception:
         raise julia_error
     raise error
-
