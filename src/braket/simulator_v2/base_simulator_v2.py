@@ -10,30 +10,93 @@ from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
 from juliacall import JuliaError
-
 from braket.simulator_v2.julia_import import jl
+
+
+
+
+def yield_till_done(f: Future):
+    #from braket.simulator_v2.julia_import import jl
+
+    jl_yield = getattr(jl, "yield")
+    # we must yield multiple times
+    n_waits = 0
+    while True:
+        # yield to Julia's task scheduler
+        jl_yield._jl_call_nogil()
+        # wait for up to 0.1 seconds for the threads to finish
+        state = wait([f], timeout=0.5)
+        n_waits += 1
+        # if they finished then stop otherwise try again
+        if not state.not_done:
+            break
+    return
+
+def import_and_run_julia(device, openqasm_ir: OpenQASMProgram, shots: int = 0):
+    jl_shots = shots
+    jl_inputs = (
+        jl.Dict[jl.String, jl.Any](
+            jl.Pair(jl.convert(jl.String, k), jl.convert(jl.Any, v))
+            for (k, v) in openqasm_ir.inputs.items()
+        )
+        if openqasm_ir.inputs
+        else jl.Dict[jl.String, jl.Any]()
+    )
+    return jl.BraketSimulator.simulate._jl_call_nogil(
+        device,
+        openqasm_ir.source,
+        jl_inputs,
+        jl_shots,
+    )
+
+def import_and_run_multiple_julia(
+    device,
+    programs: Sequence[OpenQASMProgram],
+    shots: Optional[int] = 0,
+    inputs: Optional[Union[dict, Sequence[dict]]] = {},
+):
+    #from braket.simulator_v2.julia_import import jl
+
+    irs = jl.Vector[jl.String]()
+    is_single_input = isinstance(inputs, dict) or len(inputs) == 1
+    py_inputs = {}
+    if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
+        py_inputs = [inputs.copy() for _ in range(len(programs))]
+    elif is_single_input and not isinstance(inputs, dict):
+        py_inputs = [inputs[0].copy() for _ in range(len(programs))]
+    else:
+        py_inputs = inputs
+    jl_inputs = jl.Vector[jl.Dict[jl.String, jl.Any]]()
+    for p_ix, program in enumerate(programs):
+        irs.append(program.source)
+        if program.inputs:
+            jl_inputs.append(program.inputs | py_inputs[p_ix])
+        else:
+            jl_inputs.append(py_inputs[p_ix])
+    return jl.BraketSimulator.simulate._jl_call_nogil(
+        device,
+        irs,
+        jl_inputs,
+        shots,
+    )
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device):
+        payload = OpenQASMProgram(
+            source="""
+                OPENQASM 3.0;
+                qubit[1] q;
+                h q[0];
+                #pragma braket result probability
+                """
+        )
+        import_and_run_julia(device, payload)
+        import_and_run_multiple_julia(device, [payload, payload])
         self._device = device
 
     def initialize_simulation(self, **kwargs):
         return
-
-    def yield_till_done(self, f: Future):
-        jl_yield = getattr(jl, "yield")
-        # we must yield multiple times
-        if threading.current_thread() is threading.main_thread():
-            while True:
-                # yield to Julia's task scheduler
-                jl_yield()
-                # wait for up to 0.1 seconds for the threads to finish
-                state = wait([f], timeout=0.1)
-                # if they finished then stop otherwise try again
-                if not state.not_done:
-                    break
-        return f.result()
 
     def run_openqasm(
         self,
@@ -56,26 +119,16 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-
         executor = ThreadPoolExecutor(max_workers=1)
         try:
-            jl_shots = shots
-            jl_inputs = (
-                jl.Dict[jl.String, jl.Any](
-                    jl.Pair(jl.convert(jl.String, k), jl.convert(jl.Any, v))
-                    for (k, v) in openqasm_ir.inputs.items()
-                )
-                if openqasm_ir.inputs
-                else jl.Dict[jl.String, jl.Any]()
-            )
             f = executor.submit(
-                jl.BraketSimulator.simulate._jl_call_nogil,
+                import_and_run_julia,
                 self._device,
-                openqasm_ir.source,
-                jl_inputs,
-                jl_shots,
+                openqasm_ir,
+                shots,
             )
-            jl_result = self.yield_till_done(f)
+            yield_till_done(f)
+            jl_result = f.result()
 
         except JuliaError as e:
             _handle_julia_error(e)
@@ -111,35 +164,18 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
-
         executor = ThreadPoolExecutor(max_workers=1)
-        try:
-            irs = jl.Vector[jl.String]()
-            is_single_input = isinstance(inputs, dict) or len(inputs) == 1
-            py_inputs = {}
-            if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
-                py_inputs = [inputs.copy() for _ in range(len(programs))]
-            elif is_single_input and not isinstance(inputs, dict):
-                py_inputs = [inputs[0].copy() for _ in range(len(programs))]
-            else:
-                py_inputs = inputs
-            jl_inputs = jl.Vector[jl.Dict[jl.String, jl.Any]]()
-            for p_ix, program in enumerate(programs):
-                irs.append(program.source)
-                if program.inputs:
-                    jl_inputs.append(program.inputs | py_inputs[p_ix])
-                else:
-                    jl_inputs.append(py_inputs[p_ix])
 
+        try:
             f = executor.submit(
-                jl.BraketSimulator.simulate._jl_call_nogil,
+                import_and_run_multiple_julia,
                 self._device,
-                irs,
-                jl_inputs,
+                programs,
                 shots,
-                max_parallel=jl.convert(jl.Int, max_parallel),
+                inputs,
             )
-            jl_results = self.yield_till_done(f)
+            yield_till_done(f)
+            jl_results = f.result()
 
         except JuliaError as e:
             _handle_julia_error(e)
@@ -203,6 +239,7 @@ def _result_value_to_ndarray(
 
 def _handle_julia_error(julia_error: JuliaError):
     try:
+        print(julia_error, flush=True)
         python_exception = getattr(julia_error.exception, "alternate_type", None)
         if python_exception is None:
             error = julia_error
