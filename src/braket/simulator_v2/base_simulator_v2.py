@@ -1,5 +1,6 @@
 import sys
 from collections.abc import Sequence
+from concurrent.futures import ThreadPoolExecutor, wait, Future
 from typing import Optional, Union
 
 import numpy as np
@@ -7,10 +8,9 @@ from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
-from juliacall import JuliaError
-
+        
 from braket.simulator_v2.julia_import import jl
-
+from juliacall import JuliaError
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device):
@@ -18,6 +18,18 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
 
     def initialize_simulation(self, **kwargs):
         return
+
+    def yield_till_done(self, f: Future):
+        # we must yield multiple times
+        while True:
+        # yield to Julia's task scheduler
+            jl_yield()
+        # wait for up to 0.1 seconds for the threads to finish
+            state = wait([f], timeout=1)
+        # if they finished then stop otherwise try again
+            if not state.not_done:
+                break
+        return f.result()
 
     def run_openqasm(
         self,
@@ -40,6 +52,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
+
+        jl_yield = getattr(jl, "yield")
+        executor = ThreadPoolExecutor(max_workers=1)
         try:
             jl_shots = shots
             jl_inputs = (
@@ -50,11 +65,19 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 if openqasm_ir.inputs
                 else jl.Dict[jl.String, jl.Any]()
             )
-            jl_result = jl.BraketSimulator.simulate._jl_call_nogil(
-                self._device, openqasm_ir.source, jl_inputs, jl_shots
+            f = executor.submit(
+                jl.BraketSimulator.simulate._jl_call_nogil,
+                self._device,
+                openqasm_ir.source,
+                jl_inputs,
+                jl_shots,
             )
+            jl_result = self.yield_till_done(f)
+
         except JuliaError as e:
             _handle_julia_error(e)
+        finally:
+            executor.shutdown(wait=False)
 
         result = GateModelTaskResult.parse_raw_schema(jl_result)
         result.additionalMetadata.action = openqasm_ir
@@ -85,6 +108,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
+
+        jl_yield = getattr(jl, "yield")
+        executor = ThreadPoolExecutor(max_workers=1)
         try:
             irs = jl.Vector[jl.String]()
             is_single_input = isinstance(inputs, dict) or len(inputs) == 1
@@ -103,16 +129,21 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 else:
                     jl_inputs.append(py_inputs[p_ix])
 
-            jl_results = jl.BraketSimulator.simulate._jl_call_nogil(
+            f = executor.submit(
+                jl.BraketSimulator.simulate._jl_call_nogil,
                 self._device,
                 irs,
                 jl_inputs,
                 shots,
                 max_parallel=jl.convert(jl.Int, max_parallel),
             )
+            jl_result = self.yield_till_done(f)
 
         except JuliaError as e:
             _handle_julia_error(e)
+        finally:
+            executor.shutdown(wait=False)
+
         results = [
             GateModelTaskResult.parse_raw_schema(jl_result) for jl_result in jl_results
         ]
@@ -167,10 +198,8 @@ def _result_value_to_ndarray(
 
     return task_result
 
-
 def _handle_julia_error(julia_error: JuliaError):
     try:
-        print(julia_error)
         python_exception = getattr(julia_error.exception, "alternate_type", None)
         if python_exception is None:
             error = julia_error
@@ -180,3 +209,4 @@ def _handle_julia_error(julia_error: JuliaError):
     except Exception:
         raise julia_error
     raise error
+
