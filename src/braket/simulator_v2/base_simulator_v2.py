@@ -1,6 +1,7 @@
 import sys
 from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor, wait, Future
+import threading
 from typing import Optional, Union
 
 import numpy as np
@@ -20,15 +21,17 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         return
 
     def yield_till_done(self, f: Future):
+        jl_yield = getattr(jl, "yield")
         # we must yield multiple times
-        while True:
-        # yield to Julia's task scheduler
-            jl_yield()
-        # wait for up to 0.1 seconds for the threads to finish
-            state = wait([f], timeout=1)
-        # if they finished then stop otherwise try again
-            if not state.not_done:
-                break
+        if threading.current_thread() is threading.main_thread():
+            while True:
+            # yield to Julia's task scheduler
+                jl_yield()
+            # wait for up to 0.1 seconds for the threads to finish
+                state = wait([f], timeout=0.1)
+            # if they finished then stop otherwise try again
+                if not state.not_done:
+                    break
         return f.result()
 
     def run_openqasm(
@@ -53,7 +56,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 are requested when shots>0.
         """
 
-        jl_yield = getattr(jl, "yield")
         executor = ThreadPoolExecutor(max_workers=1)
         try:
             jl_shots = shots
@@ -109,7 +111,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             the result of the ith program.
         """
 
-        jl_yield = getattr(jl, "yield")
         executor = ThreadPoolExecutor(max_workers=1)
         try:
             irs = jl.Vector[jl.String]()
@@ -137,7 +138,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 shots,
                 max_parallel=jl.convert(jl.Int, max_parallel),
             )
-            jl_result = self.yield_till_done(f)
+            jl_results = self.yield_till_done(f)
 
         except JuliaError as e:
             _handle_julia_error(e)
