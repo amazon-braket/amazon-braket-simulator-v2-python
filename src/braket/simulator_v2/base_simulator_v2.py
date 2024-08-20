@@ -11,6 +11,7 @@ from braket.task_result import GateModelTaskResult
 
 from braket.simulator_v2.julia_import import setup_julia
 
+
 def _handle_julia_error(error):
     # we don't import `JuliaError` explicitly here to avoid
     # having to import juliacall on the main thread. we need
@@ -26,6 +27,7 @@ def _handle_julia_error(error):
         raise py_error
     else:
         raise error
+
 
 def translate_and_run(
     device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
@@ -56,6 +58,7 @@ def translate_and_run(
         return py_result
     except Exception as e:
         _handle_julia_error(e)
+
 
 def translate_and_run_multiple(
     device_id: str,
