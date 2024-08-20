@@ -8,12 +8,14 @@ from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
-from juliacall import JuliaError
 
-from braket.simulator_v2.julia_import import jl
+from braket.simulator_v2.julia_import import setup_julia
 
 
-def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0) -> str:
+def translate_and_run(
+    device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
+) -> str:
+    jl = setup_julia()
     jl_shots = shots
     jl_inputs = (
         jl.Dict[jl.String, jl.Any](
@@ -23,6 +25,11 @@ def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0) -> s
         if openqasm_ir.inputs
         else jl.Dict[jl.String, jl.Any]()
     )
+    if device_id == "braket_sv_v2":
+        device = jl.BraketSimulator.StateVectorSimulator(0, 0)
+    elif device_id == "braket_dm_v2":
+        device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
+
     result = jl.BraketSimulator.simulate._jl_call_nogil(
         device,
         openqasm_ir.source,
@@ -34,11 +41,12 @@ def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0) -> s
 
 
 def translate_and_run_multiple(
-    device,
+    device_id: str,
     programs: Sequence[OpenQASMProgram],
     shots: Optional[int] = 0,
     inputs: Optional[Union[dict, Sequence[dict]]] = {},
 ) -> List[str]:
+    jl = setup_julia()
     irs = jl.Vector[jl.String]()
     is_single_input = isinstance(inputs, dict) or len(inputs) == 1
     py_inputs = {}
@@ -56,6 +64,11 @@ def translate_and_run_multiple(
         else:
             jl_inputs.append(py_inputs[p_ix])
 
+    if device_id == "braket_sv_v2":
+        device = jl.BraketSimulator.StateVectorSimulator(0, 0)
+    elif device_id == "braket_dm_v2":
+        device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
+
     results = jl.BraketSimulator.simulate._jl_call_nogil(
         device,
         irs,
@@ -67,7 +80,7 @@ def translate_and_run_multiple(
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
-    def __init__(self, device):
+    def __init__(self, device: str):
         self._device = device
         self._executor = ProcessPoolExecutor(max_workers=1)
 
@@ -107,7 +120,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             )
             jl_result = f.result()
 
-        except JuliaError as e:
+        except Exception as e:
             _handle_julia_error(e)
 
         result = GateModelTaskResult.parse_raw_schema(jl_result)
@@ -149,7 +162,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             )
             jl_results = f.result()
 
-        except JuliaError as e:
+        except Exception as e:
             _handle_julia_error(e)
 
         results = [
@@ -207,15 +220,17 @@ def _result_value_to_ndarray(
     return task_result
 
 
-def _handle_julia_error(julia_error: JuliaError):
-    try:
-        print(julia_error, flush=True)
-        python_exception = getattr(julia_error.exception, "alternate_type", None)
-        if python_exception is None:
-            error = julia_error
-        else:
-            class_val = getattr(sys.modules["builtins"], str(python_exception))
-            error = class_val(julia_error.exception.message)
-    except Exception:
-        raise julia_error
-    raise error
+def _handle_julia_error(error):
+    if type(error).__name__ == "JuliaError":
+        try:
+            python_exception = getattr(error.exception, "alternate_type", None)
+            if python_exception is None:
+                py_error = error
+            else:
+                class_val = getattr(sys.modules["builtins"], str(python_exception))
+                py_error = class_val(error.exception.message)
+            raise py_error
+        except Exception:
+            raise error
+    else:
+        raise error

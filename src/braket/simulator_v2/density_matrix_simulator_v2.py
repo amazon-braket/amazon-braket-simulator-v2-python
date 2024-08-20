@@ -6,7 +6,6 @@ from braket.device_schema.simulators import (
 )
 
 from braket.simulator_v2.base_simulator_v2 import BaseLocalSimulatorV2
-from braket.simulator_v2.julia_import import jlBraketSimulator
 
 
 class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
@@ -19,7 +18,7 @@ class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
     DEVICE_ID = "braket_dm_v2"
 
     def __init__(self):
-        super().__init__(jlBraketSimulator.DensityMatrixSimulator(0, 0))
+        super().__init__(self.DEVICE_ID)
 
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:
