@@ -105,7 +105,7 @@ def translate_and_run_multiple(
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         self._device = device
-        executor = ProcessPoolExecutor(max_workers=1)
+        executor = ProcessPoolExecutor(max_workers=1, initializer=setup_julia)
         self._executor = executor
 
     def __del__(self):
