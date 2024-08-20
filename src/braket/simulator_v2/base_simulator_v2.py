@@ -1,6 +1,6 @@
 import sys
 from collections.abc import Sequence
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, wait
 from typing import List, Optional, Union
 
 import numpy as np
@@ -82,7 +82,11 @@ def translate_and_run_multiple(
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         self._device = device
-        self._executor = ProcessPoolExecutor(max_workers=1)
+        executor = ProcessPoolExecutor(max_workers=1)
+        # run a first setup here to handle all code loading
+        f = executor.submit(setup_julia)
+        wait([f])
+        self._executor = executor
 
     def __del__(self):
         self._executor.shutdown(wait=False)
