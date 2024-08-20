@@ -11,6 +11,21 @@ from braket.task_result import GateModelTaskResult
 
 from braket.simulator_v2.julia_import import setup_julia
 
+def _handle_julia_error(error):
+    # we don't import `JuliaError` explicitly here to avoid
+    # having to import juliacall on the main thread. we need
+    # to call *this* function on that thread in case getting
+    # the result from the submitted Future raises an exception
+    if type(error).__name__ == "JuliaError":
+        python_exception = getattr(error.exception, "alternate_type", None)
+        if python_exception is None:
+            py_error = error
+        else:
+            class_val = getattr(sys.modules["builtins"], str(python_exception))
+            py_error = class_val(str(error.exception.message))
+        raise py_error
+    else:
+        raise error
 
 def translate_and_run(
     device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
@@ -30,15 +45,17 @@ def translate_and_run(
     elif device_id == "braket_dm_v2":
         device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
 
-    result = jl.BraketSimulator.simulate._jl_call_nogil(
-        device,
-        openqasm_ir.source,
-        jl_inputs,
-        jl_shots,
-    )
-    py_result = str(result)
-    return py_result
-
+    try:
+        result = jl.BraketSimulator.simulate._jl_call_nogil(
+            device,
+            openqasm_ir.source,
+            jl_inputs,
+            jl_shots,
+        )
+        py_result = str(result)
+        return py_result
+    except Exception as e:
+        _handle_julia_error(e)
 
 def translate_and_run_multiple(
     device_id: str,
@@ -69,13 +86,16 @@ def translate_and_run_multiple(
     elif device_id == "braket_dm_v2":
         device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
 
-    results = jl.BraketSimulator.simulate._jl_call_nogil(
-        device,
-        irs,
-        jl_inputs,
-        shots,
-    )
-    py_results = [str(result) for result in results]
+    try:
+        results = jl.BraketSimulator.simulate._jl_call_nogil(
+            device,
+            irs,
+            jl_inputs,
+            shots,
+        )
+        py_results = [str(result) for result in results]
+    except Exception as e:
+        _handle_julia_error(e)
     return py_results
 
 
@@ -83,9 +103,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         self._device = device
         executor = ProcessPoolExecutor(max_workers=1)
-        # run a first setup here to handle all code loading
-        f = executor.submit(setup_julia)
-        wait([f])
         self._executor = executor
 
     def __del__(self):
@@ -115,15 +132,14 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
+        f = self._executor.submit(
+            translate_and_run,
+            self._device,
+            openqasm_ir,
+            shots,
+        )
         try:
-            f = self._executor.submit(
-                translate_and_run,
-                self._device,
-                openqasm_ir,
-                shots,
-            )
             jl_result = f.result()
-
         except Exception as e:
             _handle_julia_error(e)
 
@@ -156,16 +172,15 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
+        f = self._executor.submit(
+            translate_and_run_multiple,
+            self._device,
+            programs,
+            shots,
+            inputs,
+        )
         try:
-            f = self._executor.submit(
-                translate_and_run_multiple,
-                self._device,
-                programs,
-                shots,
-                inputs,
-            )
             jl_results = f.result()
-
         except Exception as e:
             _handle_julia_error(e)
 
@@ -222,19 +237,3 @@ def _result_value_to_ndarray(
             task_result.resultTypes[result_ind].value = np.asarray(val)
 
     return task_result
-
-
-def _handle_julia_error(error):
-    if type(error).__name__ == "JuliaError":
-        try:
-            python_exception = getattr(error.exception, "alternate_type", None)
-            if python_exception is None:
-                py_error = error
-            else:
-                class_val = getattr(sys.modules["builtins"], str(python_exception))
-                py_error = class_val(error.exception.message)
-            raise py_error
-        except Exception:
-            raise error
-    else:
-        raise error
