@@ -31,9 +31,6 @@ def setup_julia():
     
     # don't reimport if we don't have to
     if "juliacall" in sys.modules:
-        # don't waste time looking for packages
-        # which should already be present
-        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "yes"
         return sys.modules["juliacall"].Main
     else:
         # install Julia and any packages as needed
@@ -50,6 +47,21 @@ def setup_julia():
         cnot q[0], q[1];
         #pragma braket result state_vector
         """
+        input_dict = jl.Vector[jl.Dict[jl.String, jl.Any]]()
+        input_dict.append(jl.Dict[jl.String, jl.Any]())
+        irs = jl.Vector[jl.String]()
+        irs.append(stock_oq3)
+        irs.append(stock_oq3)
         jl.BraketSimulator.simulate._jl_call_nogil(sv, stock_oq3, jl.Dict[jl.String, jl.Any](), 0)
+        jl.BraketSimulator.simulate._jl_call_nogil(sv, irs, input_dict, 0)
         jl.BraketSimulator.simulate._jl_call_nogil(dm, stock_oq3, jl.Dict[jl.String, jl.Any](), 0)
+        jl.BraketSimulator.simulate._jl_call_nogil(dm, irs, input_dict, 0)
+        # don't waste time looking for packages
+        # which should already be present after this
+        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "no"
+        del sv
+        del dm
+        del stock_oq3
+        del input_dict
+        del irs
         return jl
