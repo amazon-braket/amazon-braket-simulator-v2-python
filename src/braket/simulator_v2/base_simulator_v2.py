@@ -1,8 +1,7 @@
 import sys
-import threading
 from collections.abc import Sequence
-from concurrent.futures import Future, ProcessPoolExecutor, wait
-from typing import Optional, Union
+from concurrent.futures import ProcessPoolExecutor
+from typing import List, Optional, Union
 
 import numpy as np
 from braket.default_simulator.simulator import BaseLocalSimulator
@@ -10,9 +9,11 @@ from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
 from juliacall import JuliaError
+
 from braket.simulator_v2.julia_import import jl
 
-def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0):
+
+def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0) -> str:
     jl_shots = shots
     jl_inputs = (
         jl.Dict[jl.String, jl.Any](
@@ -22,19 +23,22 @@ def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0):
         if openqasm_ir.inputs
         else jl.Dict[jl.String, jl.Any]()
     )
-    return jl.BraketSimulator.simulate._jl_call_nogil(
+    result = jl.BraketSimulator.simulate._jl_call_nogil(
         device,
         openqasm_ir.source,
         jl_inputs,
         jl_shots,
     )
+    py_result = str(result)
+    return py_result
+
 
 def translate_and_run_multiple(
     device,
     programs: Sequence[OpenQASMProgram],
     shots: Optional[int] = 0,
     inputs: Optional[Union[dict, Sequence[dict]]] = {},
-):
+) -> List[str]:
     irs = jl.Vector[jl.String]()
     is_single_input = isinstance(inputs, dict) or len(inputs) == 1
     py_inputs = {}
@@ -51,19 +55,24 @@ def translate_and_run_multiple(
             jl_inputs.append(program.inputs | py_inputs[p_ix])
         else:
             jl_inputs.append(py_inputs[p_ix])
-    return jl.BraketSimulator.simulate._jl_call_nogil(
+
+    results = jl.BraketSimulator.simulate._jl_call_nogil(
         device,
         irs,
         jl_inputs,
         shots,
     )
-
-
+    py_results = [str(result) for result in results]
+    return py_results
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device):
         self._device = device
+        self._executor = ProcessPoolExecutor(max_workers=1)
+
+    def __del__(self):
+        self._executor.shutdown(wait=False)
 
     def initialize_simulation(self, **kwargs):
         return
@@ -89,17 +98,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-        stock_payload = OpenQASMProgram(
-            source="""
-                OPENQASM 3.0;
-                qubit[1] q;
-                h q[0];
-                #pragma braket result state_vector
-                """
-        )
-        executor = ProcessPoolExecutor(max_workers=1)
         try:
-            f = executor.submit(
+            f = self._executor.submit(
                 translate_and_run,
                 self._device,
                 openqasm_ir,
@@ -109,8 +109,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
 
         except JuliaError as e:
             _handle_julia_error(e)
-        finally:
-            executor.shutdown(wait=False)
 
         result = GateModelTaskResult.parse_raw_schema(jl_result)
         result.additionalMetadata.action = openqasm_ir
@@ -141,10 +139,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
-        executor = ProcessPoolExecutor(max_workers=1)
-
         try:
-            f = executor.submit(
+            f = self._executor.submit(
                 translate_and_run_multiple,
                 self._device,
                 programs,
@@ -155,8 +151,6 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
 
         except JuliaError as e:
             _handle_julia_error(e)
-        finally:
-            executor.shutdown(wait=False)
 
         results = [
             GateModelTaskResult.parse_raw_schema(jl_result) for jl_result in jl_results
