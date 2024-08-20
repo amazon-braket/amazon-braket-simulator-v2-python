@@ -106,6 +106,12 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         self._device = device
         executor = ProcessPoolExecutor(max_workers=1, initializer=setup_julia)
+        def no_op():
+            pass
+        # trigger worker creation here, because workers are created
+        # on an as-needed basis, *not* when the executor is created
+        f = executor.submit(no_op)
+        wait([f])
         self._executor = executor
 
     def __del__(self):
