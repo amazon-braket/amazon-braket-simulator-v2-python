@@ -24,16 +24,20 @@ def setup_julia():
         ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
         ("PYTHON_JULIACALL_THREADS", "auto"),
         ("PYTHON_JULIACALL_OPTLEVEL", "3"),
-        ("PYTHON_JULIAPKG_OFFLINE", "yes"),
         # let the user's Conda/Pip handle installing things
         ("JULIA_CONDAPKG_BACKEND", "Null"),
     ):
         os.environ[k] = os.environ.get(k, default)
     
     # don't reimport if we don't have to
-    if "juliacall" in sys.modules: 
+    if "juliacall" in sys.modules:
+        # don't waste time looking for packages
+        # which should already be present
+        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "yes"
         return sys.modules["juliacall"].Main
     else:
+        # install Julia and any packages as needed
+        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "no"
         import juliacall
         jl = juliacall.Main
         jl.seval("using JSON3, BraketSimulator")
