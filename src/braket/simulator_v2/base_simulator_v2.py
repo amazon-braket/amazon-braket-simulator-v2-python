@@ -1,7 +1,7 @@
 import sys
 import threading
 from collections.abc import Sequence
-from concurrent.futures import Future, ThreadPoolExecutor, wait
+from concurrent.futures import Future, ProcessPoolExecutor, wait
 from typing import Optional, Union
 
 import numpy as np
@@ -12,27 +12,7 @@ from braket.task_result import GateModelTaskResult
 from juliacall import JuliaError
 from braket.simulator_v2.julia_import import jl
 
-
-
-
-def yield_till_done(f: Future):
-    #from braket.simulator_v2.julia_import import jl
-
-    jl_yield = getattr(jl, "yield")
-    # we must yield multiple times
-    n_waits = 0
-    while True:
-        # yield to Julia's task scheduler
-        jl_yield._jl_call_nogil()
-        # wait for up to 0.1 seconds for the threads to finish
-        state = wait([f], timeout=0.5)
-        n_waits += 1
-        # if they finished then stop otherwise try again
-        if not state.not_done:
-            break
-    return
-
-def import_and_run_julia(device, openqasm_ir: OpenQASMProgram, shots: int = 0):
+def translate_and_run(device, openqasm_ir: OpenQASMProgram, shots: int = 0):
     jl_shots = shots
     jl_inputs = (
         jl.Dict[jl.String, jl.Any](
@@ -49,14 +29,12 @@ def import_and_run_julia(device, openqasm_ir: OpenQASMProgram, shots: int = 0):
         jl_shots,
     )
 
-def import_and_run_multiple_julia(
+def translate_and_run_multiple(
     device,
     programs: Sequence[OpenQASMProgram],
     shots: Optional[int] = 0,
     inputs: Optional[Union[dict, Sequence[dict]]] = {},
 ):
-    #from braket.simulator_v2.julia_import import jl
-
     irs = jl.Vector[jl.String]()
     is_single_input = isinstance(inputs, dict) or len(inputs) == 1
     py_inputs = {}
@@ -81,18 +59,10 @@ def import_and_run_multiple_julia(
     )
 
 
+
+
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device):
-        payload = OpenQASMProgram(
-            source="""
-                OPENQASM 3.0;
-                qubit[1] q;
-                h q[0];
-                #pragma braket result probability
-                """
-        )
-        import_and_run_julia(device, payload)
-        import_and_run_multiple_julia(device, [payload, payload])
         self._device = device
 
     def initialize_simulation(self, **kwargs):
@@ -119,15 +89,22 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-        executor = ThreadPoolExecutor(max_workers=1)
+        stock_payload = OpenQASMProgram(
+            source="""
+                OPENQASM 3.0;
+                qubit[1] q;
+                h q[0];
+                #pragma braket result state_vector
+                """
+        )
+        executor = ProcessPoolExecutor(max_workers=1)
         try:
             f = executor.submit(
-                import_and_run_julia,
+                translate_and_run,
                 self._device,
                 openqasm_ir,
                 shots,
             )
-            yield_till_done(f)
             jl_result = f.result()
 
         except JuliaError as e:
@@ -164,17 +141,16 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
-        executor = ThreadPoolExecutor(max_workers=1)
+        executor = ProcessPoolExecutor(max_workers=1)
 
         try:
             f = executor.submit(
-                import_and_run_multiple_julia,
+                translate_and_run_multiple,
                 self._device,
                 programs,
                 shots,
                 inputs,
             )
-            yield_till_done(f)
             jl_results = f.result()
 
         except JuliaError as e:
