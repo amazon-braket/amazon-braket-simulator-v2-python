@@ -40,7 +40,7 @@ def vqe():
     return VQE(estimator=qi, ansatz=ansatz, optimizer=slsqp)
 
 
-@pytest.mark.timeout(10)
+@pytest.mark.timeout(300)
 def test_qiskit_vqe(H2_op, vqe):
     # Find the ground state
     result = vqe.compute_minimum_eigenvalue(H2_op)

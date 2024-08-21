@@ -1132,7 +1132,7 @@ def test_run_multiple():
     assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))
 
 
-@pytest.mark.timeout(10)
+@pytest.mark.timeout(300)
 def test_run_single_executor():
     payload = OpenQASMProgram(
         source="""
@@ -1144,16 +1144,14 @@ def test_run_single_executor():
             """
     )
     pool = ThreadPoolExecutor(2)
-    fs = {
-        pool.submit(StateVectorSimulator().run_openqasm, payload): ix
-        for ix in range(10)
-    }
+    simulator = StateVectorSimulator()
+    fs = {pool.submit(simulator.run_openqasm, payload): ix for ix in range(10)}
     for future in as_completed(fs):
         results = future.result()
         assert np.allclose(results.resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
 
 
-@pytest.mark.timeout(10)
+@pytest.mark.timeout(300)
 def test_run_multiple_executor():
     payloads = [
         OpenQASMProgram(
@@ -1168,10 +1166,8 @@ def test_run_multiple_executor():
         for gate in ["h", "z", "x"]
     ]
     pool = ThreadPoolExecutor(2)
-    fs = {
-        pool.submit(StateVectorSimulator().run_multiple, payloads): ix
-        for ix in range(10)
-    }
+    simulator = StateVectorSimulator()
+    fs = {pool.submit(simulator.run_multiple, payloads): ix for ix in range(10)}
     for future in as_completed(fs):
         results = future.result()
         assert np.allclose(

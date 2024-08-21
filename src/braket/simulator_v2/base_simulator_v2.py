@@ -1,20 +1,123 @@
 import sys
 from collections.abc import Sequence
-from typing import Optional, Union
+from concurrent.futures import ProcessPoolExecutor, wait
+from typing import List, Optional, Union
 
 import numpy as np
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
-from juliacall import JuliaError
 
-from braket.simulator_v2.julia_import import jl
+from braket.simulator_v2.julia_import import setup_julia
+
+
+def _handle_julia_error(error):
+    # we don't import `JuliaError` explicitly here to avoid
+    # having to import juliacall on the main thread. we need
+    # to call *this* function on that thread in case getting
+    # the result from the submitted Future raises an exception
+    if type(error).__name__ == "JuliaError":
+        python_exception = getattr(error.exception, "alternate_type", None)
+        if python_exception is None:
+            py_error = error
+        else:
+            class_val = getattr(sys.modules["builtins"], str(python_exception))
+            py_error = class_val(str(error.exception.message))
+        raise py_error
+    else:
+        raise error
+
+
+def translate_and_run(
+    device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
+) -> str:
+    jl = setup_julia()
+    jl_shots = shots
+    jl_inputs = (
+        jl.Dict[jl.String, jl.Any](
+            jl.Pair(jl.convert(jl.String, k), jl.convert(jl.Any, v))
+            for (k, v) in openqasm_ir.inputs.items()
+        )
+        if openqasm_ir.inputs
+        else jl.Dict[jl.String, jl.Any]()
+    )
+    if device_id == "braket_sv_v2":
+        device = jl.BraketSimulator.StateVectorSimulator(0, 0)
+    elif device_id == "braket_dm_v2":
+        device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
+
+    try:
+        result = jl.BraketSimulator.simulate._jl_call_nogil(
+            device,
+            openqasm_ir.source,
+            jl_inputs,
+            jl_shots,
+        )
+        py_result = str(result)
+        return py_result
+    except Exception as e:
+        _handle_julia_error(e)
+
+
+def translate_and_run_multiple(
+    device_id: str,
+    programs: Sequence[OpenQASMProgram],
+    shots: Optional[int] = 0,
+    inputs: Optional[Union[dict, Sequence[dict]]] = {},
+) -> List[str]:
+    jl = setup_julia()
+    irs = jl.Vector[jl.String]()
+    is_single_input = isinstance(inputs, dict) or len(inputs) == 1
+    py_inputs = {}
+    if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
+        py_inputs = [inputs.copy() for _ in range(len(programs))]
+    elif is_single_input and not isinstance(inputs, dict):
+        py_inputs = [inputs[0].copy() for _ in range(len(programs))]
+    else:
+        py_inputs = inputs
+    jl_inputs = jl.Vector[jl.Dict[jl.String, jl.Any]]()
+    for p_ix, program in enumerate(programs):
+        irs.append(program.source)
+        if program.inputs:
+            jl_inputs.append(program.inputs | py_inputs[p_ix])
+        else:
+            jl_inputs.append(py_inputs[p_ix])
+
+    if device_id == "braket_sv_v2":
+        device = jl.BraketSimulator.StateVectorSimulator(0, 0)
+    elif device_id == "braket_dm_v2":
+        device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
+
+    try:
+        results = jl.BraketSimulator.simulate._jl_call_nogil(
+            device,
+            irs,
+            jl_inputs,
+            shots,
+        )
+        py_results = [str(result) for result in results]
+    except Exception as e:
+        _handle_julia_error(e)
+    return py_results
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
-    def __init__(self, device):
+    def __init__(self, device: str):
         self._device = device
+        executor = ProcessPoolExecutor(max_workers=1, initializer=setup_julia)
+
+        def no_op():
+            pass
+
+        # trigger worker creation here, because workers are created
+        # on an as-needed basis, *not* when the executor is created
+        f = executor.submit(no_op)
+        wait([f])
+        self._executor = executor
+
+    def __del__(self):
+        self._executor.shutdown(wait=False)
 
     def initialize_simulation(self, **kwargs):
         return
@@ -40,20 +143,15 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
+        f = self._executor.submit(
+            translate_and_run,
+            self._device,
+            openqasm_ir,
+            shots,
+        )
         try:
-            jl_shots = shots
-            jl_inputs = (
-                jl.Dict[jl.String, jl.Any](
-                    jl.Pair(jl.convert(jl.String, k), jl.convert(jl.Any, v))
-                    for (k, v) in openqasm_ir.inputs.items()
-                )
-                if openqasm_ir.inputs
-                else jl.Dict[jl.String, jl.Any]()
-            )
-            jl_result = jl.BraketSimulator.simulate._jl_call_nogil(
-                self._device, openqasm_ir.source, jl_inputs, jl_shots
-            )
-        except JuliaError as e:
+            jl_result = f.result()
+        except Exception as e:
             _handle_julia_error(e)
 
         result = GateModelTaskResult.parse_raw_schema(jl_result)
@@ -85,34 +183,18 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
+        f = self._executor.submit(
+            translate_and_run_multiple,
+            self._device,
+            programs,
+            shots,
+            inputs,
+        )
         try:
-            irs = jl.Vector[jl.String]()
-            is_single_input = isinstance(inputs, dict) or len(inputs) == 1
-            py_inputs = {}
-            if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
-                py_inputs = [inputs.copy() for _ in range(len(programs))]
-            elif is_single_input and not isinstance(inputs, dict):
-                py_inputs = [inputs[0].copy() for _ in range(len(programs))]
-            else:
-                py_inputs = inputs
-            jl_inputs = jl.Vector[jl.Dict[jl.String, jl.Any]]()
-            for p_ix, program in enumerate(programs):
-                irs.append(program.source)
-                if program.inputs:
-                    jl_inputs.append(program.inputs | py_inputs[p_ix])
-                else:
-                    jl_inputs.append(py_inputs[p_ix])
-
-            jl_results = jl.BraketSimulator.simulate._jl_call_nogil(
-                self._device,
-                irs,
-                jl_inputs,
-                shots,
-                max_parallel=jl.convert(jl.Int, max_parallel),
-            )
-
-        except JuliaError as e:
+            jl_results = f.result()
+        except Exception as e:
             _handle_julia_error(e)
+
         results = [
             GateModelTaskResult.parse_raw_schema(jl_result) for jl_result in jl_results
         ]
@@ -166,17 +248,3 @@ def _result_value_to_ndarray(
             task_result.resultTypes[result_ind].value = np.asarray(val)
 
     return task_result
-
-
-def _handle_julia_error(julia_error: JuliaError):
-    try:
-        print(julia_error)
-        python_exception = getattr(julia_error.exception, "alternate_type", None)
-        if python_exception is None:
-            error = julia_error
-        else:
-            class_val = getattr(sys.modules["builtins"], str(python_exception))
-            error = class_val(julia_error.exception.message)
-    except Exception:
-        raise julia_error
-    raise error
