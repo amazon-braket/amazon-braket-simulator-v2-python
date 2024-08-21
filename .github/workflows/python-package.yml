@@ -24,6 +24,11 @@ jobs:
       uses: julia-actions/install-juliaup@v2
       with:
         channel: '1'
+    - name: Update Julia registry 
+      shell: julia --project=. --color=yes {0}
+      run: |
+        using Pkg
+        Pkg.Registry.update()
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
