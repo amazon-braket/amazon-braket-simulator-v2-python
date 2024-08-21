@@ -1,6 +1,6 @@
 import sys
 from collections.abc import Sequence
-from concurrent.futures import ProcessPoolExecutor, wait
+from multiprocessing.pool import Pool
 from typing import List, Optional, Union
 
 import numpy as np
@@ -105,19 +105,12 @@ def translate_and_run_multiple(
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         self._device = device
-        executor = ProcessPoolExecutor(max_workers=1, initializer=setup_julia)
-
-        def no_op():
-            pass
-
-        # trigger worker creation here, because workers are created
-        # on an as-needed basis, *not* when the executor is created
-        f = executor.submit(no_op)
-        wait([f])
-        self._executor = executor
+        pool = Pool(1, initializer=setup_julia)
+        self._executor = pool
 
     def __del__(self):
-        self._executor.shutdown(wait=False)
+        self._executor.terminate()
+        del self._executor
 
     def initialize_simulation(self, **kwargs):
         return
@@ -143,14 +136,11 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-        f = self._executor.submit(
-            translate_and_run,
-            self._device,
-            openqasm_ir,
-            shots,
-        )
         try:
-            jl_result = f.result()
+            jl_result = self._executor.apply(
+                translate_and_run,
+                [self._device, openqasm_ir, shots],
+            )
         except Exception as e:
             _handle_julia_error(e)
 
@@ -183,15 +173,11 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
-        f = self._executor.submit(
-            translate_and_run_multiple,
-            self._device,
-            programs,
-            shots,
-            inputs,
-        )
         try:
-            jl_results = f.result()
+            jl_results = self._executor.apply(
+                translate_and_run_multiple,
+                [self._device, programs, shots, inputs],
+            )
         except Exception as e:
             _handle_julia_error(e)
 
