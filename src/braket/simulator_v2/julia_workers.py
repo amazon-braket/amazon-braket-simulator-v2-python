@@ -1,0 +1,78 @@
+from braket.ir.openqasm import Program as OpenQASMProgram
+from collections.abc import Sequence
+import json
+import sys
+from typing import List, Optional, Union
+
+def _handle_julia_error(error):
+    import sys
+    if isinstance(error, sys.modules["juliacall"].JuliaError):
+        python_exception = getattr(error.exception, "alternate_type", None)
+        if python_exception is None:
+            py_error = error
+        else:
+            class_val = getattr(sys.modules["builtins"], str(python_exception))
+            py_error = class_val(str(error.exception.message))
+        raise py_error
+    else:
+        raise error
+    return
+
+
+def translate_and_run(
+    device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
+) -> str:
+    jl        = sys.modules["juliacall"].Main
+    jl_shots  = shots
+    jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else '{}'
+    py_result = ""
+    try:
+        result = jl.BraketSimulator.simulate(
+            device_id,
+            openqasm_ir.source,
+            jl_inputs,
+            jl_shots,
+        )
+        py_result = str(result)
+    except Exception as e:
+        _handle_julia_error(e)
+
+    return py_result
+
+
+def translate_and_run_multiple(
+    device_id: str,
+    programs: Sequence[OpenQASMProgram],
+    shots: Optional[int] = 0,
+    inputs: Optional[Union[dict, Sequence[dict]]] = {},
+) -> List[str]:
+    jl  = sys.modules["juliacall"].Main
+    irs = [program.source for program in programs]
+    is_single_input = isinstance(inputs, dict) or len(inputs) == 1
+    py_inputs = {}
+    if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
+        py_inputs = [inputs.copy() for _ in range(len(programs))]
+    elif is_single_input and not isinstance(inputs, dict):
+        py_inputs = [inputs[0].copy() for _ in range(len(programs))]
+    else:
+        py_inputs = inputs
+    full_inputs = []
+    for p_ix, program in enumerate(programs):
+        if program.inputs:
+            full_inputs.append(program.inputs | py_inputs[p_ix])
+        else:
+            full_inputs.append(py_inputs[p_ix])
+
+    jl_inputs = json.dumps(full_inputs)
+
+    try:
+        results = jl.BraketSimulator.simulate(
+            device_id,
+            irs,
+            jl_inputs,
+            shots,
+        )
+        py_results = [str(result) for result in results]
+    except Exception as e:
+        _handle_julia_error(e)
+    return py_results
