@@ -2,14 +2,52 @@ import sys
 from collections.abc import Sequence
 from multiprocessing.pool import Pool
 from typing import List, Optional, Union
-
+import atexit
+import json
 import numpy as np
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
 
-from braket.simulator_v2.julia_import import setup_julia
+def setup_julia():
+    import os
+    import sys
+    import json
+    import warnings
+
+    # don't reimport if we don't have to
+    if "juliacall" in sys.modules:
+        os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
+        return sys.modules["juliacall"].Main
+    else:
+        for k, default in (
+            ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
+            ("PYTHON_JULIACALL_THREADS", "auto"),
+            ("PYTHON_JULIACALL_OPTLEVEL", "3"),
+            # let the user's Conda/Pip handle installing things
+            ("JULIA_CONDAPKG_BACKEND", "Null"),
+        ):
+            os.environ[k] = os.environ.get(k, default)
+        # install Julia and any packages as needed
+        import juliacall
+
+        jl = juliacall.Main
+        jl.seval("using JSON3, BraketSimulator")
+        jl_yield = getattr(jl, "yield")
+        jl_yield()
+        # don't waste time looking for packages
+        # which should already be present after this
+        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "no"
+
+        return jl
+
+def exit_julia():
+    import sys
+    jl = sys.modules["juliacall"].Main
+    jl_yield = getattr(jl, "yield")
+    jl_yield()
+    return
 
 
 def _handle_julia_error(error):
@@ -32,32 +70,22 @@ def _handle_julia_error(error):
 def translate_and_run(
     device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
 ) -> str:
-    jl = setup_julia()
-    jl_shots = shots
-    jl_inputs = (
-        jl.Dict[jl.String, jl.Any](
-            jl.Pair(jl.convert(jl.String, k), jl.convert(jl.Any, v))
-            for (k, v) in openqasm_ir.inputs.items()
-        )
-        if openqasm_ir.inputs
-        else jl.Dict[jl.String, jl.Any]()
-    )
-    if device_id == "braket_sv_v2":
-        device = jl.BraketSimulator.StateVectorSimulator(0, 0)
-    elif device_id == "braket_dm_v2":
-        device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
-
+    jl        = setup_julia()
+    jl_shots  = shots
+    jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else json.dumps({})
+    py_result = ""
     try:
-        result = jl.BraketSimulator.simulate._jl_call_nogil(
-            device,
+        result = jl.BraketSimulator.simulate(
+            device_id,
             openqasm_ir.source,
             jl_inputs,
             jl_shots,
         )
         py_result = str(result)
-        return py_result
     except Exception as e:
         _handle_julia_error(e)
+
+    return py_result
 
 
 def translate_and_run_multiple(
@@ -67,7 +95,7 @@ def translate_and_run_multiple(
     inputs: Optional[Union[dict, Sequence[dict]]] = {},
 ) -> List[str]:
     jl = setup_julia()
-    irs = jl.Vector[jl.String]()
+    irs = [program.source for program in programs]
     is_single_input = isinstance(inputs, dict) or len(inputs) == 1
     py_inputs = {}
     if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
@@ -76,22 +104,18 @@ def translate_and_run_multiple(
         py_inputs = [inputs[0].copy() for _ in range(len(programs))]
     else:
         py_inputs = inputs
-    jl_inputs = jl.Vector[jl.Dict[jl.String, jl.Any]]()
+    full_inputs = []
     for p_ix, program in enumerate(programs):
-        irs.append(program.source)
         if program.inputs:
-            jl_inputs.append(program.inputs | py_inputs[p_ix])
+            full_inputs.append(program.inputs | py_inputs[p_ix])
         else:
-            jl_inputs.append(py_inputs[p_ix])
+            full_inputs.append(py_inputs[p_ix])
 
-    if device_id == "braket_sv_v2":
-        device = jl.BraketSimulator.StateVectorSimulator(0, 0)
-    elif device_id == "braket_dm_v2":
-        device = jl.BraketSimulator.DensityMatrixSimulator(0, 0)
+    jl_inputs = json.dumps(full_inputs)
 
     try:
-        results = jl.BraketSimulator.simulate._jl_call_nogil(
-            device,
+        results = jl.BraketSimulator.simulate(
+            device_id,
             irs,
             jl_inputs,
             shots,
@@ -105,13 +129,11 @@ def translate_and_run_multiple(
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
         self._device = device
-        pool = Pool(1, initializer=setup_julia)
+        pool = Pool(processes=1)
+        pool.apply(setup_julia)
         self._executor = pool
-
-    def __del__(self):
-        self._executor.terminate()
-        del self._executor
-
+        atexit.register(self._executor.close)
+    
     def initialize_simulation(self, **kwargs):
         return
 
@@ -145,6 +167,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             _handle_julia_error(e)
 
         result = GateModelTaskResult.parse_raw_schema(jl_result)
+        jl_result = None
         result.additionalMetadata.action = openqasm_ir
 
         # attach the result types
@@ -184,6 +207,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         results = [
             GateModelTaskResult.parse_raw_schema(jl_result) for jl_result in jl_results
         ]
+        jl_results = None
         for p_ix, program in enumerate(programs):
             results[p_ix].additionalMetadata.action = program
 
