@@ -64,7 +64,6 @@ def setup_julia():
         jl.BraketSimulator.simulate._jl_call_nogil(dm, irs, input_dict, 0)
         # don't waste time looking for packages
         # which should already be present after this
-        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "no"
         del sv
         del dm
         del stock_oq3
