@@ -37,15 +37,34 @@ def setup_julia():
 
         jl = juliacall.Main
         jl.seval("using JSON3, BraketSimulator")
-        stock_oq3 = """
+        sv_stock_oq3 = """
         OPENQASM 3.0;
+        input float theta; 
         qubit[2] q;
         h q[0];
         cnot q;
+        x q[0];
+        xx(theta) q;
+        yy(theta) q;
+        zz(theta) q;
+        #pragma braket result expectation z(q[0]) 
+        """
+        dm_stock_oq3 = """
+        OPENQASM 3.0;
+        input float theta; 
+        qubit[2] q;
+        h q[0];
+        x q[0];
+        cnot q;
+        xx(theta) q;
+        yy(theta) q;
+        zz(theta) q;
         #pragma braket result probability 
         """
-        jl.BraketSimulator.simulate("braket_sv_v2", stock_oq3, '{}', 0)
-        jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, '{}', 0)
+        r = jl.BraketSimulator.simulate("braket_sv_v2", sv_stock_oq3, '{\"theta\": 0.1}', 0)
+        jl.JSON3.write(r)
+        r = jl.BraketSimulator.simulate("braket_dm_v2", dm_stock_oq3, '{\"theta\": 0.1}', 0)
+        jl.JSON3.write(r)
         return jl
 
 def setup_pool():

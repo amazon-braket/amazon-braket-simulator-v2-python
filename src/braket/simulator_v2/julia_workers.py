@@ -1,4 +1,5 @@
 from braket.ir.openqasm import Program as OpenQASMProgram
+from braket.task_result import ResultTypeValue
 from collections.abc import Sequence
 import json
 import sys
@@ -25,7 +26,6 @@ def translate_and_run(
     jl        = sys.modules["juliacall"].Main
     jl_shots  = shots
     jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else '{}'
-    py_result = ""
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
@@ -33,11 +33,11 @@ def translate_and_run(
             jl_inputs,
             jl_shots,
         )
-        py_result = str(result)
+
     except Exception as e:
         _handle_julia_error(e)
 
-    return py_result
+    return result
 
 
 def translate_and_run_multiple(
