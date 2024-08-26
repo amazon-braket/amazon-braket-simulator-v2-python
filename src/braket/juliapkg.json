@@ -3,7 +3,7 @@
     "packages": {
         "BraketSimulator": {
             "uuid": "76d27892-9a0b-406c-98e4-7c178e9b3dff",
-            "dev": "True"
+            "rev": "ksh/python"
         },
         "JSON3": {
             "uuid": "0f8b85d8-7281-11e9-16c2-39a750bddbf1",
