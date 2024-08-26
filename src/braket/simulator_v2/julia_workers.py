@@ -10,7 +10,8 @@ def _handle_julia_error(error):
     if isinstance(error, sys.modules["juliacall"].JuliaError):
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
-            py_error = error
+            # convert to RuntimeError as JuliaError can't be serialized
+            py_error = RuntimeError(f"Unable to unwrap internal Julia exception. Exception message: {str(error.exception.message)}")
         else:
             class_val = getattr(sys.modules["builtins"], str(python_exception))
             py_error = class_val(str(error.exception.message))
