@@ -1,17 +1,22 @@
-from braket.ir.openqasm import Program as OpenQASMProgram
-from braket.task_result import ResultTypeValue
-from collections.abc import Sequence
 import json
 import sys
+from collections.abc import Sequence
 from typing import List, Optional, Union
+
+from braket.ir.openqasm import Program as OpenQASMProgram
+
 
 def _handle_julia_error(error):
     import sys
+
     if isinstance(error, sys.modules["juliacall"].JuliaError):
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
             # convert to RuntimeError as JuliaError can't be serialized
-            py_error = RuntimeError(f"Unable to unwrap internal Julia exception. Exception message: {str(error.exception.message)}")
+            py_error = RuntimeError(
+                "Unable to unwrap internal Julia exception."
+                f"Exception message: {str(error.exception.message)}"
+            )
         else:
             class_val = getattr(sys.modules["builtins"], str(python_exception))
             py_error = class_val(str(error.exception.message))
@@ -24,9 +29,9 @@ def _handle_julia_error(error):
 def translate_and_run(
     device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
 ) -> str:
-    jl        = sys.modules["juliacall"].Main
-    jl_shots  = shots
-    jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else '{}'
+    jl = sys.modules["juliacall"].Main
+    jl_shots = shots
+    jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
@@ -47,7 +52,7 @@ def translate_and_run_multiple(
     shots: Optional[int] = 0,
     inputs: Optional[Union[dict, Sequence[dict]]] = {},
 ) -> List[str]:
-    jl  = sys.modules["juliacall"].Main
+    jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
     is_single_input = isinstance(inputs, dict) or len(inputs) == 1
     py_inputs = {}

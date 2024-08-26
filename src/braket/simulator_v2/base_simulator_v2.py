@@ -1,23 +1,28 @@
-import time
-from collections.abc import Sequence
-from typing import List, Optional, Union
+import atexit
 import json
+from collections.abc import Sequence
+from multiprocessing.pool import Pool
+from typing import Optional, Union
+
 import numpy as np
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
 from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
 
-from braket.simulator_v2.julia_workers import translate_and_run, translate_and_run_multiple, _handle_julia_error
-
-from multiprocessing.pool import Pool
-import atexit
+from braket.simulator_v2.julia_workers import (
+    _handle_julia_error,
+    translate_and_run,
+    translate_and_run_multiple,
+)
 
 __JULIA_POOL__ = None
 
+
 def setup_julia():
-    import sys
     import os
+    import sys
+
     # don't reimport if we don't have to
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
@@ -39,7 +44,7 @@ def setup_julia():
         jl.seval("using JSON3, BraketSimulator")
         sv_stock_oq3 = """
         OPENQASM 3.0;
-        input float theta; 
+        input float theta;
         qubit[2] q;
         h q[0];
         cnot q;
@@ -47,11 +52,11 @@ def setup_julia():
         xx(theta) q;
         yy(theta) q;
         zz(theta) q;
-        #pragma braket result expectation z(q[0]) 
+        #pragma braket result expectation z(q[0])
         """
         dm_stock_oq3 = """
         OPENQASM 3.0;
-        input float theta; 
+        input float theta;
         qubit[2] q;
         h q[0];
         x q[0];
@@ -59,13 +64,18 @@ def setup_julia():
         xx(theta) q;
         yy(theta) q;
         zz(theta) q;
-        #pragma braket result probability 
+        #pragma braket result probability
         """
-        r = jl.BraketSimulator.simulate("braket_sv_v2", sv_stock_oq3, '{\"theta\": 0.1}', 0)
+        r = jl.BraketSimulator.simulate(
+            "braket_sv_v2", sv_stock_oq3, '{"theta": 0.1}', 0
+        )
         jl.JSON3.write(r)
-        r = jl.BraketSimulator.simulate("braket_dm_v2", dm_stock_oq3, '{\"theta\": 0.1}', 0)
+        r = jl.BraketSimulator.simulate(
+            "braket_dm_v2", dm_stock_oq3, '{"theta": 0.1}', 0
+        )
         jl.JSON3.write(r)
         return jl
+
 
 def setup_pool():
     global __JULIA_POOL__
@@ -74,6 +84,7 @@ def setup_pool():
     atexit.register(__JULIA_POOL__.join)
     atexit.register(__JULIA_POOL__.close)
     return
+
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str):
