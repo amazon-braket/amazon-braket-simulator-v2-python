@@ -56,7 +56,7 @@ def translate_and_run_multiple(
     jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
     py_inputs = {}
-    if len(inputs) > 1 or isinstance(inputs, dict)):
+    if len(inputs) > 1 or isinstance(inputs, dict):
         py_inputs = [inputs.copy() for _ in range(len(programs))]
     elif len(inputs) == 1:
         py_inputs = [inputs[0].copy() for _ in range(len(programs))]
