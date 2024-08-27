@@ -49,9 +49,10 @@ def translate_and_run(
 def translate_and_run_multiple(
     device_id: str,
     programs: Sequence[OpenQASMProgram],
-    shots: Optional[int] = 0,
-    inputs: Optional[Union[dict, Sequence[dict]]] = {},
+    shots: int = 0,
+    inputs: Optional[Union[dict, Sequence[dict]]] = None,
 ) -> List[str]:
+    inputs = inputs or {}
     jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
     py_inputs = {}
