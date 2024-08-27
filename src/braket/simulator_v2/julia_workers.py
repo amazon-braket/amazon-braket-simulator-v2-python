@@ -46,21 +46,18 @@ def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int =
 def translate_and_run_multiple(
     device_id: str,
     programs: Sequence[OpenQASMProgram],
-    shots: int | None = 0,
+    shots: int = 0,
     inputs: dict | Sequence[dict] | None = None,
 ) -> list[str]:
     if inputs is None:
         inputs = {}
     jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
-    is_single_input = isinstance(inputs, dict) or len(inputs) == 1
     py_inputs = {}
-    if (is_single_input and isinstance(inputs, dict)) or not is_single_input:
+    if len(inputs) > 1 or isinstance(inputs, dict):
         py_inputs = [inputs.copy() for _ in range(len(programs))]
-    elif is_single_input and not isinstance(inputs, dict):
+    elif len(inputs) == 1:
         py_inputs = [inputs[0].copy() for _ in range(len(programs))]
-    else:
-        py_inputs = inputs
     full_inputs = []
     for p_ix, program in enumerate(programs):
         if program.inputs:

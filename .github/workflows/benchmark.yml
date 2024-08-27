@@ -26,12 +26,11 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
-        pip install pytest pytest-benchmark pytest-xdist juliacall
-        pip install -e . # to put juliapkg.json in sys.path
+        pip install -e .[test] # to put juliapkg.json in sys.path
         python -c 'import juliacall' # force install of all deps
     - name: Benchmark
       run: |
-        pytest -n 0 benchmark/benchmark.py --benchmark-json benchmark/output.json
+        pytest -n 0 benchmark/benchmark.py --benchmark-json=benchmark/output.json
     - name: Store benchmark result
       uses: benchmark-action/github-action-benchmark@v1
       with:
