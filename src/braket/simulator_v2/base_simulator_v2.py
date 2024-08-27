@@ -195,17 +195,17 @@ def _result_value_to_ndarray(
         if isinstance(result_type.value, dict):
             val = task_result.resultTypes[result_ind].value
             task_result.resultTypes[result_ind].value = {k: reconstruct_complex(v) for (k, v) in val.items()}
-        if isinstance(result_type.type, StateVector):
+        elif isinstance(result_type.type, StateVector):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals
             fixed_val = [reconstruct_complex(v) for v in val]
             task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
-        if isinstance(result_type.type, DensityMatrix):
+        elif isinstance(result_type.type, DensityMatrix):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals
             fixed_val = [[reconstruct_complex(v) for v in inner_val] for inner_val in val]
             task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
-        if isinstance(result_type.type, Probability):
+        elif isinstance(result_type.type, Probability):
             val = task_result.resultTypes[result_ind].value
             task_result.resultTypes[result_ind].value = np.asarray(val)
 
