@@ -26,8 +26,7 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
-        pip install pytest pytest-benchmark pytest-xdist juliacall
-        pip install -e . # to put juliapkg.json in sys.path
+        pip install -e .[test] # to put juliapkg.json in sys.path
         python -c 'import juliacall' # force install of all deps
     - name: Benchmark
       run: |
