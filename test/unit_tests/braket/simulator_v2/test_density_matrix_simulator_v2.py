@@ -77,9 +77,7 @@ def test_simulator_run_noisy_circuit(noisy_circuit_2_qubit, caplog):
 
     assert all([len(measurement) == 2] for measurement in result.measurements)
     assert len(result.measurements) == shots_count
-    counter = Counter(
-        ["".join([str(m) for m in measurement]) for measurement in result.measurements]
-    )
+    counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
     assert counter.keys() == {"10", "11"}
     assert 0.0 < counter["10"] / (counter["10"] + counter["11"]) < 0.2
     assert 0.8 < counter["11"] / (counter["10"] + counter["11"]) < 1.0
@@ -99,9 +97,7 @@ def test_simulator_run_bell_pair(bell_ir, caplog):
 
     assert all([len(measurement) == 2] for measurement in result.measurements)
     assert len(result.measurements) == shots_count
-    counter = Counter(
-        ["".join([str(m) for m in measurement]) for measurement in result.measurements]
-    )
+    counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
     assert counter.keys() == {"00", "11"}
     assert 0.4 < counter["00"] / (counter["00"] + counter["11"]) < 0.6
     assert 0.4 < counter["11"] / (counter["00"] + counter["11"]) < 0.6
@@ -124,9 +120,7 @@ def test_simulator_run_grcs_8(grcs_8_qubit):
     simulator = DensityMatrixSimulator()
     result = simulator.run(grcs_8_qubit.circuit_ir, shots=0)
     density_matrix = result.resultTypes[0].value
-    assert cmath.isclose(
-        density_matrix[0][0].real, grcs_8_qubit.probability_zero, abs_tol=1e-7
-    )
+    assert cmath.isclose(density_matrix[0][0].real, grcs_8_qubit.probability_zero, abs_tol=1e-7)
 
 
 def test_properties():
@@ -134,157 +128,153 @@ def test_properties():
     observables = ["x", "y", "z", "h", "i", "hermitian"]
     max_shots = sys.maxsize
     qubit_count = 16
-    expected_properties = GateModelSimulatorDeviceCapabilities.parse_obj(
-        {
-            "service": {
-                "executionWindows": [
+    expected_properties = GateModelSimulatorDeviceCapabilities.parse_obj({
+        "service": {
+            "executionWindows": [
+                {
+                    "executionDay": "Everyday",
+                    "windowStartHour": "00:00",
+                    "windowEndHour": "23:59:59",
+                }
+            ],
+            "shotsRange": [0, max_shots],
+        },
+        "action": {
+            "braket.ir.openqasm.program": {
+                "actionType": "braket.ir.openqasm.program",
+                "version": ["1"],
+                "supportedOperations": sorted([
+                    # OpenQASM primitives
+                    "U",
+                    "GPhase",
+                    # builtin Braket gates
+                    "ccnot",
+                    "cnot",
+                    "cphaseshift",
+                    "cphaseshift00",
+                    "cphaseshift01",
+                    "cphaseshift10",
+                    "cswap",
+                    "cv",
+                    "cy",
+                    "cz",
+                    "ecr",
+                    "gpi",
+                    "gpi2",
+                    "h",
+                    "i",
+                    "iswap",
+                    "ms",
+                    "pswap",
+                    "phaseshift",
+                    "rx",
+                    "ry",
+                    "rz",
+                    "s",
+                    "si",
+                    "swap",
+                    "t",
+                    "ti",
+                    "unitary",
+                    "v",
+                    "vi",
+                    "x",
+                    "xx",
+                    "xy",
+                    "y",
+                    "yy",
+                    "z",
+                    "zz",
+                    # noise operations
+                    "bit_flip",
+                    "phase_flip",
+                    "pauli_channel",
+                    "depolarizing",
+                    "two_qubit_depolarizing",
+                    "two_qubit_dephasing",
+                    "amplitude_damping",
+                    "generalized_amplitude_damping",
+                    "phase_damping",
+                    "kraus",
+                ]),
+                "supportedModifiers": [
                     {
-                        "executionDay": "Everyday",
-                        "windowStartHour": "00:00",
-                        "windowEndHour": "23:59:59",
-                    }
+                        "name": "ctrl",
+                    },
+                    {
+                        "name": "negctrl",
+                    },
+                    {
+                        "name": "pow",
+                        "exponent_types": ["int", "float"],
+                    },
+                    {
+                        "name": "inv",
+                    },
                 ],
-                "shotsRange": [0, max_shots],
+                "supportedPragmas": [
+                    "braket_unitary_matrix",
+                    "braket_result_type_density_matrix",
+                    "braket_result_type_sample",
+                    "braket_result_type_expectation",
+                    "braket_result_type_variance",
+                    "braket_result_type_probability",
+                    "braket_result_type_amplitude",
+                    "braket_noise_amplitude_damping",
+                    "braket_noise_bit_flip",
+                    "braket_noise_depolarizing",
+                    "braket_noise_kraus",
+                    "braket_noise_pauli_channel",
+                    "braket_noise_generalized_amplitude_damping",
+                    "braket_noise_phase_flip",
+                    "braket_noise_phase_damping",
+                    "braket_noise_two_qubit_dephasing",
+                    "braket_noise_two_qubit_depolarizing",
+                ],
+                "forbiddenPragmas": [
+                    "braket_result_type_adjoint_gradient",
+                ],
+                "supportedResultTypes": [
+                    {
+                        "name": "Sample",
+                        "observables": observables,
+                        "minShots": 1,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "Expectation",
+                        "observables": observables,
+                        "minShots": 0,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "Variance",
+                        "observables": observables,
+                        "minShots": 0,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "Probability",
+                        "minShots": 0,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "DensityMatrix",
+                        "minShots": 0,
+                        "maxShots": 0,
+                    },
+                ],
+                "supportPhysicalQubits": False,
+                "supportsPartialVerbatimBox": False,
+                "requiresContiguousQubitIndices": True,
+                "requiresAllQubitsMeasurement": True,
+                "supportsUnassignedMeasurements": True,
+                "disabledQubitRewiringSupported": False,
             },
-            "action": {
-                "braket.ir.openqasm.program": {
-                    "actionType": "braket.ir.openqasm.program",
-                    "version": ["1"],
-                    "supportedOperations": sorted(
-                        [
-                            # OpenQASM primitives
-                            "U",
-                            "GPhase",
-                            # builtin Braket gates
-                            "ccnot",
-                            "cnot",
-                            "cphaseshift",
-                            "cphaseshift00",
-                            "cphaseshift01",
-                            "cphaseshift10",
-                            "cswap",
-                            "cv",
-                            "cy",
-                            "cz",
-                            "ecr",
-                            "gpi",
-                            "gpi2",
-                            "h",
-                            "i",
-                            "iswap",
-                            "ms",
-                            "pswap",
-                            "phaseshift",
-                            "rx",
-                            "ry",
-                            "rz",
-                            "s",
-                            "si",
-                            "swap",
-                            "t",
-                            "ti",
-                            "unitary",
-                            "v",
-                            "vi",
-                            "x",
-                            "xx",
-                            "xy",
-                            "y",
-                            "yy",
-                            "z",
-                            "zz",
-                            # noise operations
-                            "bit_flip",
-                            "phase_flip",
-                            "pauli_channel",
-                            "depolarizing",
-                            "two_qubit_depolarizing",
-                            "two_qubit_dephasing",
-                            "amplitude_damping",
-                            "generalized_amplitude_damping",
-                            "phase_damping",
-                            "kraus",
-                        ]
-                    ),
-                    "supportedModifiers": [
-                        {
-                            "name": "ctrl",
-                        },
-                        {
-                            "name": "negctrl",
-                        },
-                        {
-                            "name": "pow",
-                            "exponent_types": ["int", "float"],
-                        },
-                        {
-                            "name": "inv",
-                        },
-                    ],
-                    "supportedPragmas": [
-                        "braket_unitary_matrix",
-                        "braket_result_type_density_matrix",
-                        "braket_result_type_sample",
-                        "braket_result_type_expectation",
-                        "braket_result_type_variance",
-                        "braket_result_type_probability",
-                        "braket_result_type_amplitude",
-                        "braket_noise_amplitude_damping",
-                        "braket_noise_bit_flip",
-                        "braket_noise_depolarizing",
-                        "braket_noise_kraus",
-                        "braket_noise_pauli_channel",
-                        "braket_noise_generalized_amplitude_damping",
-                        "braket_noise_phase_flip",
-                        "braket_noise_phase_damping",
-                        "braket_noise_two_qubit_dephasing",
-                        "braket_noise_two_qubit_depolarizing",
-                    ],
-                    "forbiddenPragmas": [
-                        "braket_result_type_adjoint_gradient",
-                    ],
-                    "supportedResultTypes": [
-                        {
-                            "name": "Sample",
-                            "observables": observables,
-                            "minShots": 1,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "Expectation",
-                            "observables": observables,
-                            "minShots": 0,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "Variance",
-                            "observables": observables,
-                            "minShots": 0,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "Probability",
-                            "minShots": 0,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "DensityMatrix",
-                            "minShots": 0,
-                            "maxShots": 0,
-                        },
-                    ],
-                    "supportPhysicalQubits": False,
-                    "supportsPartialVerbatimBox": False,
-                    "requiresContiguousQubitIndices": True,
-                    "requiresAllQubitsMeasurement": True,
-                    "supportsUnassignedMeasurements": True,
-                    "disabledQubitRewiringSupported": False,
-                },
-            },
-            "paradigm": {"qubitCount": qubit_count},
-            "deviceParameters": GateModelSimulatorDeviceParameters.schema(),
-        }
-    )
+        },
+        "paradigm": {"qubitCount": qubit_count},
+        "deviceParameters": GateModelSimulatorDeviceParameters.schema(),
+    })
     assert simulator.properties == expected_properties
 
 

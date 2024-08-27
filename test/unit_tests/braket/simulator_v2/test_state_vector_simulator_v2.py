@@ -72,9 +72,7 @@ def test_simulator_run_grcs_16(grcs_16_qubit, batch_size):
     simulator = StateVectorSimulator()
     result = simulator.run(grcs_16_qubit.circuit_ir, shots=0, batch_size=batch_size)
     state_vector = result.resultTypes[0].value
-    assert cmath.isclose(
-        abs(state_vector[0]) ** 2, grcs_16_qubit.probability_zero, abs_tol=1e-7
-    )
+    assert cmath.isclose(abs(state_vector[0]) ** 2, grcs_16_qubit.probability_zero, abs_tol=1e-7)
 
 
 @pytest.mark.parametrize("batch_size", [1])
@@ -85,9 +83,7 @@ def test_simulator_run_bell_pair(bell_ir, batch_size, caplog):
 
     assert all([len(measurement) == 2] for measurement in result.measurements)
     assert len(result.measurements) == shots_count
-    counter = Counter(
-        ["".join([str(m) for m in measurement]) for measurement in result.measurements]
-    )
+    counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
     assert counter.keys() == {"00", "11"}
     assert 0.4 < counter["00"] / (counter["00"] + counter["11"]) < 0.6
     assert 0.4 < counter["11"] / (counter["00"] + counter["11"]) < 0.6
@@ -105,147 +101,145 @@ def test_properties():
     observables = ["x", "y", "z", "h", "i", "hermitian"]
     max_shots = sys.maxsize
     qubit_count = 32
-    expected_properties = GateModelSimulatorDeviceCapabilities.parse_obj(
-        {
-            "service": {
-                "executionWindows": [
-                    {
-                        "executionDay": "Everyday",
-                        "windowStartHour": "00:00",
-                        "windowEndHour": "23:59:59",
-                    }
+    expected_properties = GateModelSimulatorDeviceCapabilities.parse_obj({
+        "service": {
+            "executionWindows": [
+                {
+                    "executionDay": "Everyday",
+                    "windowStartHour": "00:00",
+                    "windowEndHour": "23:59:59",
+                }
+            ],
+            "shotsRange": [0, max_shots],
+        },
+        "action": {
+            "braket.ir.openqasm.program": {
+                "actionType": "braket.ir.openqasm.program",
+                "version": ["1"],
+                "supportedOperations": [
+                    # OpenQASM primitives
+                    "U",
+                    "GPhase",
+                    # builtin Braket gates
+                    "ccnot",
+                    "cnot",
+                    "cphaseshift",
+                    "cphaseshift00",
+                    "cphaseshift01",
+                    "cphaseshift10",
+                    "cswap",
+                    "cv",
+                    "cy",
+                    "cz",
+                    "ecr",
+                    "gpi",
+                    "gpi2",
+                    "h",
+                    "i",
+                    "iswap",
+                    "ms",
+                    "pswap",
+                    "phaseshift",
+                    "rx",
+                    "ry",
+                    "rz",
+                    "s",
+                    "si",
+                    "swap",
+                    "t",
+                    "ti",
+                    "unitary",
+                    "v",
+                    "vi",
+                    "x",
+                    "xx",
+                    "xy",
+                    "y",
+                    "yy",
+                    "z",
+                    "zz",
                 ],
-                "shotsRange": [0, max_shots],
+                "supportedModifiers": [
+                    {
+                        "name": "ctrl",
+                    },
+                    {
+                        "name": "negctrl",
+                    },
+                    {
+                        "name": "pow",
+                        "exponent_types": ["int", "float"],
+                    },
+                    {
+                        "name": "inv",
+                    },
+                ],
+                "supportedPragmas": [
+                    "braket_unitary_matrix",
+                    "braket_result_type_state_vector",
+                    "braket_result_type_density_matrix",
+                    "braket_result_type_sample",
+                    "braket_result_type_expectation",
+                    "braket_result_type_variance",
+                    "braket_result_type_probability",
+                    "braket_result_type_amplitude",
+                ],
+                "forbiddenPragmas": [
+                    "braket_noise_amplitude_damping",
+                    "braket_noise_bit_flip",
+                    "braket_noise_depolarizing",
+                    "braket_noise_kraus",
+                    "braket_noise_pauli_channel",
+                    "braket_noise_generalized_amplitude_damping",
+                    "braket_noise_phase_flip",
+                    "braket_noise_phase_damping",
+                    "braket_noise_two_qubit_dephasing",
+                    "braket_noise_two_qubit_depolarizing",
+                    "braket_result_type_adjoint_gradient",
+                ],
+                "supportedResultTypes": [
+                    {
+                        "name": "Sample",
+                        "observables": observables,
+                        "minShots": 1,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "Expectation",
+                        "observables": observables,
+                        "minShots": 0,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "Variance",
+                        "observables": observables,
+                        "minShots": 0,
+                        "maxShots": max_shots,
+                    },
+                    {
+                        "name": "Probability",
+                        "minShots": 0,
+                        "maxShots": max_shots,
+                    },
+                    {"name": "StateVector", "minShots": 0, "maxShots": 0},
+                    {
+                        "name": "DensityMatrix",
+                        "minShots": 0,
+                        "maxShots": 0,
+                    },
+                    {"name": "Amplitude", "minShots": 0, "maxShots": 0},
+                ],
+                "supportPhysicalQubits": False,
+                "supportsPartialVerbatimBox": False,
+                "requiresContiguousQubitIndices": True,
+                "requiresAllQubitsMeasurement": True,
+                "supportsUnassignedMeasurements": True,
+                "disabledQubitRewiringSupported": False,
             },
-            "action": {
-                "braket.ir.openqasm.program": {
-                    "actionType": "braket.ir.openqasm.program",
-                    "version": ["1"],
-                    "supportedOperations": [
-                        # OpenQASM primitives
-                        "U",
-                        "GPhase",
-                        # builtin Braket gates
-                        "ccnot",
-                        "cnot",
-                        "cphaseshift",
-                        "cphaseshift00",
-                        "cphaseshift01",
-                        "cphaseshift10",
-                        "cswap",
-                        "cv",
-                        "cy",
-                        "cz",
-                        "ecr",
-                        "gpi",
-                        "gpi2",
-                        "h",
-                        "i",
-                        "iswap",
-                        "ms",
-                        "pswap",
-                        "phaseshift",
-                        "rx",
-                        "ry",
-                        "rz",
-                        "s",
-                        "si",
-                        "swap",
-                        "t",
-                        "ti",
-                        "unitary",
-                        "v",
-                        "vi",
-                        "x",
-                        "xx",
-                        "xy",
-                        "y",
-                        "yy",
-                        "z",
-                        "zz",
-                    ],
-                    "supportedModifiers": [
-                        {
-                            "name": "ctrl",
-                        },
-                        {
-                            "name": "negctrl",
-                        },
-                        {
-                            "name": "pow",
-                            "exponent_types": ["int", "float"],
-                        },
-                        {
-                            "name": "inv",
-                        },
-                    ],
-                    "supportedPragmas": [
-                        "braket_unitary_matrix",
-                        "braket_result_type_state_vector",
-                        "braket_result_type_density_matrix",
-                        "braket_result_type_sample",
-                        "braket_result_type_expectation",
-                        "braket_result_type_variance",
-                        "braket_result_type_probability",
-                        "braket_result_type_amplitude",
-                    ],
-                    "forbiddenPragmas": [
-                        "braket_noise_amplitude_damping",
-                        "braket_noise_bit_flip",
-                        "braket_noise_depolarizing",
-                        "braket_noise_kraus",
-                        "braket_noise_pauli_channel",
-                        "braket_noise_generalized_amplitude_damping",
-                        "braket_noise_phase_flip",
-                        "braket_noise_phase_damping",
-                        "braket_noise_two_qubit_dephasing",
-                        "braket_noise_two_qubit_depolarizing",
-                        "braket_result_type_adjoint_gradient",
-                    ],
-                    "supportedResultTypes": [
-                        {
-                            "name": "Sample",
-                            "observables": observables,
-                            "minShots": 1,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "Expectation",
-                            "observables": observables,
-                            "minShots": 0,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "Variance",
-                            "observables": observables,
-                            "minShots": 0,
-                            "maxShots": max_shots,
-                        },
-                        {
-                            "name": "Probability",
-                            "minShots": 0,
-                            "maxShots": max_shots,
-                        },
-                        {"name": "StateVector", "minShots": 0, "maxShots": 0},
-                        {
-                            "name": "DensityMatrix",
-                            "minShots": 0,
-                            "maxShots": 0,
-                        },
-                        {"name": "Amplitude", "minShots": 0, "maxShots": 0},
-                    ],
-                    "supportPhysicalQubits": False,
-                    "supportsPartialVerbatimBox": False,
-                    "requiresContiguousQubitIndices": True,
-                    "requiresAllQubitsMeasurement": True,
-                    "supportsUnassignedMeasurements": True,
-                    "disabledQubitRewiringSupported": False,
-                },
-            },
-            "paradigm": {"qubitCount": qubit_count},
-            "deviceParameters": GateModelSimulatorDeviceParameters.schema(),
-        }
-    )
+        },
+        "paradigm": {"qubitCount": qubit_count},
+        "deviceParameters": GateModelSimulatorDeviceParameters.schema(),
+    })
     assert simulator.properties == expected_properties
 
 
@@ -396,9 +390,7 @@ def test_result_types_analytic():
     assert result_types[14].type == Expectation(observable=("z",), targets=(0,))
     assert result_types[15].type == Expectation(observable=("x",))
     assert result_types[16].type == Expectation(observable=("y",))
-    assert result_types[17].type == Variance(
-        observable=("x", "z", "h"), targets=(0, 2, 1)
-    )
+    assert result_types[17].type == Variance(observable=("x", "z", "h"), targets=(0, 2, 1))
     assert result_types[18].type == Expectation(
         observable=([[[0, 0], [0, -1]], [[0, 1], [0, 0]]],),
         targets=(0,),
@@ -587,12 +579,7 @@ def test_simulator_identity(caplog):
             program,
             shots=shots_count,
         )
-        counter = Counter(
-            [
-                "".join([str(m) for m in measurement])
-                for measurement in result.measurements
-            ]
-        )
+        counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
         assert counter.keys() == {"00"}
         assert counter["00"] == shots_count
     assert not caplog.text
@@ -718,9 +705,7 @@ def test_simulator_run_observable_references_invalid_qubit(ir, qubit_count):
 
 @pytest.mark.parametrize("batch_size", [1])
 @pytest.mark.parametrize("targets", [(None), ([1]), ([0])])
-def test_simulator_bell_pair_result_types(
-    bell_ir_with_result, targets, batch_size, caplog
-):
+def test_simulator_bell_pair_result_types(bell_ir_with_result, targets, batch_size, caplog):
     simulator = StateVectorSimulator()
     ir = bell_ir_with_result(targets)
     result = simulator.run(ir, shots=0, batch_size=batch_size)
@@ -811,13 +796,11 @@ def test_simulator_valid_observables_qasm(result_types, expected, caplog):
 
 def test_observable_hash_tensor_product():
     matrix = np.eye(4)
-    obs = observables.TensorProduct(
-        [
-            observables.PauliX([0]),
-            observables.Hermitian(matrix, [1, 2]),
-            observables.PauliY([1]),
-        ]
-    )
+    obs = observables.TensorProduct([
+        observables.PauliX([0]),
+        observables.Hermitian(matrix, [1, 2]),
+        observables.PauliY([1]),
+    ])
     hash_dict = StateVectorSimulator._observable_hash(obs)
     matrix_hash = hash_dict[1]
     assert hash_dict == {
@@ -1170,8 +1153,6 @@ def test_run_multiple_executor():
     fs = {pool.submit(simulator.run_multiple, payloads): ix for ix in range(10)}
     for future in as_completed(fs):
         results = future.result()
-        assert np.allclose(
-            results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2)
-        )
+        assert np.allclose(results[0].resultTypes[0].value, np.array([1, 1]) / np.sqrt(2))
         assert np.allclose(results[1].resultTypes[0].value, np.array([1, 0]))
         assert np.allclose(results[2].resultTypes[0].value, np.array([0, 1]))
