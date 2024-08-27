@@ -90,7 +90,7 @@ lint.isort = { known-first-party = [
 ] }
 lint.preview = true
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.ruff.lint.flake8-annotations]
