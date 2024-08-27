@@ -33,6 +33,7 @@ package-data = {"*" = ["*.json"]}
 dependencies = {file = "requirements.txt"}
 optional-dependencies.test = { file = "requirements-test.txt" }
 
+
 [tool.ruff]
 target-version = "py39"
 line-length = 120
