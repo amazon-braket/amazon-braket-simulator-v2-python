@@ -63,6 +63,7 @@ def setup_julia():
         xx(theta) q;
         yy(theta) q;
         zz(theta) q;
+        #pragma braket noise bit_flip(0.1) q[0]
         #pragma braket result probability
         """
         r = jl.BraketSimulator.simulate(
@@ -73,7 +74,7 @@ def setup_julia():
             "braket_dm_v2", dm_stock_oq3, '{"theta": 0.1}', 0
         )
         jl.JSON3.write(r)
-        return jl
+        return
 
 
 def setup_pool():
