@@ -36,8 +36,7 @@ def setup_julia():
             ("JULIA_CONDAPKG_BACKEND", "Null"),
         ):
             os.environ[k] = os.environ.get(k, default)
-        # install Julia and any packages as needed
-        os.environ["PYTHON_JULIAPKG_OFFLINE"] = "yes"
+
         import juliacall
 
         jl = juliacall.Main
