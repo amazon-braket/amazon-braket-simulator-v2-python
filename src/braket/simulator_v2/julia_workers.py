@@ -7,9 +7,8 @@ from braket.ir.openqasm import Program as OpenQASMProgram
 
 
 def _handle_julia_error(error):
-    import sys
-
-    if isinstance(error, sys.modules["juliacall"].JuliaError):
+    # in case juliacall isn't loaded
+    if type(error).__name__ == "JuliaError":
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
             # convert to RuntimeError as JuliaError can't be serialized
