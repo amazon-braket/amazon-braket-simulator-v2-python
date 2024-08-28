@@ -6,7 +6,6 @@ from braket.device_schema.simulators import (
 )
 
 from braket.simulator_v2.base_simulator_v2 import BaseLocalSimulatorV2
-from braket.simulator_v2.julia_import import jlBraketSimulator
 
 
 class StateVectorSimulatorV2(BaseLocalSimulatorV2):
@@ -19,7 +18,7 @@ class StateVectorSimulatorV2(BaseLocalSimulatorV2):
     DEVICE_ID = "braket_sv_v2"
 
     def __init__(self):
-        super().__init__(jlBraketSimulator.StateVectorSimulator(0, 0))
+        super().__init__(self.DEVICE_ID)
 
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:
@@ -45,86 +44,6 @@ class StateVectorSimulatorV2(BaseLocalSimulatorV2):
                     "shotsRange": [0, max_shots],
                 },
                 "action": {
-                    "braket.ir.jaqcd.program": {
-                        "actionType": "braket.ir.jaqcd.program",
-                        "version": ["1"],
-                        "supportedOperations": [
-                            "ccnot",
-                            "cnot",
-                            "cphaseshift",
-                            "cphaseshift00",
-                            "cphaseshift01",
-                            "cphaseshift10",
-                            "cswap",
-                            "cv",
-                            "cy",
-                            "cz",
-                            "ecr",
-                            "h",
-                            "i",
-                            "iswap",
-                            "pswap",
-                            "phaseshift",
-                            "rx",
-                            "ry",
-                            "rz",
-                            "s",
-                            "si",
-                            "swap",
-                            "t",
-                            "ti",
-                            "unitary",
-                            "v",
-                            "vi",
-                            "x",
-                            "xx",
-                            "xy",
-                            "y",
-                            "yy",
-                            "z",
-                            "zz",
-                        ],
-                        "supportedResultTypes": [
-                            {
-                                "name": "Sample",
-                                "observables": observables,
-                                "minShots": 1,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "Expectation",
-                                "observables": observables,
-                                "minShots": 0,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "Variance",
-                                "observables": observables,
-                                "minShots": 0,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "Probability",
-                                "minShots": 0,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "StateVector",
-                                "minShots": 0,
-                                "maxShots": 0,
-                            },
-                            {
-                                "name": "DensityMatrix",
-                                "minShots": 0,
-                                "maxShots": 0,
-                            },
-                            {
-                                "name": "Amplitude",
-                                "minShots": 0,
-                                "maxShots": 0,
-                            },
-                        ],
-                    },
                     "braket.ir.openqasm.program": {
                         "actionType": "braket.ir.openqasm.program",
                         "version": ["1"],

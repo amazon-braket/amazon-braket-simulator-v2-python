@@ -6,7 +6,6 @@ from braket.device_schema.simulators import (
 )
 
 from braket.simulator_v2.base_simulator_v2 import BaseLocalSimulatorV2
-from braket.simulator_v2.julia_import import jlBraketSimulator
 
 
 class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
@@ -19,7 +18,7 @@ class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
     DEVICE_ID = "braket_dm_v2"
 
     def __init__(self):
-        super().__init__(jlBraketSimulator.DensityMatrixSimulator(0, 0))
+        super().__init__(self.DEVICE_ID)
 
     @property
     def properties(self) -> GateModelSimulatorDeviceCapabilities:
@@ -171,87 +170,6 @@ class DensityMatrixSimulatorV2(BaseLocalSimulatorV2):
                         "requiresAllQubitsMeasurement": True,
                         "supportsUnassignedMeasurements": True,
                         "disabledQubitRewiringSupported": False,
-                    },
-                    "braket.ir.jaqcd.program": {
-                        "actionType": "braket.ir.jaqcd.program",
-                        "version": ["1"],
-                        "supportedOperations": [
-                            "amplitude_damping",
-                            "bit_flip",
-                            "ccnot",
-                            "cnot",
-                            "cphaseshift",
-                            "cphaseshift00",
-                            "cphaseshift01",
-                            "cphaseshift10",
-                            "cswap",
-                            "cv",
-                            "cy",
-                            "cz",
-                            "depolarizing",
-                            "ecr",
-                            "generalized_amplitude_damping",
-                            "h",
-                            "i",
-                            "iswap",
-                            "kraus",
-                            "pauli_channel",
-                            "two_qubit_pauli_channel",
-                            "phase_flip",
-                            "phase_damping",
-                            "phaseshift",
-                            "pswap",
-                            "rx",
-                            "ry",
-                            "rz",
-                            "s",
-                            "si",
-                            "swap",
-                            "t",
-                            "ti",
-                            "two_qubit_dephasing",
-                            "two_qubit_depolarizing",
-                            "unitary",
-                            "v",
-                            "vi",
-                            "x",
-                            "xx",
-                            "xy",
-                            "y",
-                            "yy",
-                            "z",
-                            "zz",
-                        ],
-                        "supportedResultTypes": [
-                            {
-                                "name": "Sample",
-                                "observables": observables,
-                                "minShots": 1,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "Expectation",
-                                "observables": observables,
-                                "minShots": 0,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "Variance",
-                                "observables": observables,
-                                "minShots": 0,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "Probability",
-                                "minShots": 0,
-                                "maxShots": max_shots,
-                            },
-                            {
-                                "name": "DensityMatrix",
-                                "minShots": 0,
-                                "maxShots": 0,
-                            },
-                        ],
                     },
                 },
                 "paradigm": {"qubitCount": qubit_count},
