@@ -358,7 +358,7 @@ def test_valid_local_device_for_noise_model(backend, noise_model):
 
 @pytest.mark.parametrize(
     "backend, device_name",
-    [("braket_sv_v2", "StateVectorSimulatorV2")],
+    [["braket_sv_v2", "StateVectorSimulatorV2"]],
 )
 def test_invalid_local_device_for_noise_model(backend, device_name, noise_model):
     with pytest.raises(
