@@ -40,40 +40,16 @@ def setup_julia():
         import juliacall
 
         jl = juliacall.Main
-        jl.seval("using JSON3, BraketSimulator")
-        sv_stock_oq3 = """
-        OPENQASM 3.0;
-        input float theta;
-        qubit[2] q;
-        h q[0];
-        cnot q;
-        x q[0];
-        xx(theta) q;
-        yy(theta) q;
-        zz(theta) q;
-        #pragma braket result expectation z(q[0])
-        """
+        jl.seval("using BraketSimulator, JSON3")
         dm_stock_oq3 = """
         OPENQASM 3.0;
-        input float theta;
         qubit[2] q;
         h q[0];
-        x q[0];
         cnot q;
-        xx(theta) q;
-        yy(theta) q;
-        zz(theta) q;
         #pragma braket noise bit_flip(0.1) q[0]
         #pragma braket result probability
         """
-        r = jl.BraketSimulator.simulate(
-            "braket_sv_v2", sv_stock_oq3, '{"theta": 0.1}', 0
-        )
-        jl.JSON3.write(r)
-        r = jl.BraketSimulator.simulate(
-            "braket_dm_v2", dm_stock_oq3, '{"theta": 0.1}', 0
-        )
-        jl.JSON3.write(r)
+        jl.BraketSimulator.simulate("braket_dm_v2", dm_stock_oq3, "{}", 0)
         return
 
 
@@ -126,8 +102,15 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         except Exception as e:
             _handle_julia_error(e)
 
-        result = GateModelTaskResult(**json.loads(jl_result))
-        jl_result = None
+        loaded_result = json.loads(jl_result[0])
+        result = GateModelTaskResult(**loaded_result)
+        if jl_result[1]:
+            array_len = jl_result[2]
+            for result_ind, result_type in enumerate(result.resultTypes):
+                if isinstance(result_type.type, StateVector):
+                    result.resultTypes[result_ind].value = np.memmap(
+                        jl_result[1], dtype=np.complex128, mode="r", shape=(array_len,)
+                    )
         result.additionalMetadata.action = openqasm_ir
 
         # attach the result types
@@ -204,9 +187,9 @@ def _result_value_to_ndarray(
             }
         if isinstance(result_type.type, StateVector):
             val = task_result.resultTypes[result_ind].value
-            # complex are stored as tuples of reals
-            fixed_val = [reconstruct_complex(v) for v in val]
-            task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
+            if isinstance(val, list):
+                fixed_val = [reconstruct_complex(v) for v in val]
+                task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
         if isinstance(result_type.type, DensityMatrix):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals
