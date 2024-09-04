@@ -31,21 +31,21 @@ def setup_julia() -> None:
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return sys.modules["juliacall"].Main
-    for k, default in (
-        ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
-        ("PYTHON_JULIACALL_THREADS", "auto"),
-        ("PYTHON_JULIACALL_OPTLEVEL", "3"),
-        # let the user's Conda/Pip handle installing things
-        ("JULIA_CONDAPKG_BACKEND", "Null"),
-    ):
-        os.environ[k] = os.environ.get(k, default)
-    # install Julia and any packages as needed
-    os.environ["PYTHON_JULIAPKG_OFFLINE"] = "yes"
-    import juliacall  # noqa: PLC0415
+    else:
+        for k, default in (
+            ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
+            ("PYTHON_JULIACALL_THREADS", "auto"),
+            ("PYTHON_JULIACALL_OPTLEVEL", "3"),
+            # let the user's Conda/Pip handle installing things
+            ("JULIA_CONDAPKG_BACKEND", "Null"),
+        ):
+            os.environ[k] = os.environ.get(k, default)
 
-    jl = juliacall.Main
-    jl.seval("using JSON3, BraketSimulator")
-    sv_stock_oq3 = """
+        import juliacall
+
+        jl = juliacall.Main
+        jl.seval("using JSON3, BraketSimulator")
+        sv_stock_oq3 = """
         OPENQASM 3.0;
         input float theta;
         qubit[2] q;
@@ -57,7 +57,7 @@ def setup_julia() -> None:
         zz(theta) q;
         #pragma braket result expectation z(q[0])
         """
-    dm_stock_oq3 = """
+        dm_stock_oq3 = """
         OPENQASM 3.0;
         input float theta;
         qubit[2] q;
@@ -77,21 +77,29 @@ def setup_julia() -> None:
 
 
 def setup_pool() -> None:
-    global __JULIA_POOL__
-    __JULIA_POOL__ = Pool(processes=1)
-    __JULIA_POOL__.apply(setup_julia)
-    atexit.register(__JULIA_POOL__.join)
-    atexit.register(__JULIA_POOL__.close)
+        #pragma braket noise bit_flip(0.1) q[0]
+        #pragma braket result probability
+        r = jl.BraketSimulator.simulate(
+            "braket_sv_v2", sv_stock_oq3, '{"theta": 0.1}', 0
+        )
+        jl.JSON3.write(r)
+        r = jl.BraketSimulator.simulate(
+            "braket_dm_v2", dm_stock_oq3, '{"theta": 0.1}', 0
+        )
+        jl.JSON3.write(r)
+        return
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
-    def __init__(self, device: str) -> None:
+    def __init__(self, device: str):
+        global __JULIA_POOL__
         if __JULIA_POOL__ is None:
             setup_pool()
         self._device = device
-
     def initialize_simulation(self, **kwargs: dict) -> None:
         pass
+    def initialize_simulation(self, **kwargs):
+        return
 
     def run_openqasm(
         self,
@@ -136,9 +144,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def run_multiple(
         self,
         programs: Sequence[OpenQASMProgram],
-        max_parallel: int | None = -1,  # noqa: ARG002
-        shots: int | None = 0,
-        inputs: dict | Sequence[dict] | None = None,
+        max_parallel: Optional[int] = -1,
+        shots: Optional[int] = 0,
+        inputs: Optional[Union[dict, Sequence[dict]]],
     ) -> list[GateModelTaskResult]:
         """
         Run the tasks specified by the given IR programs.
@@ -146,7 +154,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         such as the extra parameters for AHS simulations.
         Args:
             programs (Sequence[OQ3Program]): The IR representations of the programs
-            max_parallel (int | None): The maximum number of programs to run in parallel.
+            max_parallel (Optional[int]): The maximum number of programs to run in parallel.
                 Default is the number of logical CPUs.
 
         Returns:
@@ -155,6 +163,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         """
         if inputs is None:
             inputs = {}
+        global __JULIA_POOL__
         try:
             jl_results = __JULIA_POOL__.apply(
                 translate_and_run_multiple,

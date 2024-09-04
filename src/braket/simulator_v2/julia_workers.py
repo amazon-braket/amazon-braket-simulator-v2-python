@@ -16,7 +16,8 @@ def _handle_julia_error(error: str) -> None:
         if python_exception is None:
             # convert to RuntimeError as JuliaError can't be serialized
             py_error = RuntimeError(
-                "Unable to unwrap internal Julia exception." f"Exception message: {error.exception.message!s}"
+                "Unable to unwrap internal Julia exception."
+                f"Exception message: {str(error.exception.message)}"
             )
         else:
             class_val = getattr(sys.modules["builtins"], str(python_exception))
@@ -47,10 +48,9 @@ def translate_and_run_multiple(
     device_id: str,
     programs: Sequence[OpenQASMProgram],
     shots: int = 0,
-    inputs: dict | Sequence[dict] | None = None,
-) -> list[str]:
-    if inputs is None:
-        inputs = {}
+    inputs: Optional[Union[dict, Sequence[dict]]] = None,
+) -> List[str]:
+    inputs = inputs or {}
     jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
     py_inputs = {}
