@@ -644,12 +644,7 @@ def test_simulator_identity(caplog):
             program,
             shots=shots_count,
         )
-        counter = Counter(
-            [
-                "".join([str(m) for m in measurement])
-                for measurement in result.measurements
-            ]
-        )
+        counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
         counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
         assert counter.keys() == {"00"}
         assert counter["00"] == shots_count
