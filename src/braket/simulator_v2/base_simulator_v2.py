@@ -26,7 +26,7 @@ def setup_julia():
     # don't reimport if we don't have to
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
-        return sys.modules["juliacall"].Main
+        return
     else:
         for k, default in (
             ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
@@ -41,15 +41,18 @@ def setup_julia():
 
         jl = juliacall.Main
         jl.seval("using BraketSimulator, JSON3")
-        dm_stock_oq3 = """
+        stock_oq3 = """
         OPENQASM 3.0;
         qubit[2] q;
         h q[0];
+        cphaseshift(1.5707963267948966) q[1], q[0];
         cnot q;
         #pragma braket noise bit_flip(0.1) q[0]
+        #pragma braket result variance y(q[0])
+        #pragma braket result density_matrix q[0], q[1]
         #pragma braket result probability
         """
-        jl.BraketSimulator.simulate("braket_dm_v2", dm_stock_oq3, "{}", 0)
+        jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, "{}", 0)
         return
 
 
@@ -60,6 +63,29 @@ def setup_pool():
     atexit.register(__JULIA_POOL__.join)
     atexit.register(__JULIA_POOL__.close)
     return
+
+
+def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
+    result = GateModelTaskResult(**raw_result)
+    if mmap_paths:
+        mmap_files = mmap_paths
+        array_lens = obj_lengths
+        mmap_index = 0
+        for result_ind, result_type in enumerate(result.resultTypes):
+            if not result_type.value:
+                d_type = (
+                    np.complex128
+                    if isinstance(result_type.type, (DensityMatrix, StateVector))
+                    else np.float64
+                )
+                result.resultTypes[result_ind].value = np.memmap(
+                    mmap_files[mmap_index],
+                    dtype=d_type,
+                    mode="r",
+                    shape=(array_lens[mmap_index],),
+                )
+                mmap_index += 1
+    return result
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
@@ -103,14 +129,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             _handle_julia_error(e)
 
         loaded_result = json.loads(jl_result[0])
-        result = GateModelTaskResult(**loaded_result)
-        if jl_result[1]:
-            array_len = jl_result[2]
-            for result_ind, result_type in enumerate(result.resultTypes):
-                if isinstance(result_type.type, StateVector):
-                    result.resultTypes[result_ind].value = np.memmap(
-                        jl_result[1], dtype=np.complex128, mode="r", shape=(array_len,)
-                    )
+        result = _handle_mmaped_result(loaded_result, jl_result[1], jl_result[2])
         result.additionalMetadata.action = openqasm_ir
 
         # attach the result types
@@ -148,8 +167,15 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         except Exception as e:
             _handle_julia_error(e)
 
+        loaded_result = json.loads(jl_results[0])
+        paths_and_lens = json.loads(jl_results[1])
+        results_paths_lens = [
+            (loaded_result[r_ix], paths_and_lens[r_ix][0], paths_and_lens[r_ix][1])
+            for r_ix in range(len(loaded_result))
+        ]
         results = [
-            GateModelTaskResult(**json.loads(jl_result)) for jl_result in jl_results
+            _handle_mmaped_result(*result_path_len)
+            for result_path_len in results_paths_lens
         ]
         jl_results = None
         for p_ix, program in enumerate(programs):
