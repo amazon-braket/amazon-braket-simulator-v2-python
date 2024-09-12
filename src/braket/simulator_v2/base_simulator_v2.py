@@ -193,7 +193,9 @@ def _result_value_to_ndarray(
         # Amplitude
         if isinstance(result_type.value, dict):
             val = task_result.resultTypes[result_ind].value
-            task_result.resultTypes[result_ind].value = {k: reconstruct_complex(v) for (k, v) in val.items()}
+            task_result.resultTypes[result_ind].value = {
+                k: reconstruct_complex(v) for (k, v) in val.items()
+            }
         elif isinstance(result_type.type, StateVector):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals

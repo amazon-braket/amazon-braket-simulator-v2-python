@@ -77,7 +77,9 @@ def test_simulator_run_noisy_circuit(noisy_circuit_2_qubit, caplog):
 
     assert all([len(measurement) == 2] for measurement in result.measurements)
     assert len(result.measurements) == shots_count
-    counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
+    counter = Counter([
+        "".join([str(m) for m in measurement]) for measurement in result.measurements
+    ])
     assert counter.keys() == {"10", "11"}
     assert 0.0 < counter["10"] / (counter["10"] + counter["11"]) < 0.2
     assert 0.8 < counter["11"] / (counter["10"] + counter["11"]) < 1.0
@@ -97,7 +99,9 @@ def test_simulator_run_bell_pair(bell_ir, caplog):
 
     assert all([len(measurement) == 2] for measurement in result.measurements)
     assert len(result.measurements) == shots_count
-    counter = Counter(["".join([str(m) for m in measurement]) for measurement in result.measurements])
+    counter = Counter([
+        "".join([str(m) for m in measurement]) for measurement in result.measurements
+    ])
     assert counter.keys() == {"00", "11"}
     assert 0.4 < counter["00"] / (counter["00"] + counter["11"]) < 0.6
     assert 0.4 < counter["11"] / (counter["00"] + counter["11"]) < 0.6

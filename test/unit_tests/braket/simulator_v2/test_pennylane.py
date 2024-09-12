@@ -116,7 +116,9 @@ PARAM_6 = np.tensor(0.432, requires_grad=True)
 CIRCUIT_6 = QuantumScript(
     ops=[
         qml.Hadamard(wires=0),
-        qml.QubitUnitary(1 / np.sqrt(2) * np.tensor([[1, 1], [1, -1]], requires_grad=True), wires=0),
+        qml.QubitUnitary(
+            1 / np.sqrt(2) * np.tensor([[1, 1], [1, -1]], requires_grad=True), wires=0
+        ),
         qml.RX(PARAM_6, wires=0),
         qml.QubitUnitary(1 / np.sqrt(2) * anp.array([[1, 1], [1, -1]]), wires=0),
         qml.CNOT(wires=[0, 1]),
@@ -156,15 +158,21 @@ def test_local_sim_batch_execute_parallel(mock_run_batch):
         )
         assert np.allclose(
             results[1],
-            RESULT.get_value_by_result_type(result_types.Expectation(observable=Observable.X(), target=1)),
+            RESULT.get_value_by_result_type(
+                result_types.Expectation(observable=Observable.X(), target=1)
+            ),
         )
         assert np.allclose(
             results[2],
-            RESULT.get_value_by_result_type(result_types.Variance(observable=Observable.Y(), target=2)),
+            RESULT.get_value_by_result_type(
+                result_types.Variance(observable=Observable.Y(), target=2)
+            ),
         )
         assert np.allclose(
             results[3],
-            RESULT.get_value_by_result_type(result_types.Sample(observable=Observable.Z(), target=3)),
+            RESULT.get_value_by_result_type(
+                result_types.Sample(observable=Observable.Z(), target=3)
+            ),
         )
 
     mock_run_batch.assert_called_with(
