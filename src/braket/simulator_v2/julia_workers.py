@@ -1,33 +1,32 @@
+from __future__ import annotations
+
 import json
 import sys
-from collections.abc import Sequence
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING
 
-from braket.ir.openqasm import Program as OpenQASMProgram
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from braket.ir.openqasm import Program as OpenQASMProgram
 
 
-def _handle_julia_error(error):
-    # in case juliacall isn't loaded
-    if type(error).__name__ == "JuliaError":
+def _handle_julia_error(error: str) -> None:
+    if isinstance(error, sys.modules["juliacall"].JuliaError):
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
             # convert to RuntimeError as JuliaError can't be serialized
             py_error = RuntimeError(
                 "Unable to unwrap internal Julia exception."
-                f"Exception message: {str(error.exception.message)}"
+                f"Exception message: {error.exception.message}"
             )
         else:
             class_val = getattr(sys.modules["builtins"], str(python_exception))
             py_error = class_val(str(error.exception.message))
         raise py_error
-    else:
-        raise error
-    return
+    raise error
 
 
-def translate_and_run(
-    device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
-) -> str:
+def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0) -> str:
     jl = sys.modules["juliacall"].Main
     jl_shots = shots
     jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
@@ -49,8 +48,8 @@ def translate_and_run_multiple(
     device_id: str,
     programs: Sequence[OpenQASMProgram],
     shots: int = 0,
-    inputs: Optional[Union[dict, Sequence[dict]]] = None,
-) -> List[str]:
+    inputs: dict | Sequence[dict] | None = None,
+) -> list[str]:
     inputs = inputs or {}
     jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
