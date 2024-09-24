@@ -89,7 +89,9 @@ def test_exact_shots(benchmark, device_id, nq, exact_results, circuit):
 def test_exact_shots_batched(
     benchmark, device_id, nq, batch_size, exact_results, circuit
 ):
-    if device_id in ("braket_dm_v2", "braket_dm") and (exact_results in ("state_vector,") or nq >= 5):
+    if device_id in ("braket_dm_v2", "braket_dm") and (
+        exact_results in ("state_vector,") or nq >= 5
+    ):
         pytest.skip()
     if nq >= 10:
         pytest.skip()
@@ -136,7 +138,7 @@ def test_nonzero_shots_batched(
         pytest.skip()
     if nq >= 10:
         pytest.skip()
-    
+
     # skip all for now as this is very expensive
     pytest.skip()
 
