@@ -8,6 +8,7 @@ from braket.ir.openqasm import Program as OpenQASMProgram
 
 def _handle_julia_error(error):
     # in case juliacall isn't loaded
+    print(error)
     if type(error).__name__ == "JuliaError":
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
@@ -29,18 +30,20 @@ def translate_and_run(
     device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
 ) -> str:
     jl = sys.modules["juliacall"].Main
-    jl_shots = shots
+    jl.GC.enable(False)
     jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
             openqasm_ir.source,
             jl_inputs,
-            jl_shots,
+            shots,
         )
 
     except Exception as e:
         _handle_julia_error(e)
+    finally:
+        jl.GC.enable(True)
 
     return result
 
