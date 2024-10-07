@@ -7,7 +7,7 @@ from braket.ir.openqasm import Program
 np.random.seed(0x1C2C6D66)
 
 batch_size = (10, 100)
-n_qubits = range(3, 21)
+n_qubits = range(3, 16)
 exact_shots_results = (
     "state_vector",
     "density_matrix q[0], q[1]",
