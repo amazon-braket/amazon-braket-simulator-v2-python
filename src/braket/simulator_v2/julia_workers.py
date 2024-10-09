@@ -10,9 +10,8 @@ if TYPE_CHECKING:
     from braket.ir.openqasm import Program as OpenQASMProgram
 
 
-def _handle_julia_error(error):
+def _handle_julia_error(error: str) -> None:
     # in case juliacall isn't loaded
-    print(error)
     if type(error).__name__ == "JuliaError":
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
@@ -30,7 +29,7 @@ def _handle_julia_error(error):
 
 def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0) -> str:
     jl = sys.modules["juliacall"].Main
-    jl.GC.enable(False)
+    jl.GC.disable()
     jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
     try:
         result = jl.BraketSimulator.simulate(
@@ -43,7 +42,7 @@ def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int =
     except Exception as e:
         _handle_julia_error(e)
     finally:
-        jl.GC.enable(True)
+        jl.GC.enable()
 
     return result
 

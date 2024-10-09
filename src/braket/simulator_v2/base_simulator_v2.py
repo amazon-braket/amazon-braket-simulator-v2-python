@@ -4,9 +4,11 @@ import atexit
 import json
 import os
 import sys
+from itertools import starmap
 from multiprocessing.pool import Pool
 from typing import TYPE_CHECKING
 
+import juliacall
 import numpy as np
 
 from braket.default_simulator.simulator import BaseLocalSimulator
@@ -31,21 +33,18 @@ def setup_julia() -> None:
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return
-    else:
-        for k, default in (
-            ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
-            ("PYTHON_JULIACALL_THREADS", "auto"),
-            ("PYTHON_JULIACALL_OPTLEVEL", "3"),
-            # let the user's Conda/Pip handle installing things
-            ("JULIA_CONDAPKG_BACKEND", "Null"),
-        ):
-            os.environ[k] = os.environ.get(k, default)
+    for k, default in (
+        ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
+        ("PYTHON_JULIACALL_THREADS", "auto"),
+        ("PYTHON_JULIACALL_OPTLEVEL", "3"),
+        # let the user's Conda/Pip handle installing things
+        ("JULIA_CONDAPKG_BACKEND", "Null"),
+    ):
+        os.environ[k] = os.environ.get(k, default)
 
-        import juliacall
-
-        jl = juliacall.Main
-        jl.seval("using BraketSimulator, JSON3")
-        stock_oq3 = """
+    jl = juliacall.Main
+    jl.seval("using BraketSimulator, JSON3")
+    stock_oq3 = """
         OPENQASM 3.0;
         qubit[2] q;
         h q[0];
@@ -56,11 +55,11 @@ def setup_julia() -> None:
         #pragma braket result density_matrix q[0], q[1]
         #pragma braket result probability
         """
-        jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, "{}", 0)
-        return
+    jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, "{}", 0)
+    return
 
 
-def setup_pool():
+def setup_pool() -> None:
     global __JULIA_POOL__
     __JULIA_POOL__ = Pool(processes=1)
     __JULIA_POOL__.apply(setup_julia)
@@ -68,7 +67,9 @@ def setup_pool():
     atexit.register(__JULIA_POOL__.close)
 
 
-def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
+def _handle_mmaped_result(
+    raw_result: dict, mmap_paths: list, obj_lengths: list
+) -> GateModelTaskResult:
     result = GateModelTaskResult(**raw_result)
     if mmap_paths:
         mmap_files = mmap_paths
@@ -176,10 +177,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             (loaded_result[r_ix], paths_and_lens[r_ix][0], paths_and_lens[r_ix][1])
             for r_ix in range(len(loaded_result))
         ]
-        results = [
-            _handle_mmaped_result(*result_path_len)
-            for result_path_len in results_paths_lens
-        ]
+        results = list(starmap(_handle_mmaped_result, results_paths_lens))
         jl_results = None
         for p_ix, program in enumerate(programs):
             results[p_ix].additionalMetadata.action = program
