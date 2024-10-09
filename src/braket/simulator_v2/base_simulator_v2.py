@@ -8,7 +8,6 @@ from itertools import starmap
 from multiprocessing.pool import Pool
 from typing import TYPE_CHECKING
 
-import juliacall
 import numpy as np
 
 from braket.default_simulator.simulator import BaseLocalSimulator
@@ -33,6 +32,7 @@ def setup_julia() -> None:
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return
+    import juliacall  # noqa: PLC0415
     for k, default in (
         ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
         ("PYTHON_JULIACALL_THREADS", "auto"),

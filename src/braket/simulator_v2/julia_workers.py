@@ -29,7 +29,7 @@ def _handle_julia_error(error: str) -> None:
 
 def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0) -> str:
     jl = sys.modules["juliacall"].Main
-    jl.GC.disable()
+    jl.GC.enable(False)  # noqa: FBT003
     jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
     try:
         result = jl.BraketSimulator.simulate(
@@ -42,7 +42,7 @@ def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int =
     except Exception as e:
         _handle_julia_error(e)
     finally:
-        jl.GC.enable()
+        jl.GC.enable(True)  # noqa: FBT003
 
     return result
 
