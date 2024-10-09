@@ -30,57 +30,65 @@ def setup_julia() -> None:
     # don't reimport if we don't have to
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
-        return sys.modules["juliacall"].Main
-    for k, default in (
-        ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
-        ("PYTHON_JULIACALL_THREADS", "auto"),
-        ("PYTHON_JULIACALL_OPTLEVEL", "3"),
-        # let the user's Conda/Pip handle installing things
-        ("JULIA_CONDAPKG_BACKEND", "Null"),
-    ):
-        os.environ[k] = os.environ.get(k, default)
+        return
+    else:
+        for k, default in (
+            ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
+            ("PYTHON_JULIACALL_THREADS", "auto"),
+            ("PYTHON_JULIACALL_OPTLEVEL", "3"),
+            # let the user's Conda/Pip handle installing things
+            ("JULIA_CONDAPKG_BACKEND", "Null"),
+        ):
+            os.environ[k] = os.environ.get(k, default)
 
-    import juliacall  # noqa: PLC0415
+        import juliacall
 
-    jl = juliacall.Main
-    jl.seval("using JSON3, BraketSimulator")
-    sv_stock_oq3 = """
+        jl = juliacall.Main
+        jl.seval("using BraketSimulator, JSON3")
+        stock_oq3 = """
         OPENQASM 3.0;
-        input float theta;
         qubit[2] q;
         h q[0];
+        cphaseshift(1.5707963267948966) q[1], q[0];
         cnot q;
-        x q[0];
-        xx(theta) q;
-        yy(theta) q;
-        zz(theta) q;
-        #pragma braket result expectation z(q[0])
-        """
-    dm_stock_oq3 = """
-        OPENQASM 3.0;
-        input float theta;
-        qubit[2] q;
-        h q[0];
-        x q[0];
-        cnot q;
-        xx(theta) q;
-        yy(theta) q;
-        zz(theta) q;
+        #pragma braket noise bit_flip(0.1) q[0]
+        #pragma braket result variance y(q[0])
+        #pragma braket result density_matrix q[0], q[1]
         #pragma braket result probability
         """
-    r = jl.BraketSimulator.simulate("braket_sv_v2", sv_stock_oq3, '{"theta": 0.1}', 0)
-    jl.JSON3.write(r)
-    r = jl.BraketSimulator.simulate("braket_dm_v2", dm_stock_oq3, '{"theta": 0.1}', 0)
-    jl.JSON3.write(r)
-    return jl
+        jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, "{}", 0)
+        return
 
 
-def setup_pool() -> None:
+def setup_pool():
     global __JULIA_POOL__
     __JULIA_POOL__ = Pool(processes=1)
     __JULIA_POOL__.apply(setup_julia)
     atexit.register(__JULIA_POOL__.join)
     atexit.register(__JULIA_POOL__.close)
+
+
+def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
+    result = GateModelTaskResult(**raw_result)
+    if mmap_paths:
+        mmap_files = mmap_paths
+        array_lens = obj_lengths
+        mmap_index = 0
+        for result_ind, result_type in enumerate(result.resultTypes):
+            if not result_type.value:
+                d_type = (
+                    np.complex128
+                    if isinstance(result_type.type, (DensityMatrix, StateVector))
+                    else np.float64
+                )
+                result.resultTypes[result_ind].value = np.memmap(
+                    mmap_files[mmap_index],
+                    dtype=d_type,
+                    mode="r",
+                    shape=(array_lens[mmap_index],),
+                )
+                mmap_index += 1
+    return result
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
@@ -121,8 +129,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         except Exception as e:
             _handle_julia_error(e)
 
-        result = GateModelTaskResult(**json.loads(jl_result))
-        jl_result = None
+        loaded_result = json.loads(jl_result[0])
+        result = _handle_mmaped_result(loaded_result, jl_result[1], jl_result[2])
         result.additionalMetadata.action = openqasm_ir
 
         # attach the result types
@@ -162,7 +170,16 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         except Exception as e:
             _handle_julia_error(e)
 
-        results = [GateModelTaskResult(**json.loads(jl_result)) for jl_result in jl_results]
+        loaded_result = json.loads(jl_results[0])
+        paths_and_lens = json.loads(jl_results[1])
+        results_paths_lens = [
+            (loaded_result[r_ix], paths_and_lens[r_ix][0], paths_and_lens[r_ix][1])
+            for r_ix in range(len(loaded_result))
+        ]
+        results = [
+            _handle_mmaped_result(*result_path_len)
+            for result_path_len in results_paths_lens
+        ]
         jl_results = None
         for p_ix, program in enumerate(programs):
             results[p_ix].additionalMetadata.action = program
@@ -198,10 +215,10 @@ def _result_value_to_ndarray(
             }
         elif isinstance(result_type.type, StateVector):
             val = task_result.resultTypes[result_ind].value
-            # complex are stored as tuples of reals
-            fixed_val = [reconstruct_complex(v) for v in val]
-            task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
-        elif isinstance(result_type.type, DensityMatrix):
+            if isinstance(val, list):
+                fixed_val = [reconstruct_complex(v) for v in val]
+                task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
+        if isinstance(result_type.type, DensityMatrix):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals
             fixed_val = [[reconstruct_complex(v) for v in inner_val] for inner_val in val]
