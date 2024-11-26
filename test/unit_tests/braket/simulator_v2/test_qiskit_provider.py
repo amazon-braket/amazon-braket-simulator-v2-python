@@ -16,15 +16,13 @@ from qiskit_braket_provider import BraketLocalBackend
 @pytest.fixture
 def H2_op():
     # Define the Hamiltonian operator for H2 in terms of Pauli spin operators
-    return SparsePauliOp.from_list(
-        [
-            ("II", -1.052373245772859),
-            ("IZ", 0.39793742484318045),
-            ("ZI", -0.39793742484318045),
-            ("ZZ", -0.01128010425623538),
-            ("XX", 0.18093119978423156),
-        ]
-    )
+    return SparsePauliOp.from_list([
+        ("II", -1.052373245772859),
+        ("IZ", 0.39793742484318045),
+        ("ZI", -0.39793742484318045),
+        ("ZZ", -0.01128010425623538),
+        ("XX", 0.18093119978423156),
+    ])
 
 
 @pytest.fixture
