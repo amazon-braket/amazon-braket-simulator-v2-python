@@ -32,7 +32,6 @@ def setup_julia() -> None:
     if "juliacall" in sys.modules:
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return
-    import juliacall  # noqa: PLC0415
     for k, default in (
         ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
         ("PYTHON_JULIACALL_THREADS", "auto"),
@@ -42,6 +41,8 @@ def setup_julia() -> None:
     ):
         os.environ[k] = os.environ.get(k, default)
 
+    import juliacall  # noqa: PLC0415
+    
     jl = juliacall.Main
     jl.seval("using BraketSimulator, JSON3")
     stock_oq3 = """
