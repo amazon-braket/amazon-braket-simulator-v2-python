@@ -42,7 +42,7 @@ def setup_julia() -> None:
         os.environ[k] = os.environ.get(k, default)
 
     import juliacall  # noqa: PLC0415
-    
+
     jl = juliacall.Main
     jl.seval("using BraketSimulator, JSON3")
     stock_oq3 = """
