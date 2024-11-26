@@ -46,16 +46,16 @@ def setup_julia() -> None:
     jl = juliacall.Main
     jl.seval("using BraketSimulator, JSON3")
     stock_oq3 = """
-        OPENQASM 3.0;
-        qubit[2] q;
-        h q[0];
-        cphaseshift(1.5707963267948966) q[1], q[0];
-        cnot q;
-        #pragma braket noise bit_flip(0.1) q[0]
-        #pragma braket result variance y(q[0])
-        #pragma braket result density_matrix q[0], q[1]
-        #pragma braket result probability
-        """
+    OPENQASM 3.0;
+    qubit[2] q;
+    h q[0];
+    cphaseshift(1.5707963267948966) q[1], q[0];
+    cnot q;
+    #pragma braket noise bit_flip(0.1) q[0]
+    #pragma braket result variance y(q[0])
+    #pragma braket result density_matrix q[0], q[1]
+    #pragma braket result probability
+    """
     jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, "{}", 0)
     return
 
