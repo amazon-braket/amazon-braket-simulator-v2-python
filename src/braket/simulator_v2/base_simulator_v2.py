@@ -24,7 +24,7 @@ def setup_julia():
     import sys
 
     # don't reimport if we don't have to
-    if "juliacall" in sys.modules:
+    if "juliacall" in sys.modules and hasattr(sys.modules["juliacall"], "Main"):
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return
     else:
@@ -37,22 +37,56 @@ def setup_julia():
         ):
             os.environ[k] = os.environ.get(k, default)
 
-        import juliacall
+        from juliacall import Main as jl
 
-        jl = juliacall.Main
         jl.seval("using BraketSimulator, JSON3")
-        stock_oq3 = """
+        exact_sv_oq3 = """
         OPENQASM 3.0;
+        input float p;
         qubit[2] q;
         h q[0];
         cphaseshift(1.5707963267948966) q[1], q[0];
+        rx(1.5707963267948966) q[0];
+        ry(1.5707963267948966) q[0];
+        rz(p) q[0];
+        rz(p) q[0];
+        ry(1) q[1];
+        rx(0) q[1];
+        rz(2) q[1];
         cnot q;
-        #pragma braket noise bit_flip(0.1) q[0]
         #pragma braket result variance y(q[0])
+        #pragma braket result expectation y(q[0])
+        #pragma braket result expectation y(q[0]) @ z(q[1])
+        #pragma braket result expectation z(q[0]) @ z(q[1])
         #pragma braket result density_matrix q[0], q[1]
         #pragma braket result probability
         """
-        jl.BraketSimulator.simulate("braket_dm_v2", stock_oq3, "{}", 0)
+        inexact_sv_oq3 = """
+        OPENQASM 3.0;
+        input float p;
+        qubit[9] q;
+        h q;
+        #pragma braket result variance y(q[0])
+        #pragma braket result expectation z(q[1])
+        #pragma braket result expectation z(q[1]) @ z(q[2])
+        #pragma braket result expectation x(q[3]) @ x(q[4])
+        #pragma braket result expectation y(q[5]) @ y(q[6])
+        #pragma braket result expectation h(q[7]) @ h(q[8])
+        """
+        stock_dm_oq3 = """
+        OPENQASM 3.0;
+        input float p;
+        qubit[2] q;
+        h q[0];
+        #pragma braket noise bit_flip(0.1) q[0]
+        #pragma braket noise phase_flip(0.1) q[0]
+        #pragma braket result variance y(q[0])
+        #pragma braket result expectation y(q[0])
+        #pragma braket result density_matrix q[0], q[1]
+        """
+        jl.BraketSimulator.simulate("braket_sv_v2", exact_sv_oq3, '{"p": 1.57}', 0)
+        jl.BraketSimulator.simulate("braket_sv_v2", inexact_sv_oq3, '{"p": 1.57}', 100)
+        jl.BraketSimulator.simulate("braket_dm_v2", stock_dm_oq3, '{"p": 1.57}', 0)
         return
 
 
@@ -120,10 +154,12 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 are requested when shots>0.
         """
         global __JULIA_POOL__
+
+        inputs_dict = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
         try:
             jl_result = __JULIA_POOL__.apply(
                 translate_and_run,
-                [self._device, openqasm_ir, shots],
+                [self._device, openqasm_ir.source, inputs_dict, shots],
             )
         except Exception as e:
             _handle_julia_error(e)
