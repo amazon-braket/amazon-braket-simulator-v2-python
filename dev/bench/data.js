@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1735837630779,
+  "lastUpdate": 1736178751358,
   "repoUrl": "https://github.com/amazon-braket/amazon-braket-simulator-v2-python",
   "entries": {
     "Python Benchmark with pytest-benchmark": [
@@ -86890,6 +86890,5472 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0",
             "extra": "mean: 453.3783093999773 msec\nrounds: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "amazon-braket",
+            "username": "amazon-braket"
+          },
+          "committer": {
+            "name": "amazon-braket",
+            "username": "amazon-braket"
+          },
+          "id": "5b2ae571e0049d3a2a2a93747268a833ac996bbc",
+          "message": "change: force precompilation at startup",
+          "timestamp": "2024-12-09T20:36:56Z",
+          "url": "https://github.com/amazon-braket/amazon-braket-simulator-v2-python/pull/44/commits/5b2ae571e0049d3a2a2a93747268a833ac996bbc"
+        },
+        "date": 1736178750027,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-3-sv]",
+            "value": 534.3238985947335,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8715240000119593 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-4-sv]",
+            "value": 518.350649702891,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9291959999918618 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-5-sv]",
+            "value": 514.6498157950346,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9430688000056762 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-6-sv]",
+            "value": 563.4648490356184,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.7747335999956704 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-7-sv]",
+            "value": 447.36356127283847,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.2353183999939574 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-8-sv]",
+            "value": 502.2222329364878,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9911503999992417 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-9-sv]",
+            "value": 434.24297683537463,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.3028582000051756 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-10-sv]",
+            "value": 331.3977056143351,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.0175224000004164 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-11-sv]",
+            "value": 270.2827178861548,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.699829599986515 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-12-sv]",
+            "value": 188.27959519887935,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.311249999999745 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-13-sv]",
+            "value": 94.3439606836927,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.599512599992522 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-14-sv]",
+            "value": 63.55525961399944,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.734339000005093 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-state_vector-15-sv]",
+            "value": 23.935816242772866,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 41.77839560002212 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-3-sv]",
+            "value": 541.8752525139079,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8454431999998633 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-3-dm]",
+            "value": 471.56353964921476,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.120605000004616 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-4-sv]",
+            "value": 523.9924620556451,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9084243999941464 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-4-dm]",
+            "value": 537.033393164109,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8620816000066043 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-5-sv]",
+            "value": 551.870592968684,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8120189999990544 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-5-dm]",
+            "value": 502.3669016533628,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.990577000015037 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-6-sv]",
+            "value": 63.07519372976056,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.854093200005082 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-6-dm]",
+            "value": 498.915158882807,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0043487999828358 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-7-sv]",
+            "value": 489.4082750513496,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.043283800003337 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-7-dm]",
+            "value": 480.04703692566324,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0831292000139 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-8-sv]",
+            "value": 525.6576108092694,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9023790000119334 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-8-dm]",
+            "value": 425.2067674197938,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.3517970000057176 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-9-sv]",
+            "value": 515.9245264319408,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.938268000003518 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-9-dm]",
+            "value": 226.19652533230067,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.420934399990983 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-10-sv]",
+            "value": 510.7240299613403,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.958004600010099 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-10-dm]",
+            "value": 116.50128377438486,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.583596399989801 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-11-sv]",
+            "value": 477.9547665507054,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.092248200005997 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-12-sv]",
+            "value": 396.0715092878991,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.5247965999824373 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-13-sv]",
+            "value": 355.68756148595327,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.81145619999279 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-14-sv]",
+            "value": 362.3495352605429,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.7597662000061973 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-density_matrix q[0], q[1]-15-sv]",
+            "value": 277.23376811427437,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.607064200014065 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-3-sv]",
+            "value": 583.1781787737805,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.7147418000149628 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-3-dm]",
+            "value": 582.4464615234486,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.7168959999935396 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-4-sv]",
+            "value": 614.9671945789391,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.6261029999895982 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-4-dm]",
+            "value": 556.9462503383161,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.795505400014008 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-5-sv]",
+            "value": 584.3761428235729,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.711226599991278 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-5-dm]",
+            "value": 570.96781671496,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.7514121999965937 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-6-sv]",
+            "value": 390.3209460810287,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.561994200004847 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-6-dm]",
+            "value": 511.8938012802411,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9535302000122101 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-7-sv]",
+            "value": 534.6421372811207,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8704100000149992 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-7-dm]",
+            "value": 465.6685836675377,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1474500000067565 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-8-sv]",
+            "value": 378.9016353908678,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.6392074000114008 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-8-dm]",
+            "value": 405.36002699497277,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.4669427999924665 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-9-sv]",
+            "value": 473.8736402698975,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1102671999869926 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-9-dm]",
+            "value": 290.66622500920323,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.4403721999979098 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-10-sv]",
+            "value": 399.94663112067406,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.5003336000054333 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-10-dm]",
+            "value": 178.68588964657354,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.59641280001415 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-11-sv]",
+            "value": 323.40225380370777,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.092124399995555 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-12-sv]",
+            "value": 229.18606631301697,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.363266999985171 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-13-sv]",
+            "value": 147.39270702634317,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.784596200009219 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-14-sv]",
+            "value": 82.72039724844251,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.08891680000761 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-probability-15-sv]",
+            "value": 46.75739127985836,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.386992999987342 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-3-sv]",
+            "value": 602.7806028109321,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.6589783999961583 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-3-dm]",
+            "value": 506.40526702086925,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9747029999962251 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-4-sv]",
+            "value": 600.2847750999188,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.6658759999927497 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-4-dm]",
+            "value": 527.9458082604817,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8941338000104224 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-5-sv]",
+            "value": 600.2287831997055,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.6660314000091603 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-5-dm]",
+            "value": 556.7487299423985,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.7961424000077386 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-6-sv]",
+            "value": 589.3458296638144,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.696796600003836 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-6-dm]",
+            "value": 522.6327688417525,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.913389400010601 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-7-sv]",
+            "value": 613.6635628802719,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.6295573999968838 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-7-dm]",
+            "value": 509.16320655878735,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9640068000171595 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-8-sv]",
+            "value": 498.31976541273116,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.006743600009031 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-8-dm]",
+            "value": 410.8489091602143,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.433984800018152 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-9-sv]",
+            "value": 552.3143906055683,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.81056300000364 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-9-dm]",
+            "value": 238.48973418561488,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.193052599998737 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-10-sv]",
+            "value": 542.922178728404,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8418846000031408 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-10-dm]",
+            "value": 121.22973405586515,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.248801399986405 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-11-sv]",
+            "value": 508.03601203118296,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9683643999997003 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-12-sv]",
+            "value": 480.4131245410397,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0815417999983765 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-13-sv]",
+            "value": 483.5812090037477,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.067904999989878 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-14-sv]",
+            "value": 447.5912296129679,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.2341813999901206 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-expectation z(q[0])-15-sv]",
+            "value": 360.8536961287487,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.771206199986409 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-3-sv]",
+            "value": 432.5959303138149,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.311625999982425 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-3-dm]",
+            "value": 438.0399115667483,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.282897000009143 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-4-sv]",
+            "value": 517.9754577030986,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9305933999930858 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-4-dm]",
+            "value": 507.08031168098495,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9720742000117752 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-5-sv]",
+            "value": 527.5405164265343,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8955890000142972 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-5-dm]",
+            "value": 497.2105988179822,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0112202000063917 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-6-sv]",
+            "value": 510.7182915684299,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9580266000048139 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-6-dm]",
+            "value": 507.99322255837643,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9685301999970761 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-7-sv]",
+            "value": 514.4469037305598,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.943835199995192 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-7-dm]",
+            "value": 426.21516500743047,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.3462328000050547 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-8-sv]",
+            "value": 445.59467282871225,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.244191999989198 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-8-dm]",
+            "value": 403.4561669073954,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.4785840000049575 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-9-sv]",
+            "value": 494.3295457784505,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.022942000007788 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-9-dm]",
+            "value": 186.9015715399655,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.3504097999848454 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-10-sv]",
+            "value": 478.27397427343965,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.090851799994198 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-10-dm]",
+            "value": 124.14351218445876,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.055193399991367 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-11-sv]",
+            "value": 454.2240291022803,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.2015568000142594 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-12-sv]",
+            "value": 488.19495772600703,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0483620000049996 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-13-sv]",
+            "value": 455.6537702039783,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1946488000139652 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-14-sv]",
+            "value": 444.49118516103755,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.2497634000046673 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[ghz-variance y(q[0])-15-sv]",
+            "value": 333.12386504826713,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.001886399988507 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-3-sv]",
+            "value": 553.9724254643854,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.80514400001357 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-4-sv]",
+            "value": 503.1838961031636,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.987344999997731 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-5-sv]",
+            "value": 457.23470121948964,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1870606000220505 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-6-sv]",
+            "value": 401.8835478114953,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.4882830000024114 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-7-sv]",
+            "value": 394.2813123060293,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.536260199985918 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-8-sv]",
+            "value": 379.17938150040766,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.6372741999921345 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-9-sv]",
+            "value": 334.31526183229914,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.9911886000036247 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-10-sv]",
+            "value": 254.84212784990905,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.923998000004758 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-11-sv]",
+            "value": 183.21757097564895,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.457991799994488 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-12-sv]",
+            "value": 127.64136900695419,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.8344505999893945 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-13-sv]",
+            "value": 79.12104369258286,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.638862600010725 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-14-sv]",
+            "value": 42.40308672758827,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 23.583188800012067 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-state_vector-15-sv]",
+            "value": 18.17971819298974,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 55.00635319999674 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-3-sv]",
+            "value": 521.1326589059732,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9188971999938076 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-3-dm]",
+            "value": 516.2314525773551,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.9371156000033807 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-4-sv]",
+            "value": 530.8464803698563,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8837837999853946 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-4-dm]",
+            "value": 464.74068213479194,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1517376000019794 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-5-sv]",
+            "value": 481.3522223660484,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0774807999941913 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-5-dm]",
+            "value": 421.1065686822847,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.374695799994697 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-6-sv]",
+            "value": 461.0955260805785,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.168748000008236 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-6-dm]",
+            "value": 429.26417509595274,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.329567800006771 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-7-sv]",
+            "value": 408.0107858463614,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.4509156000021903 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-7-dm]",
+            "value": 326.98943313999445,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.0582028000026185 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-8-sv]",
+            "value": 387.75687147972764,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.578935599990473 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-8-dm]",
+            "value": 175.72858565304767,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.690593799999988 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-9-sv]",
+            "value": 382.00540614029705,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.6177640000014435 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-9-dm]",
+            "value": 56.124840413222465,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 17.81742260000101 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-10-sv]",
+            "value": 342.2010866654457,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.922258400008104 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-10-dm]",
+            "value": 15.22528280011093,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 65.68022500000552 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-11-sv]",
+            "value": 266.74852645470804,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.7488491999965845 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-12-sv]",
+            "value": 223.70445813426852,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.470183600005839 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-13-sv]",
+            "value": 177.15471598083164,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.644783399998232 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-14-sv]",
+            "value": 128.51389436958868,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.7812598000036814 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-density_matrix q[0], q[1]-15-sv]",
+            "value": 83.68082213122962,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.950169400006416 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-3-sv]",
+            "value": 545.0995171831951,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8345274000012068 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-3-dm]",
+            "value": 507.6435379860586,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.969886200004112 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-4-sv]",
+            "value": 558.7792773790804,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.789615400002731 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-4-dm]",
+            "value": 496.6086101385808,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0136582000077397 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-5-sv]",
+            "value": 544.7830755481549,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8355930000097942 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-5-dm]",
+            "value": 474.6410218740354,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1068554000066797 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-6-sv]",
+            "value": 483.3855550900825,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0687419999831036 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-6-dm]",
+            "value": 435.0616913134859,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.298524599996199 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-7-sv]",
+            "value": 426.09279806944267,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.346906599996146 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-7-dm]",
+            "value": 337.94963522871245,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.9590208000172424 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-8-sv]",
+            "value": 384.583819158704,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.600213400000939 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-8-dm]",
+            "value": 167.70607538082004,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.9628131999943434 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-9-sv]",
+            "value": 347.82797430131296,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.8749844000003577 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-9-dm]",
+            "value": 57.156005636981504,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 17.49597420000555 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-10-sv]",
+            "value": 262.0139967879334,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.8165899999967223 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-10-dm]",
+            "value": 19.45857586761654,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 51.391222400002334 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-11-sv]",
+            "value": 212.81306610934357,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.6989596000003075 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-12-sv]",
+            "value": 151.43064862434272,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.603683000003002 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-13-sv]",
+            "value": 81.1190298788407,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.32756359997893 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-14-sv]",
+            "value": 41.456105922692906,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.121898999987934 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-probability-15-sv]",
+            "value": 28.59210082370145,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.974694800007455 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-3-sv]",
+            "value": 572.716627485153,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.7460642000060034 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-3-dm]",
+            "value": 528.019569675499,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8938691999892399 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-4-sv]",
+            "value": 530.1538241344597,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8862449999915043 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-4-dm]",
+            "value": 549.9414477304387,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.8183754000119734 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-5-sv]",
+            "value": 515.312617493359,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.940569599992159 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-5-dm]",
+            "value": 493.60027499337394,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0259308000049714 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-6-sv]",
+            "value": 470.07246072672683,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.127331600013349 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-6-dm]",
+            "value": 458.3945519266925,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1815267999954813 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-7-sv]",
+            "value": 431.98141581494224,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.31491439999445 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-7-dm]",
+            "value": 305.06330032933835,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.2780082000044786 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-8-sv]",
+            "value": 432.4823666131128,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.312232999997832 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-8-dm]",
+            "value": 167.48799429267982,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.970577200014304 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-9-sv]",
+            "value": 397.5899054152349,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.5151543999982096 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-9-dm]",
+            "value": 56.25681298136038,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 17.77562479999233 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-10-sv]",
+            "value": 359.02367962360233,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.7853315999891493 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-10-dm]",
+            "value": 18.35542708175725,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 54.479800200010686 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-11-sv]",
+            "value": 312.7836752455409,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.1970977999890238 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-12-sv]",
+            "value": 244.64111197716048,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.0876204000142025 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-13-sv]",
+            "value": 200.31243933027142,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.992201200002455 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-14-sv]",
+            "value": 142.29865316907404,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.027473399989503 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-expectation z(q[0])-15-sv]",
+            "value": 96.03208854614698,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.413186000005226 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-3-sv]",
+            "value": 266.6310305398786,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.7505012000110582 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-3-dm]",
+            "value": 469.90180273945754,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1281042000055095 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-4-sv]",
+            "value": 474.570203122369,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.1071698000014294 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-4-dm]",
+            "value": 481.8795461111973,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0752074000029097 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-5-sv]",
+            "value": 490.8437997617153,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.0373079999899346 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-5-dm]",
+            "value": 436.65685382154123,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.290127800006303 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-6-sv]",
+            "value": 452.4626046474622,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.21012739998514 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-6-dm]",
+            "value": 288.6107169000338,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.4648748000108753 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-7-sv]",
+            "value": 396.9066681901561,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.519484000004013 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-7-dm]",
+            "value": 306.3007973072261,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.2647645999986707 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-8-sv]",
+            "value": 381.0087847662816,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.6246114000059606 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-8-dm]",
+            "value": 158.62762988718077,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.304072000011729 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-9-sv]",
+            "value": 327.4177888310517,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.0542018000005555 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-9-dm]",
+            "value": 55.375507630077664,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 18.058525199990072 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-10-sv]",
+            "value": 292.07511424107344,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.4237768000139113 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-10-dm]",
+            "value": 18.041431700475933,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 55.427973599989855 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-11-sv]",
+            "value": 297.6056553633866,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.360151200013206 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-12-sv]",
+            "value": 221.02042122645534,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.524468799991155 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-13-sv]",
+            "value": 181.25319911940042,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.517143999986729 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-14-sv]",
+            "value": 140.3435694785709,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.125371000006453 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots[qft-variance y(q[0])-15-sv]",
+            "value": 94.89419325911756,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.538052600008996 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-3-sv]",
+            "value": 81.07536417229164,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.334203000000343 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-4-sv]",
+            "value": 78.97815909551474,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.661728400007632 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-5-sv]",
+            "value": 76.51141256471519,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.06994560000021 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-6-sv]",
+            "value": 75.8048251347913,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.191772400000445 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-7-sv]",
+            "value": 68.35675461322525,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.62913220000246 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-8-sv]",
+            "value": 67.16840750607147,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.88795160000791 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-9-sv]",
+            "value": 59.11702177809574,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.915601799996693 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-10-sv]",
+            "value": 28.6325444922302,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.92529279999417 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-11-sv]",
+            "value": 30.501731522307942,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 32.78502399998615 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-12-sv]",
+            "value": 15.95063846513557,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 62.69341520001034 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-13-sv]",
+            "value": 8.862833968976867,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 112.83072700000503 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-10-14-sv]",
+            "value": 4.323270792307375,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 231.30635299999085 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-3-sv]",
+            "value": 9.575703929529558,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 104.43096480000804 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-4-sv]",
+            "value": 9.250089405815302,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 108.10706319998644 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-5-sv]",
+            "value": 8.049758195727769,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 124.22733400001107 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-6-sv]",
+            "value": 8.969216940685017,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 111.49245320000318 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-7-sv]",
+            "value": 7.357069163063358,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 135.92369159998725 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-8-sv]",
+            "value": 6.65436251968317,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 150.27735520000078 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-9-sv]",
+            "value": 4.944290782094682,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 202.25347660000352 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-10-sv]",
+            "value": 3.6533503818341395,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 273.72135040000103 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-11-sv]",
+            "value": 2.4548974734974625,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 407.3489873999961 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-12-sv]",
+            "value": 1.488205748444988,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 671.9500990000142 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-13-sv]",
+            "value": 0.8284214059093457,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.207115114200019 sec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-state_vector-100-14-sv]",
+            "value": 0.4367322180023211,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.2897326067999986 sec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-3-sv]",
+            "value": 78.93183255926431,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.669159799997942 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-3-dm]",
+            "value": 69.42381110931218,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.404279799987307 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-4-sv]",
+            "value": 76.33992446142564,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.0993055999852 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-4-dm]",
+            "value": 75.13263050566177,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.309796199996526 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-5-sv]",
+            "value": 74.63612946339127,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.398336800014476 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-6-sv]",
+            "value": 15.97060182721627,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 62.61504799999784 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-7-sv]",
+            "value": 70.37223888365196,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.210148999995909 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-8-sv]",
+            "value": 72.32368761474031,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.826728599997296 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-9-sv]",
+            "value": 72.12661798940579,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.864506999993864 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-10-sv]",
+            "value": 68.2260997116062,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.657147399998394 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-11-sv]",
+            "value": 66.65753725037739,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.002054399997178 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-12-sv]",
+            "value": 65.08468448162643,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.364597799998592 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-13-sv]",
+            "value": 61.01018318522906,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.390706400011368 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-10-14-sv]",
+            "value": 51.243665834530155,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 19.51460699999643 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-3-sv]",
+            "value": 8.855125719214252,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 112.92894439998236 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-3-dm]",
+            "value": 7.462534687875873,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 134.0027272000043 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-4-sv]",
+            "value": 8.708034635699601,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 114.8364747999949 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-4-dm]",
+            "value": 7.306430097163677,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 136.86574519999795 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-5-sv]",
+            "value": 8.479072709071614,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 117.93742480001583 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-6-sv]",
+            "value": 7.469850231579666,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 133.8714925999966 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-7-sv]",
+            "value": 8.25189031167558,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 121.18435439999757 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-8-sv]",
+            "value": 7.285201455614168,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 137.26456379999945 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-9-sv]",
+            "value": 8.184295913419554,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 122.18522040000153 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-10-sv]",
+            "value": 6.934836209612789,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 144.1995123999959 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-11-sv]",
+            "value": 7.695813869588724,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 129.94077259997994 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-12-sv]",
+            "value": 6.6068632870152,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 151.35775579999518 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-13-sv]",
+            "value": 7.005022350245331,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 142.75471939999989 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-density_matrix q[0], q[1]-100-14-sv]",
+            "value": 5.640137158028569,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 177.30065279999963 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-3-sv]",
+            "value": 87.34270561332454,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.449152999989565 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-3-dm]",
+            "value": 88.54857742191435,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.293236200003776 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-4-sv]",
+            "value": 87.67598323343475,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.40563200001452 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-4-dm]",
+            "value": 84.42849188721792,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.844342800009144 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-5-sv]",
+            "value": 82.60092197173057,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.106402399990657 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-6-sv]",
+            "value": 81.67714276769028,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.243327399983173 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-7-sv]",
+            "value": 78.0091259755378,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.819013000012092 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-8-sv]",
+            "value": 71.82950319266871,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.921856000001753 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-9-sv]",
+            "value": 64.14925818309113,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.588644800004658 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-10-sv]",
+            "value": 50.56135389226796,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 19.777951400010352 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-11-sv]",
+            "value": 38.36287504886287,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 26.066868000020804 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-12-sv]",
+            "value": 26.86160094658259,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 37.22786299999825 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-13-sv]",
+            "value": 15.921865419761932,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 62.80671100000745 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-10-14-sv]",
+            "value": 8.723264963707965,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 114.63597680001385 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-3-sv]",
+            "value": 9.918852144724715,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 100.81811739999011 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-3-dm]",
+            "value": 9.787496288311484,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 102.171175400008 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-4-sv]",
+            "value": 9.730104682732371,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 102.77381719999994 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-4-dm]",
+            "value": 9.52233437818037,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 105.01626600000691 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-5-sv]",
+            "value": 9.606221868444724,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 104.09919879998597 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-6-sv]",
+            "value": 9.343530533666248,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 107.02592519999143 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-7-sv]",
+            "value": 7.4893762673388515,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 133.52246760000526 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-8-sv]",
+            "value": 7.345114287495073,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 136.14492040001096 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-9-sv]",
+            "value": 6.362121722907141,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 157.18026839999766 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-10-sv]",
+            "value": 5.2401201038458725,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 190.8353206000129 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-11-sv]",
+            "value": 3.9401260618587464,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 253.79898620001313 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-12-sv]",
+            "value": 2.7595639306832314,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 362.37609459999476 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-13-sv]",
+            "value": 1.6280028609636616,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 614.2495348000011 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-probability-100-14-sv]",
+            "value": 0.8812474983013935,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.1347549943999866 sec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-3-sv]",
+            "value": 91.7610320296578,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.897872200007441 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-3-dm]",
+            "value": 88.02184786762442,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.360815800003365 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-4-sv]",
+            "value": 91.41503322788402,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.939119799991204 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-4-dm]",
+            "value": 87.67152034329142,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.406212599990795 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-5-sv]",
+            "value": 87.61719961384685,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.413284199988993 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-6-sv]",
+            "value": 80.90825536214999,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.359678200004964 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-7-sv]",
+            "value": 84.07619556562723,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.89397299999655 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-8-sv]",
+            "value": 85.08441020134362,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.753034399998796 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-9-sv]",
+            "value": 78.82171250630357,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.686859600012212 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-10-sv]",
+            "value": 79.4066128048201,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.593409600003724 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-11-sv]",
+            "value": 79.23453606505602,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.620759199990061 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-12-sv]",
+            "value": 80.78953871130408,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.377840199997081 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-13-sv]",
+            "value": 76.3117912982189,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.104134799982603 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-10-14-sv]",
+            "value": 74.91084710265122,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.349201599999105 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-3-sv]",
+            "value": 8.549704656181323,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 116.96310459999495 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-3-dm]",
+            "value": 8.493144285520701,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 117.7420242000153 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-4-sv]",
+            "value": 8.549462271910398,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 116.96642059998794 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-4-dm]",
+            "value": 8.265695696496094,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 120.98195199998827 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-5-sv]",
+            "value": 8.182162159915453,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 122.21708399999898 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-6-sv]",
+            "value": 8.612832361256569,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 116.10582419998536 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-7-sv]",
+            "value": 8.145452882953359,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 122.76788219999162 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-8-sv]",
+            "value": 8.259954772353225,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 121.06603820000146 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-9-sv]",
+            "value": 8.101742827149856,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 123.43023239998274 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-10-sv]",
+            "value": 7.960768682333498,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 125.61601020001945 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-11-sv]",
+            "value": 7.879637515745855,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 126.90939120000166 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-12-sv]",
+            "value": 7.4787655559144275,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 133.7119064000035 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-13-sv]",
+            "value": 7.3657185208852445,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 135.7640801999878 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-expectation z(q[0])-100-14-sv]",
+            "value": 7.445242940793292,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 134.31395160000648 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-3-sv]",
+            "value": 77.46020505203408,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.909854800000176 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-3-dm]",
+            "value": 76.0934441495057,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.14173660000506 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-4-sv]",
+            "value": 76.2143654018398,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.12088600000152 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-4-dm]",
+            "value": 74.48145785589075,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.426160400013032 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-5-sv]",
+            "value": 75.75460984983313,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.200516799997786 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-6-sv]",
+            "value": 74.45389039292122,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.431131600009394 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-7-sv]",
+            "value": 72.48831644197226,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.795326599984037 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-8-sv]",
+            "value": 71.8470218267152,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.918461399998705 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-9-sv]",
+            "value": 68.97606915290872,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.497781799991571 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-10-sv]",
+            "value": 70.51946769597852,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.18048139998973 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-11-sv]",
+            "value": 69.0906446873013,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.473739599998225 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-12-sv]",
+            "value": 69.72012751194904,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.343060400005925 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-13-sv]",
+            "value": 64.31580811175526,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.548276999993504 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-10-14-sv]",
+            "value": 62.42722702084368,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.01865159998397 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-3-sv]",
+            "value": 7.192690351899337,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 139.03003620000618 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-3-dm]",
+            "value": 7.072659982153915,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 141.389520000007 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-4-sv]",
+            "value": 8.292154934178145,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 120.59591360000468 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-4-dm]",
+            "value": 8.10370811874814,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 123.40029839999715 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-5-sv]",
+            "value": 8.255410881516596,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 121.13267459999406 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-6-sv]",
+            "value": 7.288290056545396,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 137.20639440000468 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-7-sv]",
+            "value": 7.304873027909704,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 136.89491879999878 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-8-sv]",
+            "value": 7.151966858471706,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 139.821677000009 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-9-sv]",
+            "value": 7.911542774449166,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 126.39759759999833 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-10-sv]",
+            "value": 7.954394465676047,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 125.71667199999864 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-11-sv]",
+            "value": 7.6998072690503365,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 129.8733805999973 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-12-sv]",
+            "value": 6.866878228959611,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 145.6265811999856 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-13-sv]",
+            "value": 6.570222795506172,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 152.2018401999958 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[ghz-variance y(q[0])-100-14-sv]",
+            "value": 6.309462878290465,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 158.49209659997996 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-3-sv]",
+            "value": 84.67469337595662,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.8099040000061 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-4-sv]",
+            "value": 79.144350795803,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.635140599991246 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-5-sv]",
+            "value": 74.09953906680666,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.495360599995365 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-6-sv]",
+            "value": 69.19636586220008,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.45162600000458 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-7-sv]",
+            "value": 62.24001567451421,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.066834000002927 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-8-sv]",
+            "value": 53.7599424175313,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 18.60121039999285 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-9-sv]",
+            "value": 45.44260726850309,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.005779599999187 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-10-sv]",
+            "value": 24.445991614950923,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 40.90650180000921 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-11-sv]",
+            "value": 25.417944206433063,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 39.342284800000016 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-12-sv]",
+            "value": 13.853415717160667,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 72.1843637999882 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-13-sv]",
+            "value": 7.832009327196266,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 127.68115540000052 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-10-14-sv]",
+            "value": 3.7674239704230006,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 265.4333592000057 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-3-sv]",
+            "value": 9.49650872537425,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 105.30185659999916 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-4-sv]",
+            "value": 9.164485261040745,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 109.11687580000944 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-5-sv]",
+            "value": 7.532607637796513,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 132.75615139998536 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-6-sv]",
+            "value": 7.16258851892115,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 139.6143304000134 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-7-sv]",
+            "value": 6.578339261546638,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 152.01405099999192 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-8-sv]",
+            "value": 5.29714002377816,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 188.78111500000614 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-9-sv]",
+            "value": 4.188735929470697,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 238.73550799999066 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-10-sv]",
+            "value": 3.102295670751648,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 322.34193839999534 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-11-sv]",
+            "value": 2.0831978976940744,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 480.0312063999854 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-12-sv]",
+            "value": 1.2647155996241433,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 790.6915991999995 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-13-sv]",
+            "value": 0.6937330481820448,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.4414766639999925 sec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-state_vector-100-14-sv]",
+            "value": 0.3717357751476736,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.6900827600000183 sec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-3-sv]",
+            "value": 75.64123380953998,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.220302600007017 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-3-dm]",
+            "value": 76.45060395750328,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.080341399995632 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-4-sv]",
+            "value": 74.53299970177085,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.416875799998706 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-4-dm]",
+            "value": 72.55751558078634,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.782169799992516 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-5-sv]",
+            "value": 70.99648680983307,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.085204000002705 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-6-sv]",
+            "value": 68.55253502267387,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.587352600005943 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-7-sv]",
+            "value": 65.26729581377072,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.321609200009334 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-8-sv]",
+            "value": 61.77764786356009,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.187084399984997 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-9-sv]",
+            "value": 53.556804312154284,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 18.67176380001183 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-10-sv]",
+            "value": 48.83652211563248,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 20.47647860001689 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-11-sv]",
+            "value": 47.18724255523083,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.19216860000961 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-12-sv]",
+            "value": 43.19777769897167,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 23.14933899999687 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-13-sv]",
+            "value": 34.494357764788006,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 28.990248400009477 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-10-14-sv]",
+            "value": 28.268243582368623,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 35.37538499999755 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-3-sv]",
+            "value": 8.639600071390772,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 115.74609840001813 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-3-dm]",
+            "value": 7.397833711884773,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 135.17470639999374 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-4-sv]",
+            "value": 8.376921317060786,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 119.37559899999997 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-4-dm]",
+            "value": 7.300172907223383,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 136.98305679999976 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-5-sv]",
+            "value": 8.067112008572458,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 123.96009860001413 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-6-sv]",
+            "value": 6.329659204161052,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 157.98638879998634 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-7-sv]",
+            "value": 7.385987649304735,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 135.39150720000634 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-8-sv]",
+            "value": 6.104785818394399,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 163.80591059999006 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-9-sv]",
+            "value": 6.3116390647385625,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 158.43745020001734 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-10-sv]",
+            "value": 4.978258655084297,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 200.8734517999983 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-11-sv]",
+            "value": 5.037530123321809,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 198.50997920000282 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-12-sv]",
+            "value": 4.407845119063667,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 226.86822539999412 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-13-sv]",
+            "value": 3.927438463005108,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 254.61888439999714 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-density_matrix q[0], q[1]-100-14-sv]",
+            "value": 2.9650915156253346,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 337.2577185999944 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-3-sv]",
+            "value": 90.96214664849924,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.993583999993461 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-3-dm]",
+            "value": 87.58056755357731,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.418058000003839 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-4-sv]",
+            "value": 86.47771343931564,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.563673000000563 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-4-dm]",
+            "value": 84.38160887314879,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.850923599990892 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-5-sv]",
+            "value": 81.09934114569525,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.330556400002024 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-6-sv]",
+            "value": 72.48296874932694,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.796344399997906 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-7-sv]",
+            "value": 64.35065319575546,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.539857800013124 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-8-sv]",
+            "value": 61.58735393853187,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.2370995999936 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-9-sv]",
+            "value": 51.42884555898645,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 19.44434080000974 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-10-sv]",
+            "value": 41.32413367757684,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.198934399987593 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-11-sv]",
+            "value": 29.169641751348898,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.28221740000481 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-12-sv]",
+            "value": 19.40234205205155,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 51.54016960000263 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-13-sv]",
+            "value": 12.14616405227547,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 82.3305198000071 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-10-14-sv]",
+            "value": 6.518707104039609,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 153.40465279998625 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-3-sv]",
+            "value": 9.709638334049872,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 102.99044780001623 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-3-dm]",
+            "value": 9.505675248387208,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 105.20031180001297 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-4-sv]",
+            "value": 8.239870324480268,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 121.36113320000277 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-4-dm]",
+            "value": 8.07433577154979,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 123.84919680000621 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-5-sv]",
+            "value": 7.471756610577571,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 133.83733599998777 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-6-sv]",
+            "value": 7.053368736165875,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 141.77622600000177 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-7-sv]",
+            "value": 6.829948310323125,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 146.41399239999373 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-8-sv]",
+            "value": 6.645870338315294,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 150.46938159998717 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-9-sv]",
+            "value": 5.610815378997479,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 178.2272151999905 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-10-sv]",
+            "value": 4.363387265314635,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 229.1797494000093 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-11-sv]",
+            "value": 3.155502445476315,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 316.9067421999898 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-12-sv]",
+            "value": 2.0744247990110276,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 482.0613407999872 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-13-sv]",
+            "value": 1.2025471448344394,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 831.5682293999998 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-probability-100-14-sv]",
+            "value": 0.6494562591198529,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 1.5397495765999794 sec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-3-sv]",
+            "value": 89.65384096151467,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.154011799999353 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-3-dm]",
+            "value": 85.26546438845223,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.728077799989478 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-4-sv]",
+            "value": 83.86815918673054,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.923476199990546 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-4-dm]",
+            "value": 84.18198454688486,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.879026199994769 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-5-sv]",
+            "value": 80.83469256872715,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.370925999994142 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-6-sv]",
+            "value": 72.69243216970716,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.756590200000574 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-7-sv]",
+            "value": 68.72258621676492,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.551256799995826 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-8-sv]",
+            "value": 69.10091118395263,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.4715892000022 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-9-sv]",
+            "value": 64.39547517729409,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.529041399986454 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-10-sv]",
+            "value": 59.3099596973713,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.860574599991196 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-11-sv]",
+            "value": 54.337094510814104,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 18.403633999992053 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-12-sv]",
+            "value": 49.22736372721886,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 20.313905199986948 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-13-sv]",
+            "value": 40.93152320712365,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.43104779999885 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-10-14-sv]",
+            "value": 15.815900388928425,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 63.22751000000153 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-3-sv]",
+            "value": 9.937290134369904,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 100.63105599999744 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-3-dm]",
+            "value": 9.598353334144097,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 104.18453720001253 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-4-sv]",
+            "value": 9.363250834847667,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 106.80051379999895 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-4-dm]",
+            "value": 9.182164024687001,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 108.90678900000239 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-5-sv]",
+            "value": 9.206023400212521,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 108.62453380000261 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-6-sv]",
+            "value": 8.655351667379675,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 115.53545579999991 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-7-sv]",
+            "value": 8.177874113571466,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 122.28116819999286 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-8-sv]",
+            "value": 7.540654628811089,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 132.61448099999598 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-9-sv]",
+            "value": 7.185114536136515,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 139.17662619999192 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-10-sv]",
+            "value": 5.900748092949003,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 169.47003739999218 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-11-sv]",
+            "value": 5.942516092689814,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 168.27888800000892 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-12-sv]",
+            "value": 5.37099720055617,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 186.1851649999835 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-13-sv]",
+            "value": 4.759993493050782,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 210.08432080000148 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-expectation z(q[0])-100-14-sv]",
+            "value": 3.8379353710612114,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 260.55675860000065 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-3-sv]",
+            "value": 79.60453866223394,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.562097800014271 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-3-dm]",
+            "value": 73.57565947667372,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.591451399997823 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-4-sv]",
+            "value": 77.36090393437246,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 12.926425999989988 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-4-dm]",
+            "value": 73.13989878025639,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 13.672427999995307 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-5-sv]",
+            "value": 70.56072989154366,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.172188999987156 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-6-sv]",
+            "value": 64.74850934357909,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.444371000012325 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-7-sv]",
+            "value": 62.62980261456109,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.96683939999366 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-8-sv]",
+            "value": 60.27756250319466,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 16.58992099999068 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-9-sv]",
+            "value": 54.21610334940166,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 18.44470440000805 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-10-sv]",
+            "value": 52.2196047434861,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 19.149896000021727 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-11-sv]",
+            "value": 45.944929470257854,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.765187400001196 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-12-sv]",
+            "value": 44.19641338681066,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.62627039999643 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-13-sv]",
+            "value": 36.86351528238406,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 27.127092800014907 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-10-14-sv]",
+            "value": 29.992396687513754,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 33.34178359998532 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-3-sv]",
+            "value": 8.400979151594754,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 119.0337437999915 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-3-dm]",
+            "value": 8.327741088638382,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 120.08058239998718 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-4-sv]",
+            "value": 7.259132548788647,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 137.7575065999963 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-4-dm]",
+            "value": 6.869047895297345,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 145.58058340001025 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-5-sv]",
+            "value": 6.624648289141813,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 150.9514099999933 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-6-sv]",
+            "value": 7.636258238227974,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 130.95418840000548 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-7-sv]",
+            "value": 7.184151109756554,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 139.1952903999936 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-8-sv]",
+            "value": 6.879381783529443,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 145.36189900002228 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-9-sv]",
+            "value": 5.683449590189647,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 175.94947999998567 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-10-sv]",
+            "value": 5.168426875740384,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 193.48247039999933 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-11-sv]",
+            "value": 4.778633702647076,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 209.26483640000697 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-12-sv]",
+            "value": 4.3994655057680765,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 227.30033880000065 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-13-sv]",
+            "value": 4.321827349092908,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 231.38360680000005 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_exact_shots_batched[qft-variance y(q[0])-100-14-sv]",
+            "value": 3.4819159317900046,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 287.19820340002116 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-3-sv]",
+            "value": 299.70185060390395,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.336649400011993 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-3-dm]",
+            "value": 321.7787517505754,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.1077254000138055 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-4-sv]",
+            "value": 287.76257975573196,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.4750870000152645 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-4-dm]",
+            "value": 295.31195810270196,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.3862495999983366 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-5-sv]",
+            "value": 287.1175852175693,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.482893599993986 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-5-dm]",
+            "value": 251.02990037270965,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.983589199992821 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-6-sv]",
+            "value": 247.092865949512,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.047061400001439 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-6-dm]",
+            "value": 248.2312900013269,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.028500999993412 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-7-sv]",
+            "value": 240.46688280468754,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.158576800000446 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-7-dm]",
+            "value": 241.1190431232446,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.147329000011268 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-8-sv]",
+            "value": 225.25588843659503,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.439395600002172 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-8-dm]",
+            "value": 154.55045214491554,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.470379000006687 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-9-sv]",
+            "value": 212.2764209211838,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.710838799996964 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-9-dm]",
+            "value": 158.5575876717242,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.306856800006244 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-10-sv]",
+            "value": 195.81267901161686,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.106921600008718 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-10-dm]",
+            "value": 120.69153546335023,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.285585199996603 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-11-sv]",
+            "value": 189.53571785382002,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.2760504000161745 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-12-sv]",
+            "value": 179.02464865065994,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.585823000001255 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-13-sv]",
+            "value": 180.80353212036135,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.530865399987306 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-14-sv]",
+            "value": 148.9867692894531,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.712005400004273 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-probability-100-15-sv]",
+            "value": 150.20004092029794,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.657787800008919 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-3-sv]",
+            "value": 239.28696695357777,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.17908259998967 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-3-dm]",
+            "value": 42.18078612382109,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 23.70747659999779 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-4-sv]",
+            "value": 310.0141899706378,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.225658799988196 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-4-dm]",
+            "value": 277.01569221891657,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.6099037999974826 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-5-sv]",
+            "value": 273.57607483101725,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.6552904000018316 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-5-dm]",
+            "value": 276.57187829381286,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.6156965999907698 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-6-sv]",
+            "value": 259.9255427688025,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.847255599998789 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-6-dm]",
+            "value": 250.89537030772186,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.985725200004708 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-7-sv]",
+            "value": 242.00431067653392,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.1321578000179215 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-7-dm]",
+            "value": 239.74652079801425,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.17107200000828 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-8-sv]",
+            "value": 242.12712749149694,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.130061800015028 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-8-dm]",
+            "value": 211.43323528327323,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.729625400000259 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-9-sv]",
+            "value": 223.34598007590714,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.47735840000405 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-9-dm]",
+            "value": 165.16435372755535,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.054575199982537 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-10-sv]",
+            "value": 210.45549640714472,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.751598400002877 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-10-dm]",
+            "value": 118.82635870918575,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.415641200008395 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-11-sv]",
+            "value": 181.47803917867216,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.5103086000144685 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-12-sv]",
+            "value": 182.9069704786179,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.467260199998236 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-13-sv]",
+            "value": 183.89032486800212,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.438024000000041 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-14-sv]",
+            "value": 170.8507969898681,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.853060200001892 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-expectation z(q[0])-100-15-sv]",
+            "value": 158.95335952375686,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.291153600000143 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-3-sv]",
+            "value": 334.9237522639461,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.985754199994517 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-3-dm]",
+            "value": 322.02230004473984,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.105374999995547 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-4-sv]",
+            "value": 304.74762051562476,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.2814037999969514 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-4-dm]",
+            "value": 279.8348593756741,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.573536199996852 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-5-sv]",
+            "value": 262.1349338526225,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.814829199995984 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-5-dm]",
+            "value": 274.04824005524995,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.648992599983103 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-6-sv]",
+            "value": 262.4920215556885,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.809639599990078 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-6-dm]",
+            "value": 255.94804049994545,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.9070430000037963 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-7-sv]",
+            "value": 217.84703086480727,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.590376999999535 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-7-dm]",
+            "value": 184.39528359617796,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.423132200007785 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-8-sv]",
+            "value": 231.886466902371,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.312455199988108 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-8-dm]",
+            "value": 198.93392107500102,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.026794799982781 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-9-sv]",
+            "value": 221.24052393742406,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.519967599981101 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-9-dm]",
+            "value": 136.14063676307683,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.345345399994585 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-10-sv]",
+            "value": 195.43479943335112,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.1167959999929735 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-10-dm]",
+            "value": 93.2371948456111,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.725333400000636 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-11-sv]",
+            "value": 195.8271122319628,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.10654520001026 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-12-sv]",
+            "value": 179.05265175769355,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.584949399985817 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-13-sv]",
+            "value": 172.73043180976038,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.789367800002765 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-14-sv]",
+            "value": 160.87501076651435,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.216005800001767 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-variance y(q[0])-100-15-sv]",
+            "value": 145.6763846314399,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.864530600000762 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-3-sv]",
+            "value": 358.2760843969394,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.7911436000067624 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-3-dm]",
+            "value": 319.58994309232554,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.129009600002064 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-4-sv]",
+            "value": 304.2331487085071,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.2869527999991988 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-4-dm]",
+            "value": 285.6857171433673,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.5003499999902488 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-5-sv]",
+            "value": 256.27034594399345,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.9021291999915775 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-5-dm]",
+            "value": 264.0582360366307,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.787043400006951 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-6-sv]",
+            "value": 261.3939396442135,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.8256434000004447 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-6-dm]",
+            "value": 270.9806203325757,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.690300800008117 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-7-sv]",
+            "value": 247.28014100024063,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.043996400014294 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-7-dm]",
+            "value": 193.03529430307836,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.180399799996849 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-8-sv]",
+            "value": 246.45591465705604,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.057520799983649 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-8-dm]",
+            "value": 221.36849739390914,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.517354600011458 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-9-sv]",
+            "value": 234.56460516706693,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.263217800007624 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-9-dm]",
+            "value": 189.26557575238667,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.283581000003323 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-10-sv]",
+            "value": 215.149678555792,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.6479269999963435 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-10-dm]",
+            "value": 119.96822953350717,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.335540200005198 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-11-sv]",
+            "value": 207.99635324151282,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.8077766000005795 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-12-sv]",
+            "value": 193.93840849718987,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.15627620000032 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-13-sv]",
+            "value": 186.42682234541073,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.364035000002332 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-14-sv]",
+            "value": 138.90942433230526,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.198935599990364 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[ghz-sample z(q[0])-100-15-sv]",
+            "value": 151.6450653826292,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.5943458000219835 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-3-sv]",
+            "value": 335.8585191961905,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.977444199996171 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-3-dm]",
+            "value": 347.84375137055304,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.8748539999924105 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-4-sv]",
+            "value": 291.9123693044104,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.4256856000411062 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-4-dm]",
+            "value": 298.753153710144,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.347245000031762 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-5-sv]",
+            "value": 284.1151234467868,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.519700000015291 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-5-dm]",
+            "value": 273.4148364741921,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.65744599998834 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-6-sv]",
+            "value": 264.0128238399783,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.7876948000302946 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-6-dm]",
+            "value": 252.952909021401,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.9533050000045473 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-7-sv]",
+            "value": 212.91679313847314,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.696670400016956 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-7-dm]",
+            "value": 201.83532086680208,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.954534199987393 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-8-sv]",
+            "value": 215.00162670314344,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.651127599981919 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-8-dm]",
+            "value": 118.73315428856529,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.422247399994376 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-9-sv]",
+            "value": 197.1538476243692,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.072181000014098 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-9-dm]",
+            "value": 53.2362174120864,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 18.784204600024168 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-10-sv]",
+            "value": 179.47802334761974,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.571712799974193 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-10-dm]",
+            "value": 18.064154650143486,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 55.35825060001116 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-11-sv]",
+            "value": 146.3613085800808,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.83240680000381 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-12-sv]",
+            "value": 127.22262700258393,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.860236999977132 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-13-sv]",
+            "value": 110.2301711792769,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 9.071926400019947 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-14-sv]",
+            "value": 91.83070553971676,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.889603799978431 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-probability-100-15-sv]",
+            "value": 65.92665490879943,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.168371599975217 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-3-sv]",
+            "value": 345.6715492511139,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.892919600026289 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-3-dm]",
+            "value": 348.0320008438969,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.873299000020779 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-4-sv]",
+            "value": 300.7554797191031,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.324960200006899 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-4-dm]",
+            "value": 307.10742396515354,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.2561896000061097 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-5-sv]",
+            "value": 278.19387854278295,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.594615400015755 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-5-dm]",
+            "value": 270.2805409299177,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.6998594000124285 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-6-sv]",
+            "value": 226.57325444166528,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.413583599989579 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-6-dm]",
+            "value": 248.8458405478228,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.018552200022896 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-7-sv]",
+            "value": 239.5729583257432,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.174093800020273 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-7-dm]",
+            "value": 196.1245552536426,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.098800599989772 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-8-sv]",
+            "value": 217.51664121935252,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.597349400000894 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-8-dm]",
+            "value": 122.97696134882538,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.131604399977732 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-9-sv]",
+            "value": 181.41663094942075,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.5121737999797915 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-9-dm]",
+            "value": 51.173343355123265,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 19.541423999999097 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-10-sv]",
+            "value": 178.2930494455668,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.608743599987065 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-10-dm]",
+            "value": 18.645294296708705,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 53.63283540000339 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-11-sv]",
+            "value": 165.0934853420958,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.057174199986548 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-12-sv]",
+            "value": 137.3239753817314,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.282049600007667 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-13-sv]",
+            "value": 118.90568529470582,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.41002679999292 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-14-sv]",
+            "value": 97.26035098144207,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.281682000004366 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-expectation z(q[0])-100-15-sv]",
+            "value": 68.29744575743995,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.64183600000979 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-3-sv]",
+            "value": 285.0220729647233,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.5085001999959786 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-3-dm]",
+            "value": 305.78140910036984,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.270310000016252 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-4-sv]",
+            "value": 291.719472752765,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.4279508000054193 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-4-dm]",
+            "value": 263.31134982284084,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.7977853999564104 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-5-sv]",
+            "value": 256.766859491474,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.894583600003898 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-5-dm]",
+            "value": 254.59769058368428,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.927765400021599 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-6-sv]",
+            "value": 248.28769631760568,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.0275857999859 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-6-dm]",
+            "value": 228.56010243837719,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.375216800008275 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-7-sv]",
+            "value": 209.57587376021644,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.77154159998463 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-7-dm]",
+            "value": 175.00152251341908,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.714235999994344 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-8-sv]",
+            "value": 195.9722144322952,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.10276420000082 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-8-dm]",
+            "value": 110.41820253780325,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 9.056477800004359 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-9-sv]",
+            "value": 174.73908833014283,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.7228180000038265 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-9-dm]",
+            "value": 47.74985219985606,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 20.94247320001159 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-10-sv]",
+            "value": 164.6275297204062,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.074318199989648 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-10-dm]",
+            "value": 17.995173097144693,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 55.57045739997193 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-11-sv]",
+            "value": 157.51517666571172,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.348594600012802 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-12-sv]",
+            "value": 139.7793298131376,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 7.154133599988199 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-13-sv]",
+            "value": 118.99649305477875,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.403608999969947 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-14-sv]",
+            "value": 86.87286543591152,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 11.511074200006988 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-variance y(q[0])-100-15-sv]",
+            "value": 65.31231565613055,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 15.311047999966831 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-3-sv]",
+            "value": 339.10535868032366,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.9489359999843145 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-3-dm]",
+            "value": 344.14314482845083,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 2.905767599986575 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-4-sv]",
+            "value": 304.99182561141936,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.2787763999749586 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-4-dm]",
+            "value": 296.6234873838466,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.371277199994438 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-5-sv]",
+            "value": 273.2546243424837,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.659590400002344 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-5-dm]",
+            "value": 263.1964599459873,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 3.799443199977759 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-6-sv]",
+            "value": 226.10773798426885,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.422670400026618 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-6-dm]",
+            "value": 232.71103609679514,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.297174800012726 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-7-sv]",
+            "value": 227.32612824666236,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.398966400003701 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-7-dm]",
+            "value": 200.7940440638119,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.98022739998305 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-8-sv]",
+            "value": 217.06988990428397,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 4.60681120002846 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-8-dm]",
+            "value": 123.97591554607529,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.066082799996366 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-9-sv]",
+            "value": 188.02203377645864,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.318525599977875 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-9-dm]",
+            "value": 48.12376184175929,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 20.77975540000807 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-10-sv]",
+            "value": 177.3673513031586,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 5.638016200009588 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-10-dm]",
+            "value": 18.364409292915163,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 54.45315359997949 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-11-sv]",
+            "value": 159.07931510129447,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.2861723999958485 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-12-sv]",
+            "value": 148.04492903058204,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 6.7547061999903235 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-13-sv]",
+            "value": 114.553363309917,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 8.72955599998022 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-14-sv]",
+            "value": 92.77435301252603,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 10.778841000001194 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots[qft-sample z(q[0])-100-15-sv]",
+            "value": 68.53991932155363,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 14.59003759996449 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-3-sv]",
+            "value": 44.3614864930992,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.54207599999063 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-3-dm]",
+            "value": 44.488073205779926,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.477934600010485 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-4-sv]",
+            "value": 39.6061551259933,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 25.24860080002327 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-4-dm]",
+            "value": 39.506113843737225,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 25.312537799982238 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-5-sv]",
+            "value": 23.367903919452203,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 42.79373979998127 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-6-sv]",
+            "value": 33.744634763384916,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 29.634340599977804 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-7-sv]",
+            "value": 30.692614071658706,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 32.5811283999883 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-8-sv]",
+            "value": 28.756229411630375,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.77507380002862 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-10-9-sv]",
+            "value": 26.86534571299651,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 37.22267380003359 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-3-sv]",
+            "value": 3.8546550714597596,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 259.4265846000326 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-3-dm]",
+            "value": 4.0700831657837755,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 245.69522520000646 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-4-sv]",
+            "value": 3.76996788750386,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 265.2542488000108 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-4-dm]",
+            "value": 3.667548704306153,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 272.6616823999848 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-5-sv]",
+            "value": 3.429719579528741,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 291.56902679997074 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-6-sv]",
+            "value": 3.2100855278625158,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 311.5181795999888 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-7-sv]",
+            "value": 2.921442991024507,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 342.29659899997387 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-8-sv]",
+            "value": 2.757634081971396,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 362.6296927999647 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-probability-100-100-9-sv]",
+            "value": 2.505428457973402,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 399.13332859996444 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-3-sv]",
+            "value": 44.307086961147675,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.569752799972775 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-3-dm]",
+            "value": 22.927633144673457,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 43.615491999980804 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-4-sv]",
+            "value": 38.06463644767179,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 26.2711033999949 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-4-dm]",
+            "value": 36.47232787952746,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 27.41804699999193 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-5-sv]",
+            "value": 35.988096260543244,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 27.786965800032704 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-6-sv]",
+            "value": 31.419242104034396,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 31.827629600002183 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-7-sv]",
+            "value": 28.015042150227398,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 35.69510959996478 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-8-sv]",
+            "value": 27.62643281177779,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 36.197217600010845 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-10-9-sv]",
+            "value": 24.6364645751022,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 40.5902395999874 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-3-sv]",
+            "value": 4.095973233804519,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 244.14222039999913 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-3-dm]",
+            "value": 3.9953873732220018,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 250.2886220000164 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-4-sv]",
+            "value": 3.789685997259481,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 263.87410480001563 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-4-dm]",
+            "value": 3.7294354380034305,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 268.1370992000211 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-5-sv]",
+            "value": 3.4466018926920863,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 290.1408491999973 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-6-sv]",
+            "value": 3.2462972094505003,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 308.0432676000328 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-7-sv]",
+            "value": 3.045847715328752,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 328.3158232000005 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-8-sv]",
+            "value": 2.803670896546898,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 356.67524359996605 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-expectation z(q[0])-100-100-9-sv]",
+            "value": 2.6947192241104743,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 371.0961761999897 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-3-sv]",
+            "value": 41.97516171851805,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 23.823612800015326 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-3-dm]",
+            "value": 40.90007820505187,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.449830999992628 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-4-sv]",
+            "value": 38.062685146912955,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 26.272450199985542 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-4-dm]",
+            "value": 37.76300650087765,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 26.480942399984997 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-5-sv]",
+            "value": 35.66345510117236,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 28.039908000027935 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-6-sv]",
+            "value": 31.403560072085998,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 31.843523400038972 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-7-sv]",
+            "value": 19.783525420352905,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 50.54710819999855 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-8-sv]",
+            "value": 28.31433409427624,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 35.317800399980115 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-10-9-sv]",
+            "value": 26.40146765545979,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 37.876682200021605 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-3-sv]",
+            "value": 3.78586579141248,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 264.14037239997015 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-3-dm]",
+            "value": 3.745629357136735,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 266.97783059998983 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-4-sv]",
+            "value": 3.281367639696163,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 304.7509787999843 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-4-dm]",
+            "value": 3.406379949349803,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 293.56678200001625 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-5-sv]",
+            "value": 3.234736609841325,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 309.1441809999651 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-6-sv]",
+            "value": 2.9794796337149494,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 335.6290772000193 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-7-sv]",
+            "value": 2.5848850224505955,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 386.8644025999856 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-8-sv]",
+            "value": 2.6766728993760087,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 373.5981338000329 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-variance y(q[0])-100-100-9-sv]",
+            "value": 2.383560605765538,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 419.5404126000085 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-3-sv]",
+            "value": 46.585652291770494,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.465836600009425 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-3-dm]",
+            "value": 46.46194344951246,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.52299120002681 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-4-sv]",
+            "value": 41.18028800088404,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.28346300002886 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-4-dm]",
+            "value": 40.71014251515703,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.56390319998718 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-5-sv]",
+            "value": 38.12404476868354,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 26.230165400011174 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-6-sv]",
+            "value": 33.723377922357024,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 29.65302000002339 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-7-sv]",
+            "value": 31.875623865756214,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 31.37193499997011 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-8-sv]",
+            "value": 29.324280716722896,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.10143320002135 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-10-9-sv]",
+            "value": 27.143501405482066,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 36.84123080001882 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-3-sv]",
+            "value": 4.144305135837718,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 241.2949739999931 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-3-dm]",
+            "value": 4.084800253933169,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 244.81001220001417 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-4-sv]",
+            "value": 3.6003753915561503,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 277.74881539999114 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-4-dm]",
+            "value": 3.429321634810695,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 291.6028610000012 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-5-sv]",
+            "value": 3.4047122286326172,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 293.7105789999805 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-6-sv]",
+            "value": 3.113232760419533,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 321.2095198000043 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-7-sv]",
+            "value": 2.9536861759499407,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 338.56000280002263 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-8-sv]",
+            "value": 2.6610000408245233,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 375.798566200001 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[ghz-sample z(q[0])-100-100-9-sv]",
+            "value": 2.601133092488173,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 384.4478403999801 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-3-sv]",
+            "value": 47.915490261495364,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 20.870077600011427 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-3-dm]",
+            "value": 46.432295199091854,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.53673420002633 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-4-sv]",
+            "value": 42.341387258014194,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 23.617553999974916 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-4-dm]",
+            "value": 40.50165971348557,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.69034619998638 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-5-sv]",
+            "value": 36.70616683351192,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 27.243378599996504 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-6-sv]",
+            "value": 33.231858082324294,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 30.091606599989973 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-7-sv]",
+            "value": 30.31625811323709,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 32.98560120001639 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-8-sv]",
+            "value": 27.371537927459084,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 36.53430079998543 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-10-9-sv]",
+            "value": 25.158372710967896,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 39.748198799998136 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-3-sv]",
+            "value": 4.242751008307538,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 235.6961315999797 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-3-dm]",
+            "value": 4.257485303107267,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 234.88043500001368 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-4-sv]",
+            "value": 3.882325023422893,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 257.5776098000006 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-4-dm]",
+            "value": 3.817532090184479,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 261.9493369999873 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-5-sv]",
+            "value": 3.4334336870605733,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 291.25362280001355 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-6-sv]",
+            "value": 3.1132212926292477,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 321.210702999997 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-7-sv]",
+            "value": 2.7376167769239834,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 365.2812214000278 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-8-sv]",
+            "value": 2.5662355111461017,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 389.6758483999747 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-probability-100-100-9-sv]",
+            "value": 2.405687277208883,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 415.6816264000099 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-3-sv]",
+            "value": 47.29119711634965,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 21.14558439998291 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-3-dm]",
+            "value": 45.419351650546766,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.01704700000846 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-4-sv]",
+            "value": 40.24577159007682,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.847330800002965 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-4-dm]",
+            "value": 40.26509896921886,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 24.835403999986738 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-5-sv]",
+            "value": 36.864553797342246,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 27.126328600024863 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-6-sv]",
+            "value": 33.08181472203539,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 30.228087799969217 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-7-sv]",
+            "value": 29.341962593250877,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.08088320002207 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-8-sv]",
+            "value": 27.096438435475932,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 36.90521919997991 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-10-9-sv]",
+            "value": 24.714275541884287,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 40.46244440000919 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-3-sv]",
+            "value": 4.303146016713395,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 232.38811699998223 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-3-dm]",
+            "value": 4.202239750251741,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 237.96833579999657 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-4-sv]",
+            "value": 3.825627205019242,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 261.3950462000048 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-4-dm]",
+            "value": 3.750107826850487,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 266.6589991999899 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-5-sv]",
+            "value": 3.389189278458164,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 295.05581360003816 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-6-sv]",
+            "value": 3.0001103110557774,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 333.3210770000278 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-7-sv]",
+            "value": 2.8174091722489414,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 354.9360206000074 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-8-sv]",
+            "value": 2.6489665055854994,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 377.50571699998545 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-expectation z(q[0])-100-100-9-sv]",
+            "value": 2.2931481331376182,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 436.0817278000013 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-3-sv]",
+            "value": 39.17598333576885,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 25.525843000013992 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-3-dm]",
+            "value": 25.00850701877611,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 39.98639340002228 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-4-sv]",
+            "value": 34.85849570140819,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 28.687411200007773 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-4-dm]",
+            "value": 36.12119693191024,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 27.684575400007816 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-5-sv]",
+            "value": 33.64958944844179,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 29.71804459998566 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-6-sv]",
+            "value": 30.491307102142517,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 32.79623260000335 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-7-sv]",
+            "value": 27.417824543788157,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 36.47262380000029 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-8-sv]",
+            "value": 25.621668010954572,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 39.02946520001933 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-10-9-sv]",
+            "value": 16.394638033943767,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 60.995552200029124 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-3-sv]",
+            "value": 3.8250358467824257,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 261.43545840000115 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-3-dm]",
+            "value": 3.661180682017569,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 273.13593260000744 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-4-sv]",
+            "value": 3.2304640241819955,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 309.55305259999477 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-4-dm]",
+            "value": 3.3735481389911337,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 296.4238122000097 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-5-sv]",
+            "value": 3.1430961600533003,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 318.1576220000352 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-6-sv]",
+            "value": 2.7256026117944696,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 366.8913420000081 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-7-sv]",
+            "value": 2.601829123756643,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 384.34499439999854 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-8-sv]",
+            "value": 2.400523072825128,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 416.5758752000329 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-variance y(q[0])-100-100-9-sv]",
+            "value": 2.2214266730544163,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 450.1611564000086 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-3-sv]",
+            "value": 43.968641600006606,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.74348179998924 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-3-dm]",
+            "value": 44.02189180499772,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 22.715970600029323 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-4-sv]",
+            "value": 39.129829903516786,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 25.55595059998268 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-4-dm]",
+            "value": 38.848694389412245,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 25.740890799988847 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-5-sv]",
+            "value": 33.23182936903504,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 30.091632600033336 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-6-sv]",
+            "value": 19.334474742772326,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 51.721084399969186 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-7-sv]",
+            "value": 28.591033197828317,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 34.976000799997564 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-8-sv]",
+            "value": 26.00013686472025,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 38.4613360000003 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-10-9-sv]",
+            "value": 23.47166043454789,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 42.60457000000315 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-3-sv]",
+            "value": 3.9941341570611146,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 250.36715360001838 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-3-dm]",
+            "value": 3.831512402338787,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 260.9935437999866 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-4-sv]",
+            "value": 3.6064410240390727,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 277.2816727999725 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-4-dm]",
+            "value": 3.3252525705567466,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 300.72903599998426 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-5-sv]",
+            "value": 3.328185759328193,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 300.4639981999844 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-6-sv]",
+            "value": 3.007017349492378,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 332.55544740000005 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-7-sv]",
+            "value": 2.772352488803245,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 360.7044933999987 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-8-sv]",
+            "value": 2.5620814786099224,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 390.3076496000267 msec\nrounds: 1"
+          },
+          {
+            "name": "benchmark/benchmark.py::test_nonzero_shots_batched[qft-sample z(q[0])-100-100-9-sv]",
+            "value": 2.213315709957426,
+            "unit": "iter/sec",
+            "range": "stddev: 0",
+            "extra": "mean: 451.8108264000148 msec\nrounds: 1"
           }
         ]
       }
