@@ -48,7 +48,9 @@ def make_qiskit_tapes(nq: int, nl: int, shots: int):
 @pytest.mark.parametrize("nq", n_qubits)
 def test_sim_aer(benchmark, shots, n_layers, nq):
     tapes = make_qiskit_tapes(nq, n_layers, shots)
-    sim   = qml.device("qiskit.aer", backend="aer_simulator_statevector", wires=nq, shots=shots)
+    sim = qml.device(
+        "qiskit.aer", backend="aer_simulator_statevector", wires=nq, shots=shots
+    )
     benchmark.pedantic(sim.execute, args=(tapes,), iterations=5, warmup_rounds=1)
 
 

@@ -8,7 +8,6 @@ from braket.ir.openqasm import Program as OpenQASMProgram
 
 def _handle_julia_error(error):
     # in case juliacall isn't loaded
-    print(error)
     if type(error).__name__ == "JuliaError":
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
