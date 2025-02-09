@@ -69,11 +69,7 @@ def test_exact_shots(benchmark, device_id, nq, exact_results, circuit):
         exact_results in ("state_vector",) or nq > 10
     ):
         pytest.skip()
-    if (
-        device_id in ("braket_sv",)
-        and exact_results in ("density_matrix q[0], q[1]",)
-        and nq >= 17
-    ):
+    if device_id in ("braket_sv",) and exact_results in ("density_matrix q[0], q[1]",) and nq >= 17:
         pytest.skip()
     result_type = exact_results
     oq3_prog = Program(source=circuit(nq, result_type))
@@ -86,9 +82,7 @@ def test_exact_shots(benchmark, device_id, nq, exact_results, circuit):
 @pytest.mark.parametrize("batch_size", batch_size)
 @pytest.mark.parametrize("exact_results", exact_shots_results)
 @pytest.mark.parametrize("circuit", generators)
-def test_exact_shots_batched(
-    benchmark, device_id, nq, batch_size, exact_results, circuit
-):
+def test_exact_shots_batched(benchmark, device_id, nq, batch_size, exact_results, circuit):
     if device_id in ("braket_dm_v2", "braket_dm") and (
         exact_results in ("state_vector,") or nq >= 5
     ):
@@ -100,9 +94,7 @@ def test_exact_shots_batched(
     result_type = exact_results
     oq3_prog = [Program(source=circuit(nq, result_type)) for _ in range(batch_size)]
     sim = LocalSimulator(device_id)
-    benchmark.pedantic(
-        run_sim_batch, args=(oq3_prog, sim, 0), iterations=5, warmup_rounds=1
-    )
+    benchmark.pedantic(run_sim_batch, args=(oq3_prog, sim, 0), iterations=5, warmup_rounds=1)
 
 
 shots = (100,)
@@ -119,9 +111,7 @@ def test_nonzero_shots(benchmark, device_id, nq, shots, nonzero_shots_results, c
     result_type = nonzero_shots_results
     oq3_prog = Program(source=circuit(nq, result_type))
     sim = LocalSimulator(device_id)
-    benchmark.pedantic(
-        run_sim, args=(oq3_prog, sim, shots), iterations=5, warmup_rounds=1
-    )
+    benchmark.pedantic(run_sim, args=(oq3_prog, sim, shots), iterations=5, warmup_rounds=1)
     del sim
 
 
@@ -145,7 +135,5 @@ def test_nonzero_shots_batched(
     result_type = nonzero_shots_results
     oq3_prog = [Program(source=circuit(nq, result_type)) for _ in range(batch_size)]
     sim = LocalSimulator(device_id)
-    benchmark.pedantic(
-        run_sim_batch, args=(oq3_prog, sim, shots), iterations=5, warmup_rounds=1
-    )
+    benchmark.pedantic(run_sim_batch, args=(oq3_prog, sim, shots), iterations=5, warmup_rounds=1)
     del sim
