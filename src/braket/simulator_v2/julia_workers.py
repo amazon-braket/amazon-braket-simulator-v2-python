@@ -8,7 +8,6 @@ from braket.ir.openqasm import Program as OpenQASMProgram
 
 def _handle_julia_error(error):
     # in case juliacall isn't loaded
-    print(error)
     if type(error).__name__ == "JuliaError":
         python_exception = getattr(error.exception, "alternate_type", None)
         if python_exception is None:
@@ -27,23 +26,18 @@ def _handle_julia_error(error):
 
 
 def translate_and_run(
-    device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0
+    device_id: str, openqasm_source: str, openqasm_inputs: str, shots: int = 0
 ) -> str:
-    jl = sys.modules["juliacall"].Main
-    jl.GC.enable(False)
-    jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
+    jl = getattr(sys.modules["juliacall"], "Main")
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
-            openqasm_ir.source,
-            jl_inputs,
+            openqasm_source,
+            openqasm_inputs,
             shots,
         )
-
     except Exception as e:
         _handle_julia_error(e)
-    finally:
-        jl.GC.enable(True)
 
     return result
 
@@ -55,7 +49,7 @@ def translate_and_run_multiple(
     inputs: Optional[Union[dict, Sequence[dict]]] = None,
 ) -> List[str]:
     inputs = inputs or {}
-    jl = sys.modules["juliacall"].Main
+    jl = getattr(sys.modules["juliacall"], "Main")
     irs = [program.source for program in programs]
     py_inputs = {}
     if len(inputs) > 1 or isinstance(inputs, dict):
