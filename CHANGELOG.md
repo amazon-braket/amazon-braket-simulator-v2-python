@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.3.0 (2025-02-18)
+
+### Features
+
+ * Add automated benchmarking to GitHub
+
+### Bug Fixes and Other Changes
+
+ * force precompilation at startup
+ * Update requirements.txt
+ * nobraket branch
+
 ## v0.2.2 (2024-07-11)
 
 ### Bug Fixes and Other Changes
