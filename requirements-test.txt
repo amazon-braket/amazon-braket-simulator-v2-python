@@ -11,7 +11,7 @@ pytest-cov
 pytest-rerunfailures
 pytest-timeout
 pytest-xdist
-qiskit==1.3.0
+qiskit==1.4.2
 qiskit-braket-provider==0.4.3
 qiskit-algorithms
 sphinx
