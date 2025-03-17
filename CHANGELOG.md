@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.2 (2025-03-17)
+
+### Bug Fixes and Other Changes
+
+ * build(deps): bump qiskit from 1.3.0 to 1.4.2
+
 ## v0.3.1 (2025-03-06)
 
 ### Bug Fixes and Other Changes
