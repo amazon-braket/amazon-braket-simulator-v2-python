@@ -27,22 +27,19 @@ def _handle_julia_error(error: str) -> None:
     raise error
 
 
-def translate_and_run(device_id: str, openqasm_ir: OpenQASMProgram, shots: int = 0) -> str:
-    jl = sys.modules["juliacall"].Main
-    jl.GC.enable(False)  # noqa: FBT003
-    jl_inputs = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
+def translate_and_run(
+    device_id: str, openqasm_source: str, openqasm_inputs: str, shots: int = 0
+) -> str:
+    jl = getattr(sys.modules["juliacall"], "Main")
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
-            openqasm_ir.source,
-            jl_inputs,
+            openqasm_source,
+            openqasm_inputs,
             shots,
         )
-
     except Exception as e:
         _handle_julia_error(e)
-    finally:
-        jl.GC.enable(True)  # noqa: FBT003
 
     return result
 
@@ -54,7 +51,7 @@ def translate_and_run_multiple(
     inputs: dict | Sequence[dict] | None = None,
 ) -> list[str]:
     inputs = inputs or {}
-    jl = sys.modules["juliacall"].Main
+    jl = getattr(sys.modules["juliacall"], "Main")
     irs = [program.source for program in programs]
     py_inputs = {}
     if len(inputs) > 1 or isinstance(inputs, dict):

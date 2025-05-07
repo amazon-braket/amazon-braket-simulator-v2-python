@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.3.2 (2025-03-17)
+
+### Bug Fixes and Other Changes
+
+ * build(deps): bump qiskit from 1.3.0 to 1.4.2
+
+## v0.3.1 (2025-03-06)
+
+### Bug Fixes and Other Changes
+
+ * build(deps): bump qiskit from 1.2.0 to 1.3.0
+
+## v0.3.0 (2025-02-18)
+
+### Features
+
+ * Add automated benchmarking to GitHub
+
+### Bug Fixes and Other Changes
+
+ * force precompilation at startup
+ * Update requirements.txt
+ * nobraket branch
+
 ## v0.2.2 (2024-07-11)
 
 ### Bug Fixes and Other Changes
