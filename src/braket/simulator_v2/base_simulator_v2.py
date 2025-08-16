@@ -1,28 +1,33 @@
+from __future__ import annotations
+
 import atexit
 import json
-from collections.abc import Sequence
+import os
+import sys
+from itertools import starmap
 from multiprocessing.pool import Pool
-from typing import Optional, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
+
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
-from braket.ir.openqasm import Program as OpenQASMProgram
-from braket.task_result import GateModelTaskResult
-
 from braket.simulator_v2.julia_workers import (
-    _handle_julia_error,
+    _handle_julia_error,  # noqa: PLC2701
     translate_and_run,
     translate_and_run_multiple,
 )
+from braket.task_result import GateModelTaskResult
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from braket.ir.openqasm import Program as OpenQASMProgram
 
 __JULIA_POOL__ = None
 
 
-def setup_julia():
-    import os
-    import sys
-
+def setup_julia() -> None:
     # don't reimport if we don't have to
     if "juliacall" in sys.modules and hasattr(sys.modules["juliacall"], "Main"):
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
@@ -103,7 +108,6 @@ def setup_pool():
     __JULIA_POOL__.apply(setup_julia)
     atexit.register(__JULIA_POOL__.join)
     atexit.register(__JULIA_POOL__.close)
-    return
 
 
 # large arrays are extremely expensive to transfer among Python
@@ -135,7 +139,7 @@ def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
-    def __init__(self, device: str):
+    def __init__(self, device: str) -> None:
         global __JULIA_POOL__
         # if the pool is already set up, no need
         # to do anything
@@ -143,14 +147,14 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             setup_pool()
         self._device = device
 
-    def initialize_simulation(self, **kwargs):
-        return
+    def initialize_simulation(self, **kwargs: dict) -> None:
+        pass
 
     def run_openqasm(
         self,
         openqasm_ir: OpenQASMProgram,
         shots: int = 0,
-        batch_size: int = 1,  # unused
+        batch_size: int = 1,  # noqa: ARG002
     ) -> GateModelTaskResult:
         """Executes the circuit specified by the supplied `openqasm_ir` on the simulator.
 
@@ -194,9 +198,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def run_multiple(
         self,
         programs: Sequence[OpenQASMProgram],
-        max_parallel: Optional[int] = -1,
-        shots: Optional[int] = 0,
-        inputs: Optional[Union[dict, Sequence[dict]]] = {},
+        max_parallel: int = -1,  # noqa: ARG002
+        shots: int = 0,
+        inputs: dict | Sequence[dict] | None = None,
     ) -> list[GateModelTaskResult]:
         """
         Run the tasks specified by the given IR programs.
@@ -206,11 +210,13 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             programs (Sequence[OQ3Program]): The IR representations of the programs
             max_parallel (Optional[int]): The maximum number of programs to run in parallel.
                 Default is the number of logical CPUs.
+
         Returns:
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
-        global __JULIA_POOL__
+        if inputs is None:
+            inputs = {}
         try:
             jl_results = __JULIA_POOL__.apply(
                 translate_and_run_multiple,
@@ -225,10 +231,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             (loaded_result[r_ix], paths_and_lens[r_ix][0], paths_and_lens[r_ix][1])
             for r_ix in range(len(loaded_result))
         ]
-        results = [
-            _handle_mmaped_result(*result_path_len)
-            for result_path_len in results_paths_lens
-        ]
+        results = list(starmap(_handle_mmaped_result, results_paths_lens))
         jl_results = None
         for p_ix, program in enumerate(programs):
             results[p_ix].additionalMetadata.action = program
@@ -250,11 +253,10 @@ def _result_value_to_ndarray(
     with the pydantic specification for ResultTypeValues.
     """
 
-    def reconstruct_complex(v):
+    def reconstruct_complex(v: list | float) -> complex | float:
         if isinstance(v, list):
             return complex(v[0], v[1])
-        else:
-            return v
+        return v
 
     for result_ind, result_type in enumerate(task_result.resultTypes):
         # Amplitude
@@ -263,7 +265,7 @@ def _result_value_to_ndarray(
             task_result.resultTypes[result_ind].value = {
                 k: reconstruct_complex(v) for (k, v) in val.items()
             }
-        if isinstance(result_type.type, StateVector):
+        elif isinstance(result_type.type, StateVector):
             val = task_result.resultTypes[result_ind].value
             if isinstance(val, list):
                 fixed_val = [reconstruct_complex(v) for v in val]
@@ -271,11 +273,9 @@ def _result_value_to_ndarray(
         if isinstance(result_type.type, DensityMatrix):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals
-            fixed_val = [
-                [reconstruct_complex(v) for v in inner_val] for inner_val in val
-            ]
+            fixed_val = [[reconstruct_complex(v) for v in inner_val] for inner_val in val]
             task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
-        if isinstance(result_type.type, Probability):
+        elif isinstance(result_type.type, Probability):
             val = task_result.resultTypes[result_ind].value
             task_result.resultTypes[result_ind].value = np.asarray(val)
 
