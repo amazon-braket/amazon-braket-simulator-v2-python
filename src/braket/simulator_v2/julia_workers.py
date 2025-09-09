@@ -30,7 +30,7 @@ def _handle_julia_error(error: str) -> None:
 def translate_and_run(
     device_id: str, openqasm_source: str, openqasm_inputs: str, shots: int = 0
 ) -> str:
-    jl = getattr(sys.modules["juliacall"], "Main")
+    jl = sys.modules["juliacall"].Main
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
@@ -51,7 +51,7 @@ def translate_and_run_multiple(
     inputs: dict | Sequence[dict] | None = None,
 ) -> list[str]:
     inputs = inputs or {}
-    jl = getattr(sys.modules["juliacall"], "Main")
+    jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
     py_inputs = {}
     if len(inputs) > 1 or isinstance(inputs, dict):

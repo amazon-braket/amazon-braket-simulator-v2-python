@@ -4,6 +4,7 @@ from braket.device_schema.simulators import (
     GateModelSimulatorDeviceCapabilities,
     GateModelSimulatorDeviceParameters,
 )
+
 from braket.simulator_v2.base_simulator_v2 import BaseLocalSimulatorV2
 
 

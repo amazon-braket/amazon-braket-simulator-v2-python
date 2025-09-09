@@ -44,8 +44,6 @@ lint.select = [
   "ALL",
 ]
 lint.ignore = [
-  "ANN101",  # Missing type annotation for `self` in method
-  "ANN102",  # Missing type annotation for `cls` in classmethod"
   "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed in `arg`"
   "BLE001",  # This needs to be cleaned up later.
   "COM812",  # conflicts with formatter

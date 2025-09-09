@@ -9,15 +9,15 @@ from multiprocessing.pool import Pool
 from typing import TYPE_CHECKING
 
 import numpy as np
-
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
+from braket.task_result import GateModelTaskResult
+
 from braket.simulator_v2.julia_workers import (
     _handle_julia_error,  # noqa: PLC2701
     translate_and_run,
     translate_and_run_multiple,
 )
-from braket.task_result import GateModelTaskResult
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -32,23 +32,22 @@ def setup_julia() -> None:
     if "juliacall" in sys.modules and hasattr(sys.modules["juliacall"], "Main"):
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return
-    else:
-        for k, default in (
-            ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
-            ("PYTHON_JULIACALL_THREADS", "auto"),
-            ("PYTHON_JULIACALL_OPTLEVEL", "3"),
-            # let the user's Conda/Pip handle installing things
-            ("JULIA_CONDAPKG_BACKEND", "Null"),
-        ):
-            os.environ[k] = os.environ.get(k, default)
+    for k, default in (
+        ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
+        ("PYTHON_JULIACALL_THREADS", "auto"),
+        ("PYTHON_JULIACALL_OPTLEVEL", "3"),
+        # let the user's Conda/Pip handle installing things
+        ("JULIA_CONDAPKG_BACKEND", "Null"),
+    ):
+        os.environ[k] = os.environ.get(k, default)
 
-        from juliacall import Main as jl
+    from juliacall import Main as jl  # noqa: PLC0415, N813
 
-        # These are used at simulator class instantiation to trigger
-        # precompilation of Julia methods which may be invalidated
-        # or uncacheable. Total time for this should be <1s.
-        jl.seval("using BraketSimulator, JSON3")
-        exact_sv_oq3 = """
+    # These are used at simulator class instantiation to trigger
+    # precompilation of Julia methods which may be invalidated
+    # or uncacheable. Total time for this should be <1s.
+    jl.seval("using BraketSimulator, JSON3")
+    exact_sv_oq3 = """
         OPENQASM 3.0;
         input float p;
         qubit[2] q;
@@ -69,7 +68,7 @@ def setup_julia() -> None:
         #pragma braket result density_matrix q[0], q[1]
         #pragma braket result probability
         """
-        inexact_sv_oq3 = """
+    inexact_sv_oq3 = """
         OPENQASM 3.0;
         input float p;
         qubit[9] q;
@@ -81,7 +80,7 @@ def setup_julia() -> None:
         #pragma braket result expectation y(q[5]) @ y(q[6])
         #pragma braket result expectation h(q[7]) @ h(q[8])
         """
-        stock_dm_oq3 = """
+    stock_dm_oq3 = """
         OPENQASM 3.0;
         input float p;
         qubit[2] q;
@@ -92,13 +91,13 @@ def setup_julia() -> None:
         #pragma braket result expectation y(q[0])
         #pragma braket result density_matrix q[0], q[1]
         """
-        jl.BraketSimulator.simulate("braket_sv_v2", exact_sv_oq3, '{"p": 1.57}', 0)
-        jl.BraketSimulator.simulate("braket_sv_v2", inexact_sv_oq3, '{"p": 1.57}', 100)
-        jl.BraketSimulator.simulate("braket_dm_v2", stock_dm_oq3, '{"p": 1.57}', 0)
-        return
+    jl.BraketSimulator.simulate("braket_sv_v2", exact_sv_oq3, '{"p": 1.57}', 0)
+    jl.BraketSimulator.simulate("braket_sv_v2", inexact_sv_oq3, '{"p": 1.57}', 100)
+    jl.BraketSimulator.simulate("braket_dm_v2", stock_dm_oq3, '{"p": 1.57}', 0)
+    return
 
 
-def setup_pool():
+def setup_pool() -> None:
     # We use a multiprocessing Pool with one worker
     # in order to bypass the Python GIL. This protects us
     # when the simulator is used from a non-main thread from another
@@ -115,7 +114,8 @@ def setup_pool():
 # StateVector, DensityMatrix, or Probability result types, we
 # instead do an mmap to disk, which is dramatically faster. For
 # smaller objects this isn't helpful.
-def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
+def _handle_mmaped_result(
+        raw_result: list, mmap_paths: list, obj_lengths: list) -> GateModelTaskResult:
     result = GateModelTaskResult(**raw_result)
     if mmap_paths:
         mmap_files = mmap_paths
@@ -140,7 +140,7 @@ def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str) -> None:
-        global __JULIA_POOL__  # noqa: F824
+        global __JULIA_POOL__  # noqa: PLW0602
         # if the pool is already set up, no need
         # to do anything
         if __JULIA_POOL__ is None:
@@ -170,8 +170,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             ValueError: If result types are not specified in the IR or sample is specified
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
-        """
-        global __JULIA_POOL__  # noqa: F824
+        """  # noqa: DOC502
+        global __JULIA_POOL__  # noqa: PLW0602
 
         # pass inputs and source as strings to avoid pickling a dict
         inputs_dict = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
@@ -218,7 +218,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         if inputs is None:
             inputs = {}
 
-        global __JULIA_POOL__  # noqa: F824
+        global __JULIA_POOL__  # noqa: PLW0602
         try:
             jl_results = __JULIA_POOL__.apply(
                 translate_and_run_multiple,
