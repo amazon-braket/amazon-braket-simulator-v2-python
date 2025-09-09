@@ -1,8 +1,4 @@
 amazon-braket-pennylane-plugin
-black
-flake8
-flake8-rst-docstrings
-isort
 pre-commit
 pylint
 pytest
@@ -14,6 +10,7 @@ pytest-xdist
 qiskit==1.4.3
 qiskit-braket-provider==0.6.0
 qiskit-algorithms==0.3.1
+ruff
 sphinx
 sphinx-rtd-theme
 sphinxcontrib-apidoc

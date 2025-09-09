@@ -36,9 +36,7 @@ TASK_BATCH = Mock()
 TASK_BATCH.results.return_value = [RESULT, RESULT]
 type(TASK_BATCH).tasks = PropertyMock(return_value=[TASK, TASK])
 SIM_TASK = Mock()
-SIM_TASK.result.return_value.additional_metadata.simulatorMetadata.executionDuration = (
-    1234
-)
+SIM_TASK.result.return_value.additional_metadata.simulatorMetadata.executionDuration = 1234
 SIM_TASK.result.return_value.result_types = []
 type(SIM_TASK).id = PropertyMock(return_value="task_arn")
 SIM_TASK.state.return_value = "COMPLETED"
@@ -86,9 +84,7 @@ CIRCUIT_3 = QuantumScript(
         qml.RY(0.543, wires=0),
     ],
     measurements=[
-        qml.expval(
-            2 * qml.PauliX(0) @ qml.PauliY(1) + 0.75 * qml.PauliY(0) @ qml.PauliZ(1)
-        ),
+        qml.expval(2 * qml.PauliX(0) @ qml.PauliY(1) + 0.75 * qml.PauliY(0) @ qml.PauliZ(1)),
     ],
 )
 CIRCUIT_3.trainable_params = [0, 1]
@@ -192,9 +188,7 @@ def test_local_sim_batch_execute_parallel_tracker(mock_run_batch):
     """Asserts tracker updates during parallel execution for local simulators"""
 
     mock_run_batch.return_value = TASK_BATCH
-    dev = BraketLocalQubitDevice(
-        backend="braket_sv_v2", wires=1, shots=SHOTS, parallel=True
-    )
+    dev = BraketLocalQubitDevice(backend="braket_sv_v2", wires=1, shots=SHOTS, parallel=True)
     type(TASK_BATCH).unsuccessful = PropertyMock(return_value={})
 
     with QuantumTape() as circuit:
@@ -304,35 +298,33 @@ def test_projection():
 
 
 def get_test_result_object(rts=[], source="qubit[2] q; cnot q[0], q[1]; measure q;"):
-    json_str = json.dumps(
-        {
+    json_str = json.dumps({
+        "braketSchemaHeader": {
+            "name": "braket.task_result.gate_model_task_result",
+            "version": "1",
+        },
+        "measurements": [[0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 0, 0], [0, 0, 1, 1]],
+        "resultTypes": rts,
+        "measuredQubits": [0, 1, 2, 3],
+        "taskMetadata": {
             "braketSchemaHeader": {
-                "name": "braket.task_result.gate_model_task_result",
+                "name": "braket.task_result.task_metadata",
                 "version": "1",
             },
-            "measurements": [[0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 0, 0], [0, 0, 1, 1]],
-            "resultTypes": rts,
-            "measuredQubits": [0, 1, 2, 3],
-            "taskMetadata": {
+            "id": "task_arn",
+            "shots": 0,
+            "deviceId": "default",
+        },
+        "additionalMetadata": {
+            "action": {
                 "braketSchemaHeader": {
-                    "name": "braket.task_result.task_metadata",
+                    "name": "braket.ir.openqasm.program",
                     "version": "1",
                 },
-                "id": "task_arn",
-                "shots": 0,
-                "deviceId": "default",
+                "source": source,
             },
-            "additionalMetadata": {
-                "action": {
-                    "braketSchemaHeader": {
-                        "name": "braket.ir.openqasm.program",
-                        "version": "1",
-                    },
-                    "source": source,
-                },
-            },
-        }
-    )
+        },
+    })
     return GateModelQuantumTaskResult.from_string(json_str)
 
 
@@ -350,9 +342,7 @@ def test_valid_local_device_for_noise_model(backend, noise_model):
     dev = BraketLocalQubitDevice(wires=2, backend=backend, noise_model=noise_model)
     assert dev._noise_model.instructions == [
         NoiseModelInstruction(Noise.BitFlip(0.05), GateCriteria(Gate.H)),
-        NoiseModelInstruction(
-            Noise.TwoQubitDepolarizing(0.10), GateCriteria(Gate.CNot)
-        ),
+        NoiseModelInstruction(Noise.TwoQubitDepolarizing(0.10), GateCriteria(Gate.CNot)),
     ]
 
 

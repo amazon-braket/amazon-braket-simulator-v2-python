@@ -1,49 +1,53 @@
+from __future__ import annotations
+
 import atexit
 import json
-from collections.abc import Sequence
+import os
+import sys
+from itertools import starmap
 from multiprocessing.pool import Pool
-from typing import Optional, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
 from braket.default_simulator.simulator import BaseLocalSimulator
 from braket.ir.jaqcd import DensityMatrix, Probability, StateVector
-from braket.ir.openqasm import Program as OpenQASMProgram
 from braket.task_result import GateModelTaskResult
 
 from braket.simulator_v2.julia_workers import (
-    _handle_julia_error,
+    _handle_julia_error,  # noqa: PLC2701
     translate_and_run,
     translate_and_run_multiple,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from braket.ir.openqasm import Program as OpenQASMProgram
+
 __JULIA_POOL__ = None
 
 
-def setup_julia():
-    import os
-    import sys
-
+def setup_julia() -> None:
     # don't reimport if we don't have to
     if "juliacall" in sys.modules and hasattr(sys.modules["juliacall"], "Main"):
         os.environ["PYTHON_JULIACALL_HANDLE_SIGNALS"] = "yes"
         return
-    else:
-        for k, default in (
-            ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
-            ("PYTHON_JULIACALL_THREADS", "auto"),
-            ("PYTHON_JULIACALL_OPTLEVEL", "3"),
-            # let the user's Conda/Pip handle installing things
-            ("JULIA_CONDAPKG_BACKEND", "Null"),
-        ):
-            os.environ[k] = os.environ.get(k, default)
+    for k, default in (
+        ("PYTHON_JULIACALL_HANDLE_SIGNALS", "yes"),
+        ("PYTHON_JULIACALL_THREADS", "auto"),
+        ("PYTHON_JULIACALL_OPTLEVEL", "3"),
+        # let the user's Conda/Pip handle installing things
+        ("JULIA_CONDAPKG_BACKEND", "Null"),
+    ):
+        os.environ[k] = os.environ.get(k, default)
 
-        from juliacall import Main as jl
+    from juliacall import Main as jl  # noqa: PLC0415, N813
 
-        # These are used at simulator class instantiation to trigger
-        # precompilation of Julia methods which may be invalidated
-        # or uncacheable. Total time for this should be <1s.
-        jl.seval("using BraketSimulator, JSON3")
-        exact_sv_oq3 = """
+    # These are used at simulator class instantiation to trigger
+    # precompilation of Julia methods which may be invalidated
+    # or uncacheable. Total time for this should be <1s.
+    jl.seval("using BraketSimulator, JSON3")
+    exact_sv_oq3 = """
         OPENQASM 3.0;
         input float p;
         qubit[2] q;
@@ -64,7 +68,7 @@ def setup_julia():
         #pragma braket result density_matrix q[0], q[1]
         #pragma braket result probability
         """
-        inexact_sv_oq3 = """
+    inexact_sv_oq3 = """
         OPENQASM 3.0;
         input float p;
         qubit[9] q;
@@ -76,7 +80,7 @@ def setup_julia():
         #pragma braket result expectation y(q[5]) @ y(q[6])
         #pragma braket result expectation h(q[7]) @ h(q[8])
         """
-        stock_dm_oq3 = """
+    stock_dm_oq3 = """
         OPENQASM 3.0;
         input float p;
         qubit[2] q;
@@ -87,13 +91,13 @@ def setup_julia():
         #pragma braket result expectation y(q[0])
         #pragma braket result density_matrix q[0], q[1]
         """
-        jl.BraketSimulator.simulate("braket_sv_v2", exact_sv_oq3, '{"p": 1.57}', 0)
-        jl.BraketSimulator.simulate("braket_sv_v2", inexact_sv_oq3, '{"p": 1.57}', 100)
-        jl.BraketSimulator.simulate("braket_dm_v2", stock_dm_oq3, '{"p": 1.57}', 0)
-        return
+    jl.BraketSimulator.simulate("braket_sv_v2", exact_sv_oq3, '{"p": 1.57}', 0)
+    jl.BraketSimulator.simulate("braket_sv_v2", inexact_sv_oq3, '{"p": 1.57}', 100)
+    jl.BraketSimulator.simulate("braket_dm_v2", stock_dm_oq3, '{"p": 1.57}', 0)
+    return
 
 
-def setup_pool():
+def setup_pool() -> None:
     # We use a multiprocessing Pool with one worker
     # in order to bypass the Python GIL. This protects us
     # when the simulator is used from a non-main thread from another
@@ -103,7 +107,6 @@ def setup_pool():
     __JULIA_POOL__.apply(setup_julia)
     atexit.register(__JULIA_POOL__.join)
     atexit.register(__JULIA_POOL__.close)
-    return
 
 
 # large arrays are extremely expensive to transfer among Python
@@ -111,7 +114,8 @@ def setup_pool():
 # StateVector, DensityMatrix, or Probability result types, we
 # instead do an mmap to disk, which is dramatically faster. For
 # smaller objects this isn't helpful.
-def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
+def _handle_mmaped_result(
+        raw_result: list, mmap_paths: list, obj_lengths: list) -> GateModelTaskResult:
     result = GateModelTaskResult(**raw_result)
     if mmap_paths:
         mmap_files = mmap_paths
@@ -135,22 +139,22 @@ def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
 
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
-    def __init__(self, device: str):
-        global __JULIA_POOL__  # noqa: F824
+    def __init__(self, device: str) -> None:
+        global __JULIA_POOL__  # noqa: PLW0602
         # if the pool is already set up, no need
         # to do anything
         if __JULIA_POOL__ is None:
             setup_pool()
         self._device = device
 
-    def initialize_simulation(self, **kwargs):
-        return
+    def initialize_simulation(self, **kwargs: dict) -> None:
+        pass
 
     def run_openqasm(
         self,
         openqasm_ir: OpenQASMProgram,
         shots: int = 0,
-        batch_size: int = 1,  # unused
+        batch_size: int = 1,  # noqa: ARG002
     ) -> GateModelTaskResult:
         """Executes the circuit specified by the supplied `openqasm_ir` on the simulator.
 
@@ -166,8 +170,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             ValueError: If result types are not specified in the IR or sample is specified
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
-        """
-        global __JULIA_POOL__  # noqa: F824
+        """  # noqa: DOC502
+        global __JULIA_POOL__  # noqa: PLW0602
 
         # pass inputs and source as strings to avoid pickling a dict
         inputs_dict = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
@@ -194,9 +198,9 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
     def run_multiple(
         self,
         programs: Sequence[OpenQASMProgram],
-        max_parallel: Optional[int] = -1,
-        shots: Optional[int] = 0,
-        inputs: Optional[Union[dict, Sequence[dict]]] = {},
+        max_parallel: int = -1,  # noqa: ARG002
+        shots: int = 0,
+        inputs: dict | Sequence[dict] | None = None,
     ) -> list[GateModelTaskResult]:
         """
         Run the tasks specified by the given IR programs.
@@ -206,11 +210,15 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             programs (Sequence[OQ3Program]): The IR representations of the programs
             max_parallel (Optional[int]): The maximum number of programs to run in parallel.
                 Default is the number of logical CPUs.
+
         Returns:
             list[GateModelTaskResult]: A list of result objects, with the ith object being
             the result of the ith program.
         """
-        global __JULIA_POOL__  # noqa: F824
+        if inputs is None:
+            inputs = {}
+
+        global __JULIA_POOL__  # noqa: PLW0602
         try:
             jl_results = __JULIA_POOL__.apply(
                 translate_and_run_multiple,
@@ -225,10 +233,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
             (loaded_result[r_ix], paths_and_lens[r_ix][0], paths_and_lens[r_ix][1])
             for r_ix in range(len(loaded_result))
         ]
-        results = [
-            _handle_mmaped_result(*result_path_len)
-            for result_path_len in results_paths_lens
-        ]
+        results = list(starmap(_handle_mmaped_result, results_paths_lens))
         jl_results = None
         for p_ix, program in enumerate(programs):
             results[p_ix].additionalMetadata.action = program
@@ -250,11 +255,10 @@ def _result_value_to_ndarray(
     with the pydantic specification for ResultTypeValues.
     """
 
-    def reconstruct_complex(v):
+    def reconstruct_complex(v: list | float) -> complex | float:
         if isinstance(v, list):
             return complex(v[0], v[1])
-        else:
-            return v
+        return v
 
     for result_ind, result_type in enumerate(task_result.resultTypes):
         # Amplitude
@@ -263,7 +267,7 @@ def _result_value_to_ndarray(
             task_result.resultTypes[result_ind].value = {
                 k: reconstruct_complex(v) for (k, v) in val.items()
             }
-        if isinstance(result_type.type, StateVector):
+        elif isinstance(result_type.type, StateVector):
             val = task_result.resultTypes[result_ind].value
             if isinstance(val, list):
                 fixed_val = [reconstruct_complex(v) for v in val]
@@ -271,11 +275,9 @@ def _result_value_to_ndarray(
         if isinstance(result_type.type, DensityMatrix):
             val = task_result.resultTypes[result_ind].value
             # complex are stored as tuples of reals
-            fixed_val = [
-                [reconstruct_complex(v) for v in inner_val] for inner_val in val
-            ]
+            fixed_val = [[reconstruct_complex(v) for v in inner_val] for inner_val in val]
             task_result.resultTypes[result_ind].value = np.asarray(fixed_val)
-        if isinstance(result_type.type, Probability):
+        elif isinstance(result_type.type, Probability):
             val = task_result.resultTypes[result_ind].value
             task_result.resultTypes[result_ind].value = np.asarray(val)
 
