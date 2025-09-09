@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.3 (2025-09-09)
+
+### Bug Fixes and Other Changes
+
+ * update supported python versions
+
 ## v0.3.2 (2025-03-17)
 
 ### Bug Fixes and Other Changes

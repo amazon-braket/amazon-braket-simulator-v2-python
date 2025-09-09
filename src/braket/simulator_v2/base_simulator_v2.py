@@ -140,7 +140,7 @@ def _handle_mmaped_result(raw_result, mmap_paths, obj_lengths):
 
 class BaseLocalSimulatorV2(BaseLocalSimulator):
     def __init__(self, device: str) -> None:
-        global __JULIA_POOL__
+        global __JULIA_POOL__  # noqa: F824
         # if the pool is already set up, no need
         # to do anything
         if __JULIA_POOL__ is None:
@@ -171,7 +171,7 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
                 as a result type when shots=0. Or, if StateVector and Amplitude result types
                 are requested when shots>0.
         """
-        global __JULIA_POOL__
+        global __JULIA_POOL__  # noqa: F824
 
         # pass inputs and source as strings to avoid pickling a dict
         inputs_dict = json.dumps(openqasm_ir.inputs) if openqasm_ir.inputs else "{}"
@@ -217,6 +217,8 @@ class BaseLocalSimulatorV2(BaseLocalSimulator):
         """
         if inputs is None:
             inputs = {}
+
+        global __JULIA_POOL__  # noqa: F824
         try:
             jl_results = __JULIA_POOL__.apply(
                 translate_and_run_multiple,
