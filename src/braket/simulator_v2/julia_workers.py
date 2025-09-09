@@ -1,12 +1,16 @@
+from __future__ import annotations
+
 import json
 import sys
-from collections.abc import Sequence
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING
 
-from braket.ir.openqasm import Program as OpenQASMProgram
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from braket.ir.openqasm import Program as OpenQASMProgram
 
 
-def _handle_julia_error(error):
+def _handle_julia_error(error: str) -> None:
     # in case juliacall isn't loaded
     if type(error).__name__ == "JuliaError":
         python_exception = getattr(error.exception, "alternate_type", None)
@@ -14,21 +18,19 @@ def _handle_julia_error(error):
             # convert to RuntimeError as JuliaError can't be serialized
             py_error = RuntimeError(
                 "Unable to unwrap internal Julia exception."
-                f"Exception message: {str(error.exception.message)}"
+                f"Exception message: {error.exception.message}"
             )
         else:
             class_val = getattr(sys.modules["builtins"], str(python_exception))
             py_error = class_val(str(error.exception.message))
         raise py_error
-    else:
-        raise error
-    return
+    raise error
 
 
 def translate_and_run(
     device_id: str, openqasm_source: str, openqasm_inputs: str, shots: int = 0
 ) -> str:
-    jl = getattr(sys.modules["juliacall"], "Main")
+    jl = sys.modules["juliacall"].Main
     try:
         result = jl.BraketSimulator.simulate(
             device_id,
@@ -46,10 +48,10 @@ def translate_and_run_multiple(
     device_id: str,
     programs: Sequence[OpenQASMProgram],
     shots: int = 0,
-    inputs: Optional[Union[dict, Sequence[dict]]] = None,
-) -> List[str]:
+    inputs: dict | Sequence[dict] | None = None,
+) -> list[str]:
     inputs = inputs or {}
-    jl = getattr(sys.modules["juliacall"], "Main")
+    jl = sys.modules["juliacall"].Main
     irs = [program.source for program in programs]
     py_inputs = {}
     if len(inputs) > 1 or isinstance(inputs, dict):
