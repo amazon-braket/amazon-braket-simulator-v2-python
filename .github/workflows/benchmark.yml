@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Install juliaup
       uses: julia-actions/install-juliaup@v2.1.2
       with:
@@ -23,7 +23,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.9
+        python-version: '3.x'
     - name: Install dependencies
       run: |
         pip install -e .[test] # to put juliapkg.json in sys.path
