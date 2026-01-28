@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.0 (2026-01-28)
+
+### Deprecations and Removals
+
+ * drop Python 3.10 support
+
 ## v0.3.4 (2025-09-10)
 
 ### Bug Fixes and Other Changes
