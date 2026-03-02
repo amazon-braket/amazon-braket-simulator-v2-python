@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6.0.2
     - name: Install juliaup
-      uses: julia-actions/install-juliaup@v2.1.2
+      uses: julia-actions/install-juliaup@v3
       with:
         channel: '1'
     - name: Update Julia registry 
