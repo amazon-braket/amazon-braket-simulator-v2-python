@@ -43,5 +43,5 @@ jobs:
       run: |
         tox -e unit-tests
     - name: Upload coverage report to Codecov
-      uses: codecov/codecov-action@v6
+      uses: codecov/codecov-action@v7
       if: ${{ strategy.job-index == 0 }}
