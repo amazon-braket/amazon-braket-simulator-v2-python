@@ -17,7 +17,7 @@ from unittest.mock import Mock, PropertyMock, patch
 import numpy as anp
 import pennylane as qml
 import pytest
-from braket.circuits import Circuit, Gate, Noise, Observable, result_types
+from braket.circuits import Circuit, FreeParameter, Gate, Noise, Observable, result_types
 from braket.circuits.noise_model import GateCriteria, NoiseModel, NoiseModelInstruction
 from braket.devices import LocalSimulator
 from braket.pennylane_plugin import BraketLocalQubitDevice
@@ -40,17 +40,82 @@ SIM_TASK.result.return_value.additional_metadata.simulatorMetadata.executionDura
 SIM_TASK.result.return_value.result_types = []
 type(SIM_TASK).id = PropertyMock(return_value="task_arn")
 SIM_TASK.state.return_value = "COMPLETED"
+
 CIRCUIT = (
     Circuit()
     .h(0)
     .cnot(0, 1)
-    .i(2)
+    .ry(1, -np.pi / 2)
+    .rx(2, np.pi / 2)
     .i(3)
     .probability(target=[0])
-    .expectation(observable=Observable.X(), target=1)
-    .variance(observable=Observable.Y(), target=2)
+    .expectation(observable=Observable.Z(), target=1)
+    .variance(observable=Observable.Z(), target=2)
     .sample(observable=Observable.Z(), target=3)
 )
+
+CIRCUIT_QUBIT_DEVICE = (
+    Circuit()
+    .h(0)
+    .cnot(0, 1)
+    .ry(1, FreeParameter("p_0"))
+    .rx(2, FreeParameter("p_1"))
+    .i(3)
+    .probability(target=[0])
+    .expectation(observable=Observable.Z(), target=1)
+    .variance(observable=Observable.Z(), target=2)
+    .sample(observable=Observable.Z(), target=3)
+)
+INPUTS_QUBIT_DEVICE = {"p_0": -np.pi / 2, "p_1": np.pi / 2}
+
+RESULT_QUBIT_DEVICE = GateModelQuantumTaskResult.from_string(
+    json.dumps({
+        "braketSchemaHeader": {
+            "name": "braket.task_result.gate_model_task_result",
+            "version": "1",
+        },
+        "measurements": [[0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 0, 0], [0, 0, 1, 1]],
+        "resultTypes": [
+            {"type": {"targets": [0], "type": "probability"}, "value": [0.5, 0.5]},
+            {
+                "type": {"observable": ["z"], "targets": [1], "type": "expectation"},
+                "value": 0.0,
+            },
+            {
+                "type": {"observable": ["z"], "targets": [2], "type": "variance"},
+                "value": 0.1,
+            },
+            {
+                "type": {"observable": ["z"], "targets": [3], "type": "sample"},
+                "value": [1, -1, 1, 1],
+            },
+        ],
+        "measuredQubits": [0, 1, 2, 3],
+        "taskMetadata": {
+            "braketSchemaHeader": {
+                "name": "braket.task_result.task_metadata",
+                "version": "1",
+            },
+            "id": "task_arn",
+            "shots": 0,
+            "deviceId": "default",
+        },
+        "additionalMetadata": {
+            "action": {
+                "braketSchemaHeader": {
+                    "name": "braket.ir.openqasm.program",
+                    "version": "1",
+                },
+                "source": "qubit[2] q; cnot q[0], q[1]; measure q;",
+            },
+        },
+    })
+)
+
+TASK_QUBIT_DEVICE = Mock()
+TASK_QUBIT_DEVICE.result.return_value = RESULT_QUBIT_DEVICE
+type(TASK_QUBIT_DEVICE).id = PropertyMock(return_value="task_arn")
+TASK_QUBIT_DEVICE.state.return_value = "COMPLETED"
 
 DEVICE_ARN = "baz"
 
@@ -246,7 +311,7 @@ def test_local_none_shots(backend):
 @pytest.mark.parametrize("backend", ["braket_sv_v2", "braket_dm_v2"])
 def test_local_qubit_execute(mock_run, shots, backend):
     """Tests that the local qubit device is run with the correct arguments"""
-    mock_run.return_value = TASK
+    mock_run.return_value = TASK_QUBIT_DEVICE
     dev = BraketLocalQubitDevice(wires=4, backend=backend, shots=shots, foo="bar")
 
     with QuantumTape() as circuit:
@@ -258,7 +323,9 @@ def test_local_qubit_execute(mock_run, shots, backend):
         qml.sample(qml.PauliZ(3))
 
     dev.execute(circuit)
-    mock_run.assert_called_with(CIRCUIT, shots=shots, foo="bar", inputs={})
+    mock_run.assert_called_with(
+        CIRCUIT_QUBIT_DEVICE, shots=shots, foo="bar", inputs=INPUTS_QUBIT_DEVICE
+    )
 
 
 def test_projection():
