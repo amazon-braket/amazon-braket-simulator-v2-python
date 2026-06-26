@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1 (2026-06-26)
+
+### Bug Fixes and Other Changes
+
+ * add deprecation notice
+
 ## v0.4.0 (2026-01-28)
 
 ### Deprecations and Removals
