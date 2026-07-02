@@ -24,6 +24,7 @@ dynamic = ["version", "dependencies", "optional-dependencies"]
 [project.entry-points."braket.simulators"]
 braket_sv_v2 = "braket.simulator_v2.state_vector_simulator_v2:StateVectorSimulatorV2"
 braket_dm_v2 = "braket.simulator_v2.density_matrix_simulator_v2:DensityMatrixSimulatorV2"
+braket_sv_branched = "braket.simulator_v2.state_vector_simulator_branched:StateVectorSimulatorBranched"
 
 [tool.setuptools]
 include-package-data=false
